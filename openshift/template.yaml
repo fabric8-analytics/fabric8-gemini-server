@@ -1,0 +1,173 @@
+apiVersion: v1
+kind: Template
+labels:
+  template: f8a-gemini-server
+metadata:
+  name: f8a-gemini-server
+  annotations:
+    description: f8a-gemini-server
+objects:
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    labels:
+      service: f8a-gemini-server
+    name: f8a-gemini-server
+  spec:
+    replicas: "${{REPLICAS}}"
+    selector:
+      service: f8a-gemini-server
+    template:
+      metadata:
+        labels:
+          service: f8a-gemini-server
+      spec:
+        containers:
+        - command:
+          - /bin/entrypoint.sh
+          env:
+          - name: BAYESIAN_GREMLIN_HTTP_SERVICE_HOST
+            value: bayesian-gremlin-http
+          - name: BAYESIAN_GREMLIN_HTTP_SERVICE_PORT
+            value: "8182"
+          - name: PGBOUNCER_SERVICE_HOST
+            value: bayesian-pgbouncer
+          - name: PGBOUNCER_SERVICE_PORT
+            value: "5432"
+          - name: COREAPI_SERVICE_HOST
+            value: bayesian-api
+          - name: COREAPI_SERVICE_PORT
+            value: "5000"
+          - name: POSTGRESQL_DATABASE
+            valueFrom:
+              secretKeyRef:
+                name: coreapi-postgres
+                key: database
+          - name: POSTGRESQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: coreapi-postgres
+                key: password
+          - name: POSTGRESQL_USER
+            valueFrom:
+              secretKeyRef:
+                name: coreapi-postgres
+                key: username
+          - name: GEMINI_API_SERVICE_PORT
+            value: "5000"
+          - name: GEMINI_API_SERVICE_TIMEOUT
+            value: "60"
+          - name: NUMBER_WORKER_PROCESS
+            value: "4"
+          - name: CLASS_TYPE
+            value: "sync"
+          image: "${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${IMAGE_TAG}"
+          name: f8a-gemini-server
+          ports:
+          - containerPort: ${{GEMINI_API_SERVICE_PORT}}
+          livenessProbe:
+            initialDelaySeconds: 60
+            periodSeconds: 60
+            timeoutSeconds: 30
+            failureThreshold: 3
+            successThreshold: 1
+            tcpSocket:
+              port: ${{GEMINI_API_SERVICE_PORT}}
+          readinessProbe:
+            tcpSocket:
+              port: ${{GEMINI_API_SERVICE_PORT}}
+            failureThreshold: 3
+            successThreshold: 1
+            initialDelaySeconds: 60
+            periodSeconds: 60
+            timeoutSeconds: 30
+          resources:
+            requests:
+              cpu: ${CPU_REQUEST}
+              memory: ${MEMORY_REQUEST}
+            limits:
+              cpu: ${CPU_LIMIT}
+              memory: ${MEMORY_LIMIT}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      service: f8a-gemini-server
+    name: f8a-gemini-server
+  spec:
+    ports:
+    - port: ${{GEMINI_API_SERVICE_PORT}}
+      name: "${GEMINI_API_SERVICE_PORT}"
+      targetPort: ${{GEMINI_API_SERVICE_PORT}}
+      protocol: TCP
+    selector:
+      service: f8a-gemini-server
+- apiVersion: v1
+  kind: Route
+  metadata:
+    name: f8a-gemini-server
+  spec:
+    host: ${GEMINI_API_HOSTNAME}
+    to:
+      kind: Service
+      name: f8a-gemini-server
+
+parameters:
+- description: A hostname where the fabric8-analytics Gemini API should be exposed (will be auto-generated if empty)
+  displayName: fabric8-analytics Gemini API hostname
+  required: false
+  name: GEMINI_API_HOSTNAME
+
+- description: CPU request
+  displayName: CPU request
+  required: true
+  name: CPU_REQUEST
+  value: "128m"
+
+- description: CPU limit
+  displayName: CPU limit
+  required: true
+  name: CPU_LIMIT
+  value: "500m"
+
+- description: Memory request
+  displayName: Memory request
+  required: true
+  name: MEMORY_REQUEST
+  value: "512Mi"
+
+- description: Memory limit
+  displayName: Memory limit
+  required: true
+  name: MEMORY_LIMIT
+  value: "512Mi"
+
+- description: Docker registry where the image is
+  displayName: Docker registry
+  required: true
+  name: DOCKER_REGISTRY
+  value: "registry.devshift.net"
+
+- description: Docker image to use
+  displayName: Docker image
+  required: true
+  name: DOCKER_IMAGE
+  value: "fabric8-analytics/f8a-gemini-server"
+
+- description: Image tag
+  displayName: Image tag
+  required: true
+  name: IMAGE_TAG
+  value: "latest"
+
+- description: Number of deployment replicas
+  displayName: Number of deployment replicas
+  required: true
+  name: REPLICAS
+  value: "2"
+
+- description: Port Number
+  displayName: Port Number
+  required: true
+  name: GEMINI_API_SERVICE_PORT
+  value: "5000"

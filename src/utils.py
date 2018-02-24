@@ -45,25 +45,6 @@ class Postgres:
 _rdb = Postgres()
 _session = _rdb.session
 
-
-def get_osio_user_count(ecosystem, name, version):
-    str_gremlin = "g.V().has('pecosystem','{}').has('pname','{}').has('version','{}').".format(
-        ecosystem, name, version)
-    str_gremlin += "in('uses').count();"
-    payload = {
-        'gremlin': str_gremlin
-    }
-
-    try:
-        response = get_session_retry().post(GREMLIN_SERVER_URL_REST, data=json.dumps(payload))
-        json_response = response.json()
-        return json_response['result']['data'][0]
-    except Exception as e:
-        logger.error("Failed retrieving Gremlin data.")
-        logger.error("%r" % e)
-        return -1
-
-
 def get_session_retry(retries=3, backoff_factor=0.2, status_forcelist=(404, 500, 502, 504),
                       session=None):
     """Set HTTP Adapter with retries to session."""

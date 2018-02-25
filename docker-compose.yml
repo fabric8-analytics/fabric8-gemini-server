@@ -1,26 +1,43 @@
 version: "2"
 services:
-  f8a-server-backbone:
+  fabric8-gemini-server:
     build:
       context: .
     network_mode: bridge
     entrypoint:
       - /bin/entrypoint.sh
     environment:
-      BAYESIAN_GREMLIN_HTTP_SERVICE_HOST: "bayesian-gremlin-http"
-      BAYESIAN_GREMLIN_HTTP_SERVICE_PORT: "8182"
-      PGBOUNCER_SERVICE_HOST: "bayesian-pgbouncer"
+      POSTGRESQL_USER: "gemini"
+      POSTGRESQL_PASSWORD: "gemini"
+      POSTGRESQL_DATABASE: "gemini"
+      PGBOUNCER_SERVICE_HOST: "gemini"
       PGBOUNCER_SERVICE_PORT: "5432"
-      LICENSE_SERVICE_HOST: "f8a-license-analysis"
-      LICENSE_SERVICE_PORT: "6162"
-      PGM_SERVICE_HOST: "bayesian-kronos"
-      PGM_SERVICE_PORT : "6006"
-      POSTGRESQL_USER: "user"
-      POSTGRESQL_PASSWORD: "password"
-      POSTGRESQL_DATABASE: "dbname"
       GEMINI_API_SERVICE_TIMEOUT: "60"
       GEMINI_API_SERVICE_PORT: "5000"
       NUMBER_WORKER_PROCESS: "2"
       CLASS_TYPE: "sync"
     ports:
       - "5000:5000"
+  postgres:
+    image: registry.devshift.net/bayesian/coreapi-postgres
+    network_mode: bridge
+    ports:
+     - "6432:5432"
+    environment:
+      POSTGRESQL_USER: gemini
+      POSTGRESQL_PASSWORD: gemini
+      POSTGRESQL_DATABASE: "gemini"
+    container_name: gemini-postgres
+  pgbouncer:
+    image: registry.devshift.net/bayesian/coreapi-pgbouncer
+    container_name: gemini-pgbouncer
+    network_mode: bridge
+    links:
+     - postgres
+    ports:
+     - "5432:5432"
+    environment:
+      POSTGRESQL_USER: gemini
+      POSTGRESQL_PASSWORD: gemini
+      POSTGRESQL_DATABASE: gemini
+      POSTGRESQL_INITIAL_DATABASE: gemini

@@ -1,10 +1,9 @@
-#!/usr/bin/env groovy
 @Library('github.com/msrb/cicd-pipeline-helpers')
 
 def commitId
 node('docker') {
 
-    def image = docker.image('fabric8-analytics/f8a-server-backbone')
+    def image = docker.image('fabric8-analytics/f8a-server-gemini')
 
     stage('Checkout') {
         checkout scm
@@ -39,7 +38,7 @@ node('docker') {
 if (env.BRANCH_NAME == 'master') {
     node('oc') {
 
-        def dc = 'f8a-server-backbone'
+        def dc = 'f8a-server-gemini'
         lock('f8a_staging') {
 
             stage('Deploy - Stage') {

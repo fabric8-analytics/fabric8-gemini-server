@@ -7,10 +7,10 @@ services:
     entrypoint:
       - /bin/entrypoint.sh
     environment:
-      POSTGRESQL_USER: "gemini"
-      POSTGRESQL_PASSWORD: "gemini"
-      POSTGRESQL_DATABASE: "gemini"
-      PGBOUNCER_SERVICE_HOST: "gemini"
+      POSTGRESQL_USER: coreapi
+      POSTGRESQL_PASSWORD: coreapi
+      POSTGRESQL_DATABASE: coreapi
+      PGBOUNCER_SERVICE_HOST: coreapi
       PGBOUNCER_SERVICE_PORT: "5432"
       GEMINI_API_SERVICE_TIMEOUT: "60"
       GEMINI_API_SERVICE_PORT: "5000"
@@ -24,20 +24,20 @@ services:
     ports:
      - "6432:5432"
     environment:
-      POSTGRESQL_USER: gemini
-      POSTGRESQL_PASSWORD: gemini
-      POSTGRESQL_DATABASE: "gemini"
-    container_name: gemini-postgres
+      POSTGRESQL_USER: coreapi
+      POSTGRESQL_PASSWORD: coreapi
+      POSTGRESQL_DATABASE: coreapi
+    container_name: coreapi-postgres
   pgbouncer:
     image: registry.devshift.net/bayesian/coreapi-pgbouncer
-    container_name: gemini-pgbouncer
+    container_name: coreapi-pgbouncer
     network_mode: bridge
     links:
      - postgres
     ports:
      - "5432:5432"
     environment:
-      POSTGRESQL_USER: gemini
-      POSTGRESQL_PASSWORD: gemini
-      POSTGRESQL_DATABASE: gemini
-      POSTGRESQL_INITIAL_DATABASE: gemini
+      POSTGRESQL_USER: coreapi
+      POSTGRESQL_PASSWORD: coreapi
+      POSTGRESQL_DATABASE: coreapi
+      POSTGRESQL_INITIAL_DATABASE: coreapi

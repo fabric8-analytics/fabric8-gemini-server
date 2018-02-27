@@ -62,7 +62,7 @@ objects:
           - name: CLASS_TYPE
             value: "sync"
           image: "${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${IMAGE_TAG}"
-          name: f8a-gemini-server
+          name: fabric8-gemini-server
           ports:
           - containerPort: ${{GEMINI_API_SERVICE_PORT}}
           livenessProbe:
@@ -122,7 +122,7 @@ parameters:
   displayName: CPU request
   required: true
   name: CPU_REQUEST
-  value: "128m"
+  value: "125m"
 
 - description: CPU limit
   displayName: CPU limit
@@ -134,7 +134,7 @@ parameters:
   displayName: Memory request
   required: true
   name: MEMORY_REQUEST
-  value: "512Mi"
+  value: "128Mi"
 
 - description: Memory limit
   displayName: Memory limit
@@ -152,7 +152,7 @@ parameters:
   displayName: Docker image
   required: true
   name: DOCKER_IMAGE
-  value: "fabric8-analytics/f8a-gemini-server"
+  value: "fabric8-analytics/fabric8-gemini-server"
 
 - description: Image tag
   displayName: Image tag

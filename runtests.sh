@@ -9,7 +9,7 @@ trap gc EXIT SIGINT
 
 # Enter local-setup/ directory
 # Run local instances for: dynamodb, gremlin-websocket, gremlin-http
-function start_backbone_service {
+function start_gemini_service {
     #pushd local-setup/
     echo "Invoke Docker Compose services"
     docker-compose -f docker-compose.yml up  --force-recreate -d

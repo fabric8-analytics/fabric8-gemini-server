@@ -1,3 +1,4 @@
+"""Utility classes and functions."""
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import SQLAlchemyError
@@ -23,9 +24,11 @@ LICENSE_SCORING_URL_REST = "http://{host}:{port}".format(
     port=os.environ.get("LICENSE_SERVICE_PORT"))
 
 
-# Create Postgres Connection Session
 class Postgres:
+    """Postgres utility class to create postgres connection session."""
+
     def __init__(self):
+        """Postgres utility class constructor."""
         self.connection = 'postgresql://{user}:{password}@{pgbouncer_host}:{pgbouncer_port}' \
                           '/{database}?sslmode=disable'. \
             format(user=os.getenv('POSTGRESQL_USER'),
@@ -39,11 +42,13 @@ class Postgres:
         self.session = self.Session()
 
     def session(self):
+        """Postgres utility session getter."""
         return self.session
 
 
 _rdb = Postgres()
 _session = _rdb.session
+
 
 def get_session_retry(retries=3, backoff_factor=0.2, status_forcelist=(404, 500, 502, 504),
                       session=None):
@@ -57,6 +62,7 @@ def get_session_retry(retries=3, backoff_factor=0.2, status_forcelist=(404, 500,
 
 
 def persist_repo_in_db(data):
+    """Store registered repository in the postgres database."""
     try:
         req = OSIORegisteredRepos(
             github_repo=data['github_repo'],
@@ -74,4 +80,5 @@ def persist_repo_in_db(data):
 
 
 def scan_repo(data):
+    """Scan function."""
     return True

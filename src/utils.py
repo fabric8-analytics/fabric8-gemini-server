@@ -4,12 +4,14 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import SQLAlchemyError
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
+from f8a_worker.models import OSIORegisteredRepos
+from selinon import run_flow
+from . import init_selinon
 import datetime
 import requests
 import os
 import logging
 
-from f8a_worker.models import OSIORegisteredRepos
 
 logger = logging.getLogger(__name__)
 
@@ -94,7 +96,7 @@ def persist_repo_in_db(data):
     try:
         #Work in progress
         #req is not of tyoe sql alchemy instead is of type f8a_worker
-        
+
         check_existing = _session.query(req)
 
         if not check_existing():
@@ -128,3 +130,36 @@ def persist_repo_in_db(data):
 def scan_repo(data):
     """Scan function."""
     return True
+
+def server_run_flow(flow_name, flow_args):
+    """Run a flow.
+    :param flow_name: name of flow to be run as stated in YAML config file
+    :param flow_args: arguments for the flow
+    :return: dispatcher ID handling flow
+    """
+    current_app.logger.debug('Running flow {}'.format(flow_name))
+    start = datetime.datetime.now()
+
+    init_celery(result_backend=False)
+    dispacher_id = run_flow(flow_name, flow_args)
+
+    elapsed_seconds = (datetime.datetime.now() - start).total_seconds()
+    current_app.logger.debug("It took {t} seconds to start {f} flow.".format(
+        t=elapsed_seconds, f=flow_name))
+    return dispacher_id
+
+
+#To integrate with Aagams workflow
+def server_create_component_bookkeeping(ecosystem, name, version, user_profile):
+    """Run the component analysis for given ecosystem+package+version."""
+    args = {
+        'external_request_id': uuid.uuid4().hex,
+        'data': {
+            'api_name': 'component_analyses',
+            'user_email': get_user_email(user_profile),
+            'user_profile': user_profile,
+            'request': {'ecosystem': ecosystem, 'name': name, 'version': version}
+        }
+    }
+    return server_run_flow('componentApiFlow', args)
+

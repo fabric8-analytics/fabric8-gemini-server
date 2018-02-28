@@ -6,6 +6,7 @@ from flask_cors import CORS
 from utils import persist_repo_in_db, scan_repo, validate_request_data
 
 app = Flask(__name__)
+init_selinon()
 CORS(app)
 
 @app.route('/api/v1/readiness')

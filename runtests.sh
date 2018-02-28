@@ -16,7 +16,7 @@ function start_gemini_service {
     #popd
 }
 
-start_backbone_service
+start_gemini_service
 
 export PYTHONPATH=`pwd`/src
 

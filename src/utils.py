@@ -7,9 +7,6 @@ from requests.packages.urllib3.util.retry import Retry
 import requests
 import os
 import logging
-import json
-import datetime
-import semantic_version as sv
 
 from f8a_worker.models import OSIORegisteredRepos
 
@@ -29,11 +26,13 @@ class Postgres:
 
     def __init__(self):
         """Postgres utility class constructor."""
-        self.connection = 'postgresql://{user}:{password}@{pgbouncer_host}:{pgbouncer_port}' \
-                          '/{database}?sslmode=disable'. \
+        self.connection = """postgresql://{user}:{password}@ \
+                            {pgbouncer_host}:{pgbouncer_port}' \
+                          '/{database}?sslmode=disable""". \
             format(user=os.getenv('POSTGRESQL_USER'),
                    password=os.getenv('POSTGRESQL_PASSWORD'),
-                   pgbouncer_host=os.getenv('PGBOUNCER_SERVICE_HOST', 'bayesian-pgbouncer'),
+                   pgbouncer_host=os.getenv('PGBOUNCER_SERVICE_HOST',
+                   'bayesian-pgbouncer'),
                    pgbouncer_port=os.getenv('PGBOUNCER_SERVICE_PORT', '5432'),
                    database=os.getenv('POSTGRESQL_DATABASE'))
         engine = create_engine(self.connection)
@@ -50,22 +49,43 @@ _rdb = Postgres()
 _session = _rdb.session
 
 
-def get_session_retry(retries=3, backoff_factor=0.2, status_forcelist=(404, 500, 502, 504),
+def get_session_retry(retries=3, backoff_factor=0.2,
+                      status_forcelist=(404, 500, 502, 504),
                       session=None):
     """Set HTTP Adapter with retries to session."""
     session = session or requests.Session()
-    retry = Retry(total=retries, read=retries, connect=retries,
-                  backoff_factor=backoff_factor, status_forcelist=status_forcelist)
+    retry = Retry(total=retries, read=retries,
+                  connect=retries,
+                  backoff_factor=backoff_factor,
+                  status_forcelist=status_forcelist)
+
     adapter = HTTPAdapter(max_retries=retry)
     session.mount('http://', adapter)
     return session
+
+
+def validate_request_data(input_json):
+    validate_string = "{} cannot be empty"
+    if 'github_url' not in input_json:
+        validate_string.format("github_url")
+        return False, validate_string
+
+    if 'github_sha' not in input_json:
+        validate_string.format("github_sha")
+        return False, validate_string
+
+    if 'email_ids' not in input_json:
+        validate_string.format("email_id")
+        return False, validate_string
+
+    return True, None
 
 
 def persist_repo_in_db(data):
     """Store registered repository in the postgres database."""
     try:
         req = OSIORegisteredRepos(
-            github_repo=data['github_repo'],
+            github_url=data['github_url'],
             github_sha=data['github_sha'],
             email_ids=data['email_ids']
         )
@@ -74,7 +94,7 @@ def persist_repo_in_db(data):
     except SQLAlchemyError as e:
         message = 'persisting records in the database failed. {}.'.format(e)
         logger.exception(message)
-        return {'message': message}
+        return False
 
     return True
 

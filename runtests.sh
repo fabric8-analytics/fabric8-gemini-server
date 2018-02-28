@@ -19,7 +19,7 @@ function start_gemini_service {
 start_gemini_service
 
 export PYTHONPATH=`pwd`/src
-
+pip3 install virtualenv
 echo "Create Virtualenv for Python deps ..."
 function prepare_venv() {
     VIRTUALENV=`which virtualenv`

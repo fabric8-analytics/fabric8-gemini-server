@@ -85,14 +85,37 @@ def validate_request_data(input_json):
 
 def persist_repo_in_db(data):
     """Store registered repository in the postgres database."""
-    try:
-        req = OSIORegisteredRepos(
+    req = OSIORegisteredRepos(
             git_url=data['git_url'],
             git_sha=data['git_sha'],
             email_ids=data['email_ids'],
             last_scanned_at=datetime.datetime.now()
-        )
-        _session.add(req)
+            )
+    try:
+        #Work in progress
+        #req is not of tyoe sql alchemy instead is of type f8a_worker
+        
+        check_existing = _session.query(req)
+
+        if not check_existing():
+
+            req = OSIORegisteredRepos(
+            git_url=data['git_url'],
+            git_sha=data['git_sha'],
+            email_ids=data['email_ids'],
+            last_scanned_at=datetime.datetime.now()
+            )
+
+            _session.add(req)
+        else:
+            req = {
+                "git_url":data['git_url'],
+                "git_sha":data['git_sha'],
+                "email_ids":data['email_ids'],
+                "last_scanned_at":datetime.datetime.now()
+                }
+            _session.query(User).filter_by(data["git_url"]).update(req)
+
         _session.commit()
     except SQLAlchemyError as e:
         message = 'persisting records in the database failed. {}.'.format(e)

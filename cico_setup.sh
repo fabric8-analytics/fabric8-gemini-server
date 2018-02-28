@@ -14,7 +14,7 @@ prep() {
     yum -y update
     yum -y install docker git which epel-release python34-virtualenv postgresql
     yum -y install python34-pip
-    pip install docker-compose
+    pip3 install docker-compose
     systemctl start docker
 }
 

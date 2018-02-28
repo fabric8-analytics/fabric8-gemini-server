@@ -18,26 +18,3 @@ services:
       CLASS_TYPE: "sync"
     ports:
       - "5000:5000"
-  postgres:
-    image: registry.devshift.net/bayesian/coreapi-postgres
-    network_mode: bridge
-    ports:
-     - "6432:5432"
-    environment:
-      POSTGRESQL_USER: coreapi
-      POSTGRESQL_PASSWORD: coreapi
-      POSTGRESQL_DATABASE: coreapi
-    container_name: coreapi-postgres
-  pgbouncer:
-    image: registry.devshift.net/bayesian/coreapi-pgbouncer
-    container_name: coreapi-pgbouncer
-    network_mode: bridge
-    links:
-     - postgres
-    ports:
-     - "5432:5432"
-    environment:
-      POSTGRESQL_USER: coreapi
-      POSTGRESQL_PASSWORD: coreapi
-      POSTGRESQL_DATABASE: coreapi
-      POSTGRESQL_INITIAL_DATABASE: coreapi

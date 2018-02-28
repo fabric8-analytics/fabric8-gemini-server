@@ -4,6 +4,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import SQLAlchemyError
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
+import datetime
 import requests
 import os
 import logging
@@ -26,15 +27,16 @@ class Postgres:
 
     def __init__(self):
         """Postgres utility class constructor."""
-        self.connection = """postgresql://{user}:{password}@ \
+        self.connection = "postgresql://{user}:{password}@ \
                             {pgbouncer_host}:{pgbouncer_port}' \
-                          '/{database}?sslmode=disable""". \
+                          '/{database}?sslmode=disable". \
             format(user=os.getenv('POSTGRESQL_USER'),
                    password=os.getenv('POSTGRESQL_PASSWORD'),
                    pgbouncer_host=os.getenv('PGBOUNCER_SERVICE_HOST',
                    'bayesian-pgbouncer'),
                    pgbouncer_port=os.getenv('PGBOUNCER_SERVICE_PORT', '5432'),
                    database=os.getenv('POSTGRESQL_DATABASE'))
+
         engine = create_engine(self.connection)
 
         self.Session = sessionmaker(bind=engine)
@@ -66,16 +68,16 @@ def get_session_retry(retries=3, backoff_factor=0.2,
 
 def validate_request_data(input_json):
     validate_string = "{} cannot be empty"
-    if 'github_url' not in input_json:
-        validate_string.format("github_url")
+    if 'git_url' not in input_json:
+        validate_string = validate_string.format("git_url")
         return False, validate_string
 
-    if 'github_sha' not in input_json:
-        validate_string.format("github_sha")
+    if 'git_sha' not in input_json:
+        validate_string = validate_string.format("git_sha")
         return False, validate_string
 
     if 'email_ids' not in input_json:
-        validate_string.format("email_id")
+        validate_string = validate_string.format("email_ids")
         return False, validate_string
 
     return True, None
@@ -85,9 +87,10 @@ def persist_repo_in_db(data):
     """Store registered repository in the postgres database."""
     try:
         req = OSIORegisteredRepos(
-            github_url=data['github_url'],
-            github_sha=data['github_sha'],
-            email_ids=data['email_ids']
+            git_url=data['git_url'],
+            git_sha=data['git_sha'],
+            email_ids=data['email_ids'],
+            last_scanned_at=datetime.datetime.now()
         )
         _session.add(req)
         _session.commit()

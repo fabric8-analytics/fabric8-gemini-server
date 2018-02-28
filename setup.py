@@ -33,7 +33,7 @@ setup(
     author='Samuzzal Choudhury',
     author_email='samuzzal@redhat.com',
     description='fabric8-analytics Gemini API Server',
-    license='ASL 2.0',
+    license='GPLv3',
     keywords='fabric8 analytics Gemini Server',
     url='https://github.com/fabric8-analytics/fabric8-gemini-server'
 )

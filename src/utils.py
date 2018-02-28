@@ -156,16 +156,16 @@ class worker_selinon_flow:
 
 
     #To integrate with Aagams workflow
-    def server_create_component_bookkeeping(self, ecosystem, name, version, user_profile):
-        """Run the component analysis for given ecosystem+package+version."""
-        args = {
-            'external_request_id': uuid.uuid4().hex,
-            'data': {
-                'api_name': 'component_analyses',
-                'user_email': get_user_email(user_profile),
-                'user_profile': user_profile,
-                'request': {'ecosystem': ecosystem, 'name': name, 'version': version}
-            }
-        }
-        return self.server_run_flow('componentApiFlow', args)
+    # def server_create_component_analyses(self, ecosystem, name, version, user_profile):
+    #     """Run the component analysis for given ecosystem+package+version."""
+    #     args = {
+    #         'external_request_id': uuid.uuid4().hex,
+    #         'data': {
+    #             'api_name': 'component_analyses',
+    #             'user_email': get_user_email(user_profile),
+    #             'user_profile': user_profile,
+    #             'request': {'ecosystem': ecosystem, 'name': name, 'version': version}
+    #         }
+    #     }
+    #     return self.server_run_flow('componentApiFlow', args)
 

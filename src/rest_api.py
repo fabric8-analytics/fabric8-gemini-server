@@ -8,7 +8,6 @@ from utils import persist_repo_in_db, scan_repo, validate_request_data
 app = Flask(__name__)
 CORS(app)
 
-
 @app.route('/api/v1/readiness')
 def readiness():
     """Readiness probe."""
@@ -49,13 +48,13 @@ def register():
     status = persist_repo_in_db(input_json)
     if status is not True:
         resp_dict["success"] = False
-        resp_dict["Summary"] = "Databae Ingestion Failure"
+        resp_dict["Summary"] = "Database Ingestion Failure"
         return flask.jsonify(resp_dict), 500
 
     status = scan_repo(input_json)
     if status is not True:
         resp_dict["success"] = False
-        resp_dict["Summary"] = "New Repo Scan Initializtion Failure"
+        resp_dict["summary"] = "New Repo Scan Initializtion Failure"
         return flask.jsonify(resp_dict), 500
     rep_summary = resp_dict["summary"].format(input_json['git_url'])
     resp_dict["summary"] = rep_summary

@@ -116,7 +116,7 @@ def persist_repo_in_db(data):
         #         "last_scanned_at":datetime.datetime.now()
         #         }
         #     _session.query(req)
-        #     _session.query(OSIORegisteredRepos).filter_by(data["git_url"]).update(req)
+        _session.query(OSIORegisteredRepos).filter_by(OSIORegisteredRepos.git_url=data["git_url"]).update(req)
         _session.add(req)
         _session.commit()
     except SQLAlchemyError as e:

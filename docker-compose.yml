@@ -8,9 +8,9 @@ services:
       - /bin/entrypoint.sh
     environment:
       POSTGRESQL_USER: coreapi
-      POSTGRESQL_PASSWORD: coreapi
+      POSTGRESQL_PASSWORD: coreapipostgres
       POSTGRESQL_DATABASE: coreapi
-      PGBOUNCER_SERVICE_HOST: coreapi
+      PGBOUNCER_SERVICE_HOST: bayesian-pgbouncer
       PGBOUNCER_SERVICE_PORT: "5432"
       GEMINI_API_SERVICE_TIMEOUT: "60"
       GEMINI_API_SERVICE_PORT: "5000"

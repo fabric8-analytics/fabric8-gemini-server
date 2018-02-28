@@ -12,7 +12,8 @@ RUN pip3 install -r requirements.txt && rm requirements.txt
 
 COPY ./src /src
 
-RUN pip3 install git+https://github.com/fabric8-analytics/fabric8-analytics-worker.git@${F8A_WORKER_VERSION}
+#RUN pip3 install git+https://github.com/fabric8-analytics/fabric8-analytics-worker.git@${F8A_WORKER_VERSION}
+RUN pip3 install git+https://github.com/GeetikaBatra/fabric8-analytics-worker.git@gemini
 
 ADD scripts/entrypoint.sh /bin/entrypoint.sh
 

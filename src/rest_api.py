@@ -2,11 +2,9 @@
 import flask
 from flask import Flask, request
 from flask_cors import CORS
-
 from utils import persist_repo_in_db, scan_repo, validate_request_data
 
 app = Flask(__name__)
-init_selinon()
 CORS(app)
 
 @app.route('/api/v1/readiness')
@@ -49,7 +47,7 @@ def register():
     status = persist_repo_in_db(input_json)
     if status is not True:
         resp_dict["success"] = False
-        resp_dict["Summary"] = "Database Ingestion Failure"
+        resp_dict["summary"] = "Database Ingestion Failure"
         return flask.jsonify(resp_dict), 500
 
     status = scan_repo(input_json)

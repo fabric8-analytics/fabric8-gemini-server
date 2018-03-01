@@ -74,6 +74,11 @@ def get_session_retry(retries=3, backoff_factor=0.2,
 
 
 def validate_request_data(input_json):
+    """Validate the data.
+
+    :param data: dict, describing data
+    :return: boolean, result
+    """
     validate_string = "{} cannot be empty"
     if 'git_url' not in input_json:
         validate_string = validate_string.format("git_url")
@@ -101,8 +106,7 @@ def _to_object_dict(data):
 
 
 class DatabaseIngestion():
-
-    
+    """Class to ingest data into Database."""
 
     @staticmethod
     def _update_data(session, data):
@@ -117,9 +121,11 @@ class DatabaseIngestion():
             session.rollback()
             raise Exception("Error in updating data")
 
+
     @classmethod
     def store_record(cls, data):
         """Store new record and update old ones.
+
         :param data: dict, describing github data
         :return: boolean based on completion of process
         """
@@ -149,9 +155,11 @@ class DatabaseIngestion():
             raise Exception("Error in storing the record due to {}".format(e))
         return cls.get_info(data["git_url"])
 
+
     @classmethod
     def get_info(cls, search_key):
         """Get information about github url.
+
         :param search_key: github url to serach database
         :return: record from database if exists
         """
@@ -184,12 +192,19 @@ def scan_repo(data):
 
 
 class worker_selinon_flow:
+    """Worker class to initialize async flows."""
 
     def __init__(self):
+        """Initialize class.
+
+        Intializes selinon for async functionality.
+        """
         init_selinon()
+
 
     def server_run_flow(self, flow_name, flow_args):
         """Run a flow.
+
         :param flow_name: name of flow to be run as stated in YAML config file
         :param flow_args: arguments for the flow
         :return: dispatcher ID handling flow

@@ -30,8 +30,10 @@ def scan():
 @app.route('/api/v1/register', methods=['POST'])
 def register():
     """
-    Endpoint for registering a new repository
-    or to update existing repo information.
+    Endpoint for registering a new repositor.
+
+    Registers new information and 
+    updates existing repo information.
     """
     resp_dict = {
                  "data": [],

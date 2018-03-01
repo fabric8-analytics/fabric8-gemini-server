@@ -2,10 +2,11 @@
 import flask
 from flask import Flask, request
 from flask_cors import CORS
-from utils import persist_repo_in_db, scan_repo, validate_request_data
+from utils import DatabaseIngestion, scan_repo, validate_request_data
 
 app = Flask(__name__)
 CORS(app)
+
 
 @app.route('/api/v1/readiness')
 def readiness():
@@ -30,14 +31,16 @@ def scan():
 @app.route('/api/v1/register', methods=['POST'])
 def register():
     """
-    Endpoint for registering a new repository
-    or to update existing repo information.
+    Endpoint for registering a new repositor.
+
+    Registers new information and
+    updates existing repo information.
     """
     resp_dict = {
                  "data": [],
                  "success": True,
                  "summary": "{} successfully registered"
-                 }
+    }
     input_json = request.get_json()
     validated_data = validate_request_data(input_json)
     if not validated_data[0]:
@@ -45,10 +48,11 @@ def register():
         resp_dict["summary"] = validated_data[1]
         return flask.jsonify(resp_dict), 404
     try:
-        status = persist_repo_in_db(input_json)
-    except:
+        status = DatabaseIngestion.store_record(input_json)
+        resp_dict["data"] = status
+    except Exception as e:
         resp_dict["success"] = False
-        resp_dict["summary"] = "Database Ingestion Failure"
+        resp_dict["summary"] = "Database Ingestion Failure due to" + e
         return flask.jsonify(resp_dict), 500
 
     status = scan_repo(input_json)

@@ -47,16 +47,18 @@ class Postgres:
         """Postgres utility session getter."""
         return self.session
 
+
 _rdb = Postgres()
+
 
 def get_session():
     """Retrieve the database connection session."""
     try:
         session = _rdb.session
-    except:
-        # raise sql alchemy
-        raise Exception("session could not be loaded")
+    except Exception as e:
+        raise Exception("session could not be loaded due to {}".format(e))
     return session
+
 
 def get_session_retry(retries=3, backoff_factor=0.2,
                       status_forcelist=(404, 500, 502, 504),
@@ -96,13 +98,13 @@ def validate_request_data(input_json):
 
 
 def _to_object_dict(data):
-        """Convert the object of type JobToken into a dictionary."""
-        return_dict = { OSIORegisteredRepos.git_url:data["git_url"],
-                        OSIORegisteredRepos.git_sha:data["git_sha"],
-                        OSIORegisteredRepos.email_ids:data["email_ids"],
-                        OSIORegisteredRepos.last_scanned_at:datetime.datetime.now()
-                    }
-        return return_dict
+    """Convert the object of type JobToken into a dictionary."""
+    return_dict = {OSIORegisteredRepos.git_url: data["git_url"],
+                   OSIORegisteredRepos.git_sha: data["git_sha"],
+                   OSIORegisteredRepos.email_ids: data["email_ids"],
+                   OSIORegisteredRepos.last_scanned_at: datetime.datetime.now()
+                   }
+    return return_dict
 
 
 class DatabaseIngestion():
@@ -121,7 +123,6 @@ class DatabaseIngestion():
             session.rollback()
             raise Exception("Error in updating data")
 
-
     @classmethod
     def store_record(cls, data):
         """Store new record and update old ones.
@@ -129,13 +130,13 @@ class DatabaseIngestion():
         :param data: dict, describing github data
         :return: boolean based on completion of process
         """
-        git_url = data.get("git_url",None)
+        git_url = data.get("git_url", None)
         if git_url is None:
             logger.info("github Url not found")
             raise Exception("github Url not found")
         try:
             session = get_session()
-            check_existing = cls.get_info(git_url)  
+            check_existing = cls.get_info(git_url)
             if check_existing["is_valid"]:
                 cls._update_data(session, data)
                 return check_existing["data"]
@@ -155,7 +156,6 @@ class DatabaseIngestion():
             raise Exception("Error in storing the record due to {}".format(e))
         return cls.get_info(data["git_url"])
 
-
     @classmethod
     def get_info(cls, search_key):
         """Get information about github url.
@@ -164,7 +164,7 @@ class DatabaseIngestion():
         :return: record from database if exists
         """
         if not search_key:
-            return {'error': 'No key found', 'is_valid' : False}
+            return {'error': 'No key found', 'is_valid': False}
 
         session = get_session()
 
@@ -173,17 +173,17 @@ class DatabaseIngestion():
                     .filter(OSIORegisteredRepos.git_url == search_key).one()
         except NoResultFound:
             logger.info("No info for search_key '%s' was found", search_key)
-            return {'errnoror': 'No information in the records', 'is_valid' : False}
+            return {'errnoror': 'No information in the records', 'is_valid': False}
         except SQLchemyError:
             session.rollback()
             raise
         except Exception as e:
             raise {
-                  'error': 'Error in getting info due to {}'.format(e), 
-                  'is_valid' : False
+                  'error': 'Error in getting info due to {}'.format(e),
+                  'is_valid': False
                 }
 
-        return {'is_valid': True, 'data' : entry.to_dict()}
+        return {'is_valid': True, 'data': entry.to_dict()}
 
 
 def scan_repo(data):
@@ -200,7 +200,6 @@ class worker_selinon_flow:
         Intializes selinon for async functionality.
         """
         init_selinon()
-
 
     def server_run_flow(self, flow_name, flow_args):
         """Run a flow.

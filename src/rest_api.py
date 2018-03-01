@@ -7,6 +7,7 @@ from utils import DatabaseIngestion, scan_repo, validate_request_data
 app = Flask(__name__)
 CORS(app)
 
+
 @app.route('/api/v1/readiness')
 def readiness():
     """Readiness probe."""
@@ -32,14 +33,14 @@ def register():
     """
     Endpoint for registering a new repositor.
 
-    Registers new information and 
+    Registers new information and
     updates existing repo information.
     """
     resp_dict = {
                  "data": [],
                  "success": True,
                  "summary": "{} successfully registered"
-                 }
+    }
     input_json = request.get_json()
     validated_data = validate_request_data(input_json)
     if not validated_data[0]:

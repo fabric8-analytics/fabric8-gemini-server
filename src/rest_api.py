@@ -44,8 +44,9 @@ def register():
         resp_dict["success"] = False
         resp_dict["summary"] = validated_data[1]
         return flask.jsonify(resp_dict), 404
-    status = persist_repo_in_db(input_json)
-    if status is not True:
+    try:
+        status = persist_repo_in_db(input_json)
+    except:
         resp_dict["success"] = False
         resp_dict["summary"] = "Database Ingestion Failure"
         return flask.jsonify(resp_dict), 500

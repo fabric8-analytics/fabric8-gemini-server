@@ -37,7 +37,6 @@ class Postgres:
                    'bayesian-pgbouncer'),
                    pgbouncer_port=os.getenv('PGBOUNCER_SERVICE_PORT', '5432'),
                    database=os.getenv('POSTGRESQL_DATABASE'))
-
         engine = create_engine(self.connection)
 
         self.Session = sessionmaker(bind=engine)
@@ -46,7 +45,6 @@ class Postgres:
     def session(self):
         """Postgres utility session getter."""
         return self.session
-
 
 _rdb = Postgres()
 _session = _rdb.session
@@ -93,37 +91,13 @@ def persist_repo_in_db(data):
             last_scanned_at=datetime.datetime.now()
             )
     try:
-        #Work in progress
-        #req is not of tyoe sql alchemy instead is of type f8a_worker
-
-        # check_existing = _session.query(req)
-
-        # if not check_existing():
-
-        #     req = OSIORegisteredRepos(
-        #     git_url=data['git_url'],
-        #     git_sha=data['git_sha'],
-        #     email_ids=data['email_ids'],
-        #     last_scanned_at=datetime.datetime.now()
-        #     )
-
-        #     _session.add(req)
-        # else:
-        #     req = {
-        #         "git_url":data['git_url'],
-        #         "git_sha":data['git_sha'],
-        #         "email_ids":data['email_ids'],
-        #         "last_scanned_at":datetime.datetime.now()
-        #         }
-        #     _session.query(req)
-        _session.query(OSIORegisteredRepos).filter_by(OSIORegisteredRepos.git_url=data["git_url"]).update(req)
         _session.add(req)
         _session.commit()
     except SQLAlchemyError as e:
+        session.rollback()
         message = 'persisting records in the database failed. {}.'.format(e)
         logger.exception(message)
-        return False
-
+        raise
     return True
 
 
@@ -154,18 +128,4 @@ class worker_selinon_flow:
             t=elapsed_seconds, f=flow_name))
         return dispacher_id
 
-
-    #To integrate with Aagams workflow
-    # def server_create_component_analyses(self, ecosystem, name, version, user_profile):
-    #     """Run the component analysis for given ecosystem+package+version."""
-    #     args = {
-    #         'external_request_id': uuid.uuid4().hex,
-    #         'data': {
-    #             'api_name': 'component_analyses',
-    #             'user_email': get_user_email(user_profile),
-    #             'user_profile': user_profile,
-    #             'request': {'ecosystem': ecosystem, 'name': name, 'version': version}
-    #         }
-    #     }
-    #     return self.server_run_flow('componentApiFlow', args)
 

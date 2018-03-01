@@ -31,6 +31,6 @@ function prepare_venv() {
 prepare_venv
 pip3 install -r requirements.txt
 
-py.test -s tests/
+PYTHONDONTWRITEBYTECODE=1 python3 `which pytest` --cov=src/ --cov-report term-missing -vv tests/
 
 rm -rf venv/

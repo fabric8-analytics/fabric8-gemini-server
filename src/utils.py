@@ -2,6 +2,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.orm.exc import NoResultFound
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 from f8a_worker.models import OSIORegisteredRepos
@@ -47,8 +48,15 @@ class Postgres:
         return self.session
 
 _rdb = Postgres()
-_session = _rdb.session
 
+def get_session():
+    """Retrieve the database connection session."""
+    try:
+        session = _rdb.session
+    except:
+        # raise sql alchemy
+        raise Exception("session could not be loaded")
+    return session
 
 def get_session_retry(retries=3, backoff_factor=0.2,
                       status_forcelist=(404, 500, 502, 504),
@@ -81,26 +89,33 @@ def validate_request_data(input_json):
 
     return True, None
 
+
+def _to_object_dict(data):
+        """Convert the object of type JobToken into a dictionary."""
+        return_dict = { OSIORegisteredRepos.git_url:data["git_url"],
+                        OSIORegisteredRepos.git_sha:data["git_sha"],
+                        OSIORegisteredRepos.email_ids:data["email_ids"],
+                        OSIORegisteredRepos.last_scanned_at:datetime.datetime.now()
+                    }
+        return return_dict
+
+
 class DatabaseIngestion():
 
-    @staticmethod
-    def to_object_dict(data):
-    """Convert the object of type JobToken into a dictionary."""
-        return {"OSIORegisteredRepos." + k: v for k, v in data.items()}
-
+    
 
     @staticmethod
     def _update_data(session, data):
         try:
             entries = session.query(OSIORegisteredRepos).\
                 filter(OSIORegisteredRepos.git_url == data["git_url"]).\
-                .update(to_object_dict(data))
+                update(_to_object_dict(data))
             session.commit()
         except NoResultFound:
-            return
+            raise Exception("Record trying to update doesnot exist")
         except SQLAlchemyError:
             session.rollback()
-            raise
+            raise Exception("Error in updating data")
 
     @classmethod
     def store_record(cls, data):
@@ -111,14 +126,14 @@ class DatabaseIngestion():
         git_url = data.get("git_url",None)
         if git_url is None:
             logger.info("github Url not found")
-            raise
-        session = get_session()
-        check_existing = cls.get_info(git_url)
-
+            raise Exception("github Url not found")
         try:
-        if check_existing["is_valid"]:
-            cls._update_data(session, data)
-            return get_info(data)
+            session = get_session()
+            check_existing = cls.get_info(git_url)  
+            if check_existing["is_valid"]:
+                cls._update_data(session, data)
+                return check_existing["data"]
+
             entry = OSIORegisteredRepos(
                 git_url=data['git_url'],
                 git_sha=data['git_sha'],
@@ -129,8 +144,10 @@ class DatabaseIngestion():
             session.commit()
         except SQLAlchemyError:
             session.rollback()
-            raise
-        return cls.get_info(data)
+            raise Exception("Error in storing the record in current session")
+        except Exception as e:
+            raise Exception("Error in storing the record due to {}".format(e))
+        return cls.get_info(data["git_url"])
 
     @classmethod
     def get_info(cls, search_key):
@@ -145,13 +162,19 @@ class DatabaseIngestion():
 
         try:
             entry = session.query(OSIORegisteredRepos) \
-                    .filter(OSIORegisteredRepo == search_key).one()
+                    .filter(OSIORegisteredRepos.git_url == search_key).one()
         except NoResultFound:
             logger.info("No info for search_key '%s' was found", search_key)
-            return {'error': 'No information in teh records', 'is_valid' : False}
-        except SQLAlchemyError:
+            return {'errnoror': 'No information in the records', 'is_valid' : False}
+        except SQLchemyError:
             session.rollback()
             raise
+        except Exception as e:
+            raise {
+                  'error': 'Error in getting info due to {}'.format(e), 
+                  'is_valid' : False
+                }
+
         return {'is_valid': True, 'data' : entry.to_dict()}
 
 

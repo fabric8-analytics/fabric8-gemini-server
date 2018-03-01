@@ -2,7 +2,7 @@
 import flask
 from flask import Flask, request
 from flask_cors import CORS
-from utils import persist_repo_in_db, scan_repo, validate_request_data
+from utils import DatabaseIngestion, scan_repo, validate_request_data
 
 app = Flask(__name__)
 CORS(app)
@@ -45,10 +45,11 @@ def register():
         resp_dict["summary"] = validated_data[1]
         return flask.jsonify(resp_dict), 404
     try:
-        status = persist_repo_in_db(input_json)
-    except:
+        status = DatabaseIngestion.store_record(input_json)
+        resp_dict["data"] = status
+    except Exception as e:
         resp_dict["success"] = False
-        resp_dict["summary"] = "Database Ingestion Failure"
+        resp_dict["summary"] = "Database Ingestion Failure due to" + e
         return flask.jsonify(resp_dict), 500
 
     status = scan_repo(input_json)

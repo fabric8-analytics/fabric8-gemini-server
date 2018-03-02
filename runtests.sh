@@ -30,6 +30,7 @@ function prepare_venv() {
 }
 prepare_venv
 pip3 install -r requirements.txt
+pip3 install git+https://github.com/fabric8-analytics/fabric8-analytics-worker.git@6ed8ed3
 
 PYTHONDONTWRITEBYTECODE=1 python3 `which pytest` --cov=src/ --cov-report term-missing -vv tests/
 

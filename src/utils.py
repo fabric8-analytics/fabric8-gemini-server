@@ -29,15 +29,19 @@ class Postgres:
 
     def __init__(self):
         """Postgres utility class constructor."""
-        self.connection = "postgresql://{user}:{password}@ \
-                            {pgbouncer_host}:{pgbouncer_port}' \
-                          '/{database}?sslmode=disable". \
-            format(user=os.getenv('POSTGRESQL_USER'),
-                   password=os.getenv('POSTGRESQL_PASSWORD'),
-                   pgbouncer_host=os.getenv('PGBOUNCER_SERVICE_HOST',
-                   'bayesian-pgbouncer'),
-                   pgbouncer_port=os.getenv('PGBOUNCER_SERVICE_PORT', '5432'),
-                   database=os.getenv('POSTGRESQL_DATABASE'))
+        con_string = 'postgresql://{user}' + ':{passwd}@{pg_host}:' \
+            + '{pg_port}/{db}?sslmode=disable'
+
+        self.connection = con_string.format(
+            user=os.getenv('POSTGRESQL_USER'),
+            passwd=os.getenv('POSTGRESQL_PASSWORD'),
+            pg_host=os.getenv(
+                'PGBOUNCER_SERVICE_HOST',
+                'bayesian-pgbouncer'),
+            pg_port=os.getenv(
+                'PGBOUNCER_SERVICE_PORT',
+                '5432'),
+            db=os.getenv('POSTGRESQL_DATABASE'))
         engine = create_engine(self.connection)
 
         self.Session = sessionmaker(bind=engine)
@@ -181,7 +185,7 @@ class DatabaseIngestion():
             raise {
                   'error': 'Error in getting info due to {}'.format(e),
                   'is_valid': False
-                }
+            }
 
         return {'is_valid': True, 'data': entry.to_dict()}
 

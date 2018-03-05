@@ -8,9 +8,6 @@ import json
 
 payload = {
 }
-port = os.getenv("GEMINI_API_SERVICE_PORT", "5000")
-
-url = "http://localhost:{port}/api/v1".format(port=port)
 
 
 def api_route_for(route):
@@ -24,9 +21,15 @@ def get_json_from_response(response):
 
 
 def test_readiness_endpoint(client):
-    """Test the heart beat endpoint."""
+    """Test the /api/v1/readiness endpoint."""
     response = client.get(api_route_for("readiness"))
     assert response.status_code == 200
     json_data = get_json_from_response(response)
-    # assert "status" in json_data
-    # assert json_data["status"] == "ok"
+    assert json_data == {}, "Empty JSON response expected"
+
+
+def test_liveness_endpoint(client):
+    """Test the /api/v1/liveness endpoint."""
+    response = client.get(api_route_for("liveness"))
+    assert response.status_code == 200
+    json_data = get_json_from_response(response)

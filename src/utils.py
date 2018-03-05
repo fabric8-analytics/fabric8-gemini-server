@@ -192,25 +192,23 @@ class DatabaseIngestion():
 
 
 def server_run_flow(flow_name, flow_args):
-	"""Run a flow.
+    """Run a flow.
 
-	:param flow_name: name of flow to be run as stated in YAML config file
-	:param flow_args: arguments for the flow
-	:return: dispatcher ID handling flow
-	"""
-	logger.info('Running flow {}'.format(flow_name))
-	print('Running flow {}'.format(flow_name))
-	start = datetime.datetime.now()
+    :param flow_name: name of flow to be run as stated in YAML config file
+    :param flow_args: arguments for the flow
+    :return: dispatcher ID handling flow
+    """
+    logger.info('Running flow {}'.format(flow_name))
+    start = datetime.datetime.now()
 
-	init_celery(result_backend=False)
-	dispacher_id = run_flow(flow_name, flow_args)
+    init_celery(result_backend=False)
+    dispacher_id = run_flow(flow_name, flow_args)
 
-	elapsed_seconds = (datetime.datetime.now() - start).total_seconds()
-	print("It took {t} seconds to start {f} flow.".format(
-		t=elapsed_seconds, f=flow_name))
-	logger.info("It took {t} seconds to start {f} flow.".format(
-		t=elapsed_seconds, f=flow_name))
-	return dispacher_id
+    elapsed_seconds = (datetime.datetime.now() - start).total_seconds()
+    logger.info("It took {t} seconds to start {f} flow.".format(
+        t=elapsed_seconds, f=flow_name))
+    return dispacher_id
+
 
 def scan_repo(data):
     """Scan function."""
@@ -218,7 +216,5 @@ def scan_repo(data):
             'github_sha': data['git_sha'],
             'email_ids': data['email_ids']}
     d_id = server_run_flow('osioAnalysisFlow', args)
-    print ("DISPATCHER ID = {}".format(d_id))
+    logger.info("DISPATCHER ID = {}".format(d_id))
     return True
-
-

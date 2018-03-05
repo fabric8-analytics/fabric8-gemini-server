@@ -10,6 +10,7 @@ CORS(app)
 
 init_selinon()
 
+
 @app.route('/api/v1/readiness')
 def readiness():
     """Readiness probe."""

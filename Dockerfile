@@ -1,6 +1,6 @@
 FROM registry.centos.org/centos/centos:7
 
-ENV F8A_WORKER_VERSION=6ed8ed3
+ENV F8A_WORKER_VERSION=d42f4f4
 
 RUN yum install -y epel-release &&\
     yum install -y gcc git python34-pip python34-requests httpd httpd-devel python34-devel &&\

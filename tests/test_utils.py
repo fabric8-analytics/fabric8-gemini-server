@@ -4,6 +4,7 @@ import os
 
 import src.utils
 
+
 def test_validate_request_data():
     """Test the function validate_request_data."""
     pass

@@ -40,9 +40,9 @@ def test_liveness_endpoint(client):
 
 def test_register_api_endpoint(client):
     """Test function for register endpoint."""
-    reg_resp = client.post(api_route_for("register"), json=payload)
-    jsn = get_json_from_response(reg_resp)
+    reg_resp = client.post(api_route_for("register"), data=json.dumps(payload))
     assert reg_resp.status_code == 200
+    jsn = get_json_from_response(reg_resp)
     assert(jsn["success"] == true)
     assert(jsn['data']["git_sha"] == payload["git_sha"])
     assert(jsn['data']["git_url"] == payload["git_url"])

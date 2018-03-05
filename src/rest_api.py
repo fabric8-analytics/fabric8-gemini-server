@@ -44,6 +44,11 @@ def register():
                  "success": True,
                  "summary": "{} successfully registered"
     }
+    if request.content_type != 'application/json':
+        resp_dict["success"] = False
+        resp_dict["summary"] = "Set content type to application/json"
+        return flask.jsonify(resp_dict), 400
+
     input_json = request.get_json()
     validated_data = validate_request_data(input_json)
     if not validated_data[0]:

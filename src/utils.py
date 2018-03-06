@@ -179,7 +179,7 @@ class DatabaseIngestion():
         except NoResultFound:
             logger.info("No info for search_key '%s' was found", search_key)
             return {'errnoror': 'No information in the records', 'is_valid': False}
-        except SQLchemyError:
+        except SQLAlchemyError:
             session.rollback()
             raise
         except Exception as e:

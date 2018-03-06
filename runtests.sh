@@ -32,6 +32,14 @@ prepare_venv
 pip3 install -r requirements.txt
 pip3 install git+https://github.com/fabric8-analytics/fabric8-analytics-worker.git@561636c
 
-PYTHONDONTWRITEBYTECODE=1 python3 `which pytest` --cov=src/ --cov-report term-missing -vv tests/
+export DEPLOYMENT_PREFIX="${USER}"
+export WORKER_ADMINISTRATION_REGION=api
+export SENTRY_DSN=''
+export PYTHONDONTWRITEBYTECODE=1
+export POSTGRESQL_USER='coreapi'
+export POSTGRESQL_PASSWORD='coreapi'
+export POSTGRESQL_DATABASE='coreapi'
+export PGBOUNCER_SERVICE_HOST='coreapi-pgbouncer'
+python3 `which pytest` --cov=src/ --cov-report term-missing -vv tests/
 
 rm -rf venv/

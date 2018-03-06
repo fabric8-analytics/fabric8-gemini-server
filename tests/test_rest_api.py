@@ -9,7 +9,7 @@ import json
 payload = {
     "email_ids": "abcd@gmail.com",
     "git_sha": "somesha",
-    "git_url": "test",
+    "git_url": "test"
 }
 
 
@@ -40,10 +40,11 @@ def test_liveness_endpoint(client):
 
 def test_register_api_endpoint(client):
     """Test function for register endpoint."""
-    reg_resp = client.post(api_route_for("register"), data=json.dumps(payload))
+    reg_resp = client.post(api_route_for("register"),
+                           data=json.dumps(payload), content_type='application/json')
     assert reg_resp.status_code == 200
     jsn = get_json_from_response(reg_resp)
-    assert(jsn["success"] == true)
+    assert(jsn["success"])
     assert(jsn['data']["git_sha"] == payload["git_sha"])
     assert(jsn['data']["git_url"] == payload["git_url"])
     assert(jsn['data']["email_ids"] == payload["email_ids"])

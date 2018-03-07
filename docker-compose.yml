@@ -25,3 +25,17 @@ services:
       AWS_S3_SECRET_ACCESS_KEY: ''
     ports:
       - "5000:5000"
+    container_name: gemini-server
+    links:
+      - postgres
+
+  postgres:
+    image: registry.centos.org/centos/postgresql-94-centos7:latest
+    network_mode: bridge
+    ports:
+     - "6432:5432"
+    environment:
+      POSTGRESQL_USER: coreapi
+      POSTGRESQL_PASSWORD: coreapipostgres
+      POSTGRESQL_DATABASE: coreapi
+    container_name: coreapi-pgbouncer

@@ -8,13 +8,20 @@ services:
       - /bin/entrypoint.sh
     environment:
       POSTGRESQL_USER: coreapi
-      POSTGRESQL_PASSWORD: coreapipostgres
+      POSTGRESQL_PASSWORD: coreapi
       POSTGRESQL_DATABASE: coreapi
-      PGBOUNCER_SERVICE_HOST: bayesian-pgbouncer
+      PGBOUNCER_SERVICE_HOST: coreapi-pgbouncer
       PGBOUNCER_SERVICE_PORT: "5432"
       GEMINI_API_SERVICE_TIMEOUT: "60"
       GEMINI_API_SERVICE_PORT: "5000"
       NUMBER_WORKER_PROCESS: "2"
       CLASS_TYPE: "sync"
+      SENTRY_DSN: ''
+      DEPLOYMENT_PREFIX: "${USER}"
+      WORKER_ADMINISTRATION_REGION: api
+      AWS_SQS_ACCESS_KEY_ID: ''
+      AWS_SQS_SECRET_ACCESS_KEY: ''
+      AWS_S3_ACCESS_KEY_ID: ''
+      AWS_S3_SECRET_ACCESS_KEY: ''
     ports:
       - "5000:5000"

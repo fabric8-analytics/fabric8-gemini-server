@@ -15,6 +15,12 @@ fast-docker-build:
 test:
 	./runtests.sh
 
+check-code-style:
+	./run-linter.sh
+
+check-docs-style:
+	./check-docstyle.sh
+
 get-image-name:
 	@echo $(REGISTRY)/$(REPOSITORY):$(DEFAULT_TAG)
 

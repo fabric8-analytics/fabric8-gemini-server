@@ -1,6 +1,11 @@
 """Test module."""
 
 from flask import current_app, url_for
+from f8a_worker.models import OSIORegisteredRepos
+from sqlalchemy import create_engine
+from f8a_worker.models import Base
+
+
 import requests
 import os
 import pytest
@@ -40,6 +45,7 @@ def test_liveness_endpoint(client):
 
 def test_register_api_endpoint(client):
     """Test function for register endpoint."""
+    create_database()
     reg_resp = client.post(api_route_for("register"),
                            data=json.dumps(payload), content_type='application/json')
     assert reg_resp.status_code == 200
@@ -48,3 +54,20 @@ def test_register_api_endpoint(client):
     assert(jsn['data']["git_sha"] == payload["git_sha"])
     assert(jsn['data']["git_url"] == payload["git_url"])
     assert(jsn['data']["email_ids"] == payload["email_ids"])
+
+def create_database():
+    con_string = 'postgresql://{user}' + ':{passwd}@{pg_host}:' \
+            + '{pg_port}/{db}?sslmode=disable'
+    connection = con_string.format(
+        user=os.getenv('POSTGRESQL_USER'),
+        passwd=os.getenv('POSTGRESQL_PASSWORD'),
+        pg_host=os.getenv(
+            'PGBOUNCER_SERVICE_HOST',
+            'bayesian-pgbouncer'),
+        pg_port=os.getenv(
+            'PGBOUNCER_SERVICE_PORT',
+            '5432'),
+        db=os.getenv('POSTGRESQL_DATABASE'))
+    engine = create_engine(connection)
+    Base.metadata.drop_all(engine)
+    OSIORegisteredRepos.__table__.create(engine)

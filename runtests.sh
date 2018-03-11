@@ -37,9 +37,9 @@ export WORKER_ADMINISTRATION_REGION=api
 export SENTRY_DSN=''
 export PYTHONDONTWRITEBYTECODE=1
 export POSTGRESQL_USER='coreapi'
-export POSTGRESQL_PASSWORD='coreapi'
+export POSTGRESQL_PASSWORD='coreapipostgres'
 export POSTGRESQL_DATABASE='coreapi'
-export PGBOUNCER_SERVICE_HOST='coreapi-pgbouncer'
+export PGBOUNCER_SERVICE_HOST='coreapi-postgres'
 python3 `which pytest` --cov=src/ --cov-report term-missing -vv tests/
 
 rm -rf venv/

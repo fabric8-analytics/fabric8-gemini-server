@@ -55,9 +55,11 @@ def test_register_api_endpoint(client):
     assert(jsn['data']["git_url"] == payload["git_url"])
     assert(jsn['data']["email_ids"] == payload["email_ids"])
 
+
 def create_database():
+    """Help method to create database."""
     con_string = 'postgresql://{user}' + ':{passwd}@{pg_host}:' \
-            + '{pg_port}/{db}?sslmode=disable'
+        + '{pg_port}/{db}?sslmode=disable'
     connection = con_string.format(
         user=os.getenv('POSTGRESQL_USER'),
         passwd=os.getenv('POSTGRESQL_PASSWORD'),

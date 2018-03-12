@@ -34,6 +34,7 @@ services:
     network_mode: bridge
     ports:
      - "5432:5432"
+    hostname: coreapi-postgres
     environment:
       POSTGRESQL_USER: coreapi
       POSTGRESQL_PASSWORD: coreapipostgres

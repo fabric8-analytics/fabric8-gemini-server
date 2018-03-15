@@ -132,10 +132,35 @@ def register():
     return flask.jsonify(resp_dict), 200
 
 
-@app.route('/api/v1/report/<repo>')
-def report(repo):
+@app.route('/api/v1/report')
+def report():
     """Endpoint for fetching generated scan report."""
-    return flask.jsonify({})
+    repo = request.args.get('git-url')
+    sha = request.args.get('git-sha')
+    response = dict()
+    result = retrieve_worker_result(sha, "ReportGenerationTask")
+    if result:
+        task_result = result.get('task_result')
+        if task_result:
+            response.update({
+                "git_url": repo,
+                "git_sha": sha,
+                "scanned_at": task_result.get("scanned_at"),
+                "dependencies": task_result.get("dependencies")
+            })
+            return flask.jsonify(response), 200
+        else:
+            response.update({
+                "status": "failure",
+                "message": "Failed to retrieve scan report"
+            })
+            return flask.jsonify(response), 404
+    else:
+        response.update({
+            "status": "failure",
+            "message": "No report found for this repository"
+        })
+        return flask.jsonify(response), 404
 
 
 if __name__ == "__main__":

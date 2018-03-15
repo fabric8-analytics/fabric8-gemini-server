@@ -1,34 +1,5 @@
 version: "2"
 services:
-  fabric8-gemini-server:
-    build:
-      context: .
-    network_mode: bridge
-    entrypoint:
-      - /bin/entrypoint.sh
-    environment:
-      POSTGRESQL_USER: coreapi
-      POSTGRESQL_PASSWORD: coreapipostgres
-      POSTGRESQL_DATABASE: coreapi
-      PGBOUNCER_SERVICE_HOST: coreapi-postgres
-      PGBOUNCER_SERVICE_PORT: "5432"
-      GEMINI_API_SERVICE_TIMEOUT: "60"
-      GEMINI_API_SERVICE_PORT: "5000"
-      NUMBER_WORKER_PROCESS: "2"
-      CLASS_TYPE: "sync"
-      SENTRY_DSN: ''
-      DEPLOYMENT_PREFIX: "${USER}"
-      WORKER_ADMINISTRATION_REGION: api
-      AWS_SQS_ACCESS_KEY_ID: ''
-      AWS_SQS_SECRET_ACCESS_KEY: ''
-      AWS_S3_ACCESS_KEY_ID: ''
-      AWS_S3_SECRET_ACCESS_KEY: ''
-    ports:
-      - "5000:5000"
-    container_name: gemini-server
-    links:
-      - postgres
-
   postgres:
     image: registry.centos.org/centos/postgresql-94-centos7:latest
     network_mode: bridge

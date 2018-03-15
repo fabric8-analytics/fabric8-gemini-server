@@ -2,7 +2,7 @@
 import flask
 from flask import Flask, request
 from flask_cors import CORS
-from utils import DatabaseIngestion, scan_repo, validate_request_data
+from utils import DatabaseIngestion, scan_repo, validate_request_data, retrieve_worker_result
 from f8a_worker.setup_celery import init_selinon
 
 app = Flask(__name__)
@@ -58,7 +58,11 @@ def register():
         resp_dict["summary"] = "Database Ingestion Failure due to" + e
         return flask.jsonify(resp_dict), 500
 
-    status = scan_repo(input_json)
+    worker_result = retrieve_worker_result(input_json.get('git_sha'), "ReportGenerationTask")
+    if worker_result:
+        status = True
+    else:
+        status = scan_repo(input_json)
     if status is not True:
         resp_dict["success"] = False
         resp_dict["summary"] = "New Repo Scan Initializtion Failure"
@@ -68,10 +72,32 @@ def register():
     return flask.jsonify(resp_dict), 200
 
 
-@app.route('/api/v1/report/<repo>')
+@app.route('/api/v1/report/<path:repo>')
 def report(repo):
     """Endpoint for fetching generated scan report."""
-    return flask.jsonify({})
+    repo_info = DatabaseIngestion.get_info(repo)
+    response = dict()
+    if repo_info.get('is_valid'):
+        git_sha = repo_info.get('data', {}).get('git_sha')
+        result = retrieve_worker_result(git_sha, "ReportGenerationTask")
+        if result:
+            response.update({
+                "status": "success",
+                "result": result
+            })
+            return flask.jsonify(response), 200
+        else:
+            response.update({
+                "status": "failure",
+                "message": "No report found for this repository"
+            })
+            return flask.jsonify(response), 404
+    else:
+        response.update({
+            "status": "failure",
+            "message": "No registered repository found"
+        })
+        return flask.jsonify(response), 404
 
 
 if __name__ == "__main__":

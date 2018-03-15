@@ -1,18 +1,18 @@
 """Utility classes and functions."""
+from flask import current_app
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy.orm.exc import NoResultFound
+from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
-from f8a_worker.models import OSIORegisteredRepos
+from f8a_worker.models import OSIORegisteredRepos, WorkerResult
 from f8a_worker.setup_celery import init_celery
 from selinon import run_flow
 import datetime
 import requests
 import os
 import logging
-
 
 logger = logging.getLogger(__name__)
 
@@ -31,7 +31,7 @@ class Postgres:
     def __init__(self):
         """Postgres utility class constructor."""
         con_string = 'postgresql://{user}' + ':{passwd}@{pg_host}:' \
-            + '{pg_port}/{db}?sslmode=disable'
+                     + '{pg_port}/{db}?sslmode=disable'
 
         self.connection = con_string.format(
             user=os.getenv('POSTGRESQL_USER'),
@@ -54,6 +54,29 @@ class Postgres:
 
 
 _rdb = Postgres()
+
+
+def retrieve_worker_result(external_request_id, worker):
+    """Retrieve results for selected worker from RDB."""
+    start = datetime.datetime.now()
+    session = get_session()
+    try:
+        query = session.query(WorkerResult) \
+            .filter(WorkerResult.external_request_id == external_request_id,
+                    WorkerResult.worker == worker)
+        result = query.one()
+    except (NoResultFound, MultipleResultsFound):
+        return None
+    except SQLAlchemyError:
+        session.rollback()
+        raise
+    result_dict = result.to_dict()
+    elapsed_seconds = (datetime.datetime.now() - start).total_seconds()
+    msg = "It took {t} seconds to retrieve {w} " \
+          "worker results for {r}.".format(t=elapsed_seconds, w=worker, r=external_request_id)
+    current_app.logger.debug(msg)
+
+    return result_dict
 
 
 def get_session():
@@ -118,8 +141,8 @@ class DatabaseIngestion():
     @staticmethod
     def _update_data(session, data):
         try:
-            entries = session.query(OSIORegisteredRepos).\
-                filter(OSIORegisteredRepos.git_url == data["git_url"]).\
+            entries = session.query(OSIORegisteredRepos). \
+                filter(OSIORegisteredRepos.git_url == data["git_url"]). \
                 update(_to_object_dict(data))
             session.commit()
         except NoResultFound:
@@ -175,17 +198,17 @@ class DatabaseIngestion():
 
         try:
             entry = session.query(OSIORegisteredRepos) \
-                    .filter(OSIORegisteredRepos.git_url == search_key).one()
+                .filter(OSIORegisteredRepos.git_url == search_key).one()
         except NoResultFound:
             logger.info("No info for search_key '%s' was found", search_key)
-            return {'errnoror': 'No information in the records', 'is_valid': False}
+            return {'error': 'No information in the records', 'is_valid': False}
         except SQLchemyError:
             session.rollback()
             raise
         except Exception as e:
             raise {
-                  'error': 'Error in getting info due to {}'.format(e),
-                  'is_valid': False
+                'error': 'Error in getting info due to {}'.format(e),
+                'is_valid': False
             }
 
         return {'is_valid': True, 'data': entry.to_dict()}

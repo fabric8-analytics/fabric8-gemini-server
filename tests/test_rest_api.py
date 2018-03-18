@@ -4,7 +4,7 @@ from flask import current_app, url_for
 from f8a_worker.models import OSIORegisteredRepos
 from sqlalchemy import create_engine
 from f8a_worker.models import Base
-
+from pytest_mock import mocker
 
 import requests
 import os
@@ -43,17 +43,19 @@ def test_liveness_endpoint(client):
     json_data = get_json_from_response(response)
 
 
-def test_register_api_endpoint(client):
+def test_register_api_endpoint(client, mocker):
     """Test function for register endpoint."""
     create_database()
+    scan_mock = mocker.patch(src.rest_api.scan_repo)
+    scan_mock.return_value = True
     reg_resp = client.post(api_route_for("register"),
                            data=json.dumps(payload), content_type='application/json')
     assert reg_resp.status_code == 200
     jsn = get_json_from_response(reg_resp)
     assert(jsn["success"])
-    assert(jsn['data']["git_sha"] == payload["git_sha"])
-    assert(jsn['data']["git_url"] == payload["git_url"])
-    assert(jsn['data']["email_ids"] == payload["email_ids"])
+    assert(jsn['data']["data"]["git_sha"] == payload["git_sha"])
+    assert(jsn['data']["data"]["git_url"] == payload["git_url"])
+    assert(jsn['data']["data"]["email_ids"] == payload["email_ids"])
 
 
 def create_database():

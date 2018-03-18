@@ -46,7 +46,7 @@ def test_liveness_endpoint(client):
 def test_register_api_endpoint(client, mocker):
     """Test function for register endpoint."""
     create_database()
-    scan_mock = mocker.patch(src.rest_api.scan_repo)
+    scan_mock = mocker.patch("src.rest_api.scan_repo")
     scan_mock.return_value = True
     reg_resp = client.post(api_route_for("register"),
                            data=json.dumps(payload), content_type='application/json')

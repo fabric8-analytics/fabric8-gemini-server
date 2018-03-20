@@ -15,6 +15,7 @@ all registered services
 ```
 
 ##### Result :
+`Status: 200 OK`
 ```
 {
   "data": {

@@ -60,8 +60,8 @@ def test_register_api_endpoint(client, mocker):
 
 def create_database():
     """Help method to create database."""
-    con_string = 'postgresql://{user}' + ':{passwd}@{pg_host}:' \
-        + '{pg_port}/{db}?sslmode=disable'
+    con_string = 'postgresql://{user}:{passwd}@{pg_host}:' + \
+                 '{pg_port}/{db}?sslmode=disable'
     connection = con_string.format(
         user=os.getenv('POSTGRESQL_USER'),
         passwd=os.getenv('POSTGRESQL_PASSWORD'),

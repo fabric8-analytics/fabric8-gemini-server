@@ -181,7 +181,7 @@ class DatabaseIngestion():
             return {'errnoror': 'No information in the records', 'is_valid': False}
         except SQLAlchemyError:
             session.rollback()
-            raise
+            raise Exception("Error in storing the record in current session")
         except Exception as e:
             raise {
                   'error': 'Error in getting info due to {}'.format(e),

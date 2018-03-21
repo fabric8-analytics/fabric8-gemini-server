@@ -3,12 +3,9 @@ import flask
 from flask import Flask, request
 from flask_cors import CORS
 from utils import DatabaseIngestion, scan_repo, validate_request_data
-from f8a_worker.setup_celery import init_selinon
 
 app = Flask(__name__)
 CORS(app)
-
-init_selinon()
 
 
 @app.route('/api/v1/readiness')
@@ -45,6 +42,11 @@ def register():
                  "summary": "{} successfully registered"
     }
     input_json = request.get_json()
+    if request.content_type != 'application/json':
+        resp_dict["success"] = False
+        resp_dict["summary"] = "Set content type to application/json"
+        return flask.jsonify(resp_dict), 400
+
     validated_data = validate_request_data(input_json)
     if not validated_data[0]:
         resp_dict["success"] = False
@@ -55,7 +57,7 @@ def register():
         resp_dict["data"] = status
     except Exception as e:
         resp_dict["success"] = False
-        resp_dict["summary"] = "Database Ingestion Failure due to" + e
+        resp_dict["summary"] = "Database Ingestion Failure due to" + str(e)
         return flask.jsonify(resp_dict), 500
 
     status = scan_repo(input_json)

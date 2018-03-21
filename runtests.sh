@@ -37,9 +37,17 @@ export WORKER_ADMINISTRATION_REGION=api
 export SENTRY_DSN=''
 export PYTHONDONTWRITEBYTECODE=1
 export POSTGRESQL_USER='coreapi'
-export POSTGRESQL_PASSWORD='coreapi'
+export POSTGRESQL_PASSWORD='coreapipostgres'
 export POSTGRESQL_DATABASE='coreapi'
-export PGBOUNCER_SERVICE_HOST='coreapi-pgbouncer'
+export PGBOUNCER_SERVICE_HOST='0.0.0.0'
+
+psql_conn_str="postgres://${POSTGRESQL_USER}:${POSTGRESQL_PASSWORD}@${PGBOUNCER_SERVICE_HOST}:${5432}/${POSTGRESQL_DATABASE}"
+for i in {1..60}; do
+    rc=`psql -q "${psql_conn_str}" -c ''; echo $?`
+    [ "$rc" == "0" ] && break
+    sleep 1
+done;
+
 python3 `which pytest` --cov=src/ --cov-report term-missing -vv tests/
 
 rm -rf venv/

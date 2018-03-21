@@ -178,7 +178,7 @@ class DatabaseIngestion():
                     .filter(OSIORegisteredRepos.git_url == search_key).one()
         except NoResultFound:
             logger.info("No info for search_key '%s' was found", search_key)
-            return {'errnoror': 'No information in the records', 'is_valid': False}
+            return {'error': 'No information in the records', 'is_valid': False}
         except SQLAlchemyError:
             session.rollback()
             raise Exception("Error in storing the record in current session")

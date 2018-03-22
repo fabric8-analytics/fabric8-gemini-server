@@ -66,7 +66,9 @@ paths:
             $ref: '#/definitions/Repo'
       responses:
         '201':
-          description: New repository registered
+          schema:
+            $ref: "#/definitions/RegisterResponse"
+          description: Repository registered
         '401':
           description: No suitable permissions
   '/scan':
@@ -86,12 +88,24 @@ paths:
               $ref: '#/definitions/Repo'
       responses:
         '201':
-          description: Started healthcheck for the given repository
+          schema:
+            $ref: "#/definitions/RegisterResponse"
+          description: Repository registered
         '401':
           description: No suitable permissions
         '404':
           description: No image found
 definitions:
+  RegisterResponse:
+    title: Response Data for Register Endpoint
+    description: Response Data for Register Endpoint
+    properties:
+      last_scanned_at:
+        type: string
+      success:
+        type: boolean
+      summary:
+        type: string
   Dependency:
     title: Application dependencies
     description: Application dependencies

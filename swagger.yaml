@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  title: API for OSIO Gemini
+  title: Analytics API for OSIO Gemini
   version: '0.1'
 basePath: /api/v1/
 consumes:
@@ -42,7 +42,7 @@ paths:
         '200':
           schema:
             $ref: "#/definitions/Report"
-          description: Healthcheck report for given registered repository
+          description: Scan report for given registered repository
         '401':
           description: No suitable permissions
         '404':
@@ -83,9 +83,7 @@ paths:
           description: List of registered repositories. Wildcard character '*' is supported for all repositories.
           required: true
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/Repo'
+            $ref: '#/definitions/Repo'
       responses:
         '201':
           schema:
@@ -106,6 +104,8 @@ definitions:
         type: boolean
       summary:
         type: string
+      last_scan_report:
+        $ref: '#/definitions/Dependency'
   Dependency:
     title: Application dependencies
     description: Application dependencies

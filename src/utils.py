@@ -6,6 +6,7 @@ from sqlalchemy.orm.exc import NoResultFound
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 from f8a_worker.models import OSIORegisteredRepos
+from f8a_worker.setup_celery import init_celery
 from selinon import run_flow
 import datetime
 import requests
@@ -177,10 +178,10 @@ class DatabaseIngestion():
                     .filter(OSIORegisteredRepos.git_url == search_key).one()
         except NoResultFound:
             logger.info("No info for search_key '%s' was found", search_key)
-            return {'errnoror': 'No information in the records', 'is_valid': False}
-        except SQLchemyError:
+            return {'error': 'No information in the records', 'is_valid': False}
+        except SQLAlchemyError:
             session.rollback()
-            raise
+            raise Exception("Error in storing the record in current session")
         except Exception as e:
             raise {
                   'error': 'Error in getting info due to {}'.format(e),
@@ -190,35 +191,30 @@ class DatabaseIngestion():
         return {'is_valid': True, 'data': entry.to_dict()}
 
 
+def server_run_flow(flow_name, flow_args):
+    """Run a flow.
+
+    :param flow_name: name of flow to be run as stated in YAML config file
+    :param flow_args: arguments for the flow
+    :return: dispatcher ID handling flow
+    """
+    logger.info('Running flow {}'.format(flow_name))
+    start = datetime.datetime.now()
+
+    init_celery(result_backend=False)
+    dispacher_id = run_flow(flow_name, flow_args)
+
+    elapsed_seconds = (datetime.datetime.now() - start).total_seconds()
+    logger.info("It took {t} seconds to start {f} flow.".format(
+        t=elapsed_seconds, f=flow_name))
+    return dispacher_id
+
+
 def scan_repo(data):
     """Scan function."""
+    args = {'github_repo': data['git_url'],
+            'github_sha': data['git_sha'],
+            'email_ids': data['email_ids']}
+    d_id = server_run_flow('osioAnalysisFlow', args)
+    logger.info("DISPATCHER ID = {}".format(d_id))
     return True
-
-
-class worker_selinon_flow:
-    """Worker class to initialize async flows."""
-
-    def __init__(self):
-        """Initialize class.
-
-        Intializes selinon for async functionality.
-        """
-        init_selinon()
-
-    def server_run_flow(self, flow_name, flow_args):
-        """Run a flow.
-
-        :param flow_name: name of flow to be run as stated in YAML config file
-        :param flow_args: arguments for the flow
-        :return: dispatcher ID handling flow
-        """
-        current_app.logger.debug('Running flow {}'.format(flow_name))
-        start = datetime.datetime.now()
-
-        init_celery(result_backend=False)
-        dispacher_id = run_flow(flow_name, flow_args)
-
-        elapsed_seconds = (datetime.datetime.now() - start).total_seconds()
-        current_app.logger.debug("It took {t} seconds to start {f} flow.".format(
-            t=elapsed_seconds, f=flow_name))
-        return dispacher_id

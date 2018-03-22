@@ -1,0 +1,145 @@
+swagger: '2.0'
+info:
+  title: API for OSIO Gemini
+  version: '0.1'
+basePath: /api/v1/
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /liveness:
+    get:
+      tags:
+        - Service settings
+      operationId: f8a_admin.api_v1.get_liveness
+      summary: Get job service liveness
+      responses:
+        '200':
+          description: Service is alive
+  /readiness:
+    get:
+      tags:
+        - Service settings
+      operationId: f8a_admin.api_v1.get_readiness
+      summary: Get job service readiness
+      responses:
+        '200':
+          description: Service is ready
+  '/reports/{name}':
+    get:
+      tags:
+        - Scan Services
+      operationId: f8a_scanner.api_v1.get_repo_report
+      summary: Get scan report for a registered repository
+      parameters:
+        - in: path
+          name: name
+          type: string
+          required: true
+          description: github repository name
+      responses:
+        '200':
+          schema:
+            $ref: "#/definitions/Report"
+          description: Healthcheck report for given registered repository
+        '401':
+          description: No suitable permissions
+        '404':
+          description: No matching repository found
+  '/register':
+    post:
+      tags:
+        - Scan Services
+      operationId: f8a_scanner.api_v1.register_repo
+      summary: Register a repository for scanning
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: repo
+          description: repository details and email id
+          required: true
+          schema:
+            $ref: '#/definitions/Repo'
+      responses:
+        '201':
+          description: New repository registered
+        '401':
+          description: No suitable permissions
+  '/scan':
+    post:
+      tags:
+        - Scan Services
+      operationId: f8a_scanner.api_v1.scan_repo
+      summary: Scan registered repositories
+      parameters:
+        - in: body
+          name: repos
+          description: List of registered repositories. Wildcard character '*' is supported for all repositories.
+          required: true
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Repo'
+      responses:
+        '201':
+          description: Started healthcheck for the given repository
+        '401':
+          description: No suitable permissions
+        '404':
+          description: No image found
+definitions:
+  Dependency:
+    title: Application dependencies
+    description: Application dependencies
+    properties:
+      name:
+        type: string
+      version:
+        type: string
+      cves:
+        type: array
+        items:
+          type: string
+      cve_count:
+        type: integer
+      highest_cvss_score:
+        type: number
+        format: float
+      cve_id_for_highest_cvss_score:
+        type: string
+      latest_version:
+        type: string
+      licenses:
+        type: array
+        items:
+          type: string
+  Report:
+    title: Scan Report
+    description: Analytics Scan Report
+    type: object
+    properties:
+      git_url:
+        type: string
+      git_sha:
+        type: string
+      scanned_at:
+        type: string
+      dependencies:
+        type: array
+        items:
+          $ref: '#/definitions/Dependency'
+  Repo:
+    title: Github Details
+    description: Github Details
+    properties:
+      git-url:
+        type: string
+      git-sha:
+        type: string
+      email-ids:
+        type: string
+

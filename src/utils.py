@@ -87,16 +87,16 @@ def validate_request_data(input_json):
     :return: boolean, result
     """
     validate_string = "{} cannot be empty"
-    if 'git_url' not in input_json:
-        validate_string = validate_string.format("git_url")
+    if 'git-url' not in input_json:
+        validate_string = validate_string.format("git-url")
         return False, validate_string
 
-    if 'git_sha' not in input_json:
-        validate_string = validate_string.format("git_sha")
+    if 'git-sha' not in input_json:
+        validate_string = validate_string.format("git-sha")
         return False, validate_string
 
-    if 'email_ids' not in input_json:
-        validate_string = validate_string.format("email_ids")
+    if 'email-ids' not in input_json:
+        validate_string = validate_string.format("email-ids")
         return False, validate_string
 
     return True, None
@@ -104,9 +104,9 @@ def validate_request_data(input_json):
 
 def _to_object_dict(data):
     """Convert the object of type JobToken into a dictionary."""
-    return_dict = {OSIORegisteredRepos.git_url: data["git_url"],
-                   OSIORegisteredRepos.git_sha: data["git_sha"],
-                   OSIORegisteredRepos.email_ids: data["email_ids"],
+    return_dict = {OSIORegisteredRepos.git_url: data["git-url"],
+                   OSIORegisteredRepos.git_sha: data["git-sha"],
+                   OSIORegisteredRepos.email_ids: data["email-ids"],
                    OSIORegisteredRepos.last_scanned_at: datetime.datetime.now()
                    }
     return return_dict
@@ -119,7 +119,7 @@ class DatabaseIngestion():
     def _update_data(session, data):
         try:
             entries = session.query(OSIORegisteredRepos).\
-                filter(OSIORegisteredRepos.git_url == data["git_url"]).\
+                filter(OSIORegisteredRepos.git_url == data["git-url"]).\
                 update(_to_object_dict(data))
             session.commit()
         except NoResultFound:
@@ -135,7 +135,7 @@ class DatabaseIngestion():
         :param data: dict, describing github data
         :return: boolean based on completion of process
         """
-        git_url = data.get("git_url", None)
+        git_url = data.get("git-url", None)
         if git_url is None:
             logger.info("github Url not found")
             raise Exception("github Url not found")
@@ -147,9 +147,9 @@ class DatabaseIngestion():
                 return check_existing["data"]
 
             entry = OSIORegisteredRepos(
-                git_url=data['git_url'],
-                git_sha=data['git_sha'],
-                email_ids=data['email_ids'],
+                git_url=data['git-url'],
+                git_sha=data['git-sha'],
+                email_ids=data['email-ids'],
                 last_scanned_at=datetime.datetime.now()
             )
             session.add(entry)
@@ -159,7 +159,7 @@ class DatabaseIngestion():
             raise Exception("Error in storing the record in current session")
         except Exception as e:
             raise Exception("Error in storing the record due to {}".format(e))
-        return cls.get_info(data["git_url"])
+        return cls.get_info(data["git-url"])
 
     @classmethod
     def get_info(cls, search_key):
@@ -212,9 +212,9 @@ def server_run_flow(flow_name, flow_args):
 
 def scan_repo(data):
     """Scan function."""
-    args = {'github_repo': data['git_url'],
-            'github_sha': data['git_sha'],
-            'email_ids': data['email_ids']}
+    args = {'github_repo': data['git-url'],
+            'github_sha': data['git-sha'],
+            'email_ids': data['email-ids']}
     d_id = server_run_flow('osioAnalysisFlow', args)
     logger.info("DISPATCHER ID = {}".format(d_id))
     return True

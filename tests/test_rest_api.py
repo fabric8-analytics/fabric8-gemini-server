@@ -13,9 +13,9 @@ import pytest
 import json
 
 payload = {
-    "email_ids": "abcd@gmail.com",
-    "git_sha": "somesha",
-    "git_url": "test"
+    "email-ids": "abcd@gmail.com",
+    "git-sha": "somesha",
+    "git-url": "test"
 }
 
 
@@ -54,6 +54,6 @@ def test_register_api_endpoint(client, mocker):
     assert reg_resp.status_code == 200
     jsn = get_json_from_response(reg_resp)
     assert(jsn["success"])
-    assert(jsn['data']["data"]["git_sha"] == payload["git_sha"])
-    assert(jsn['data']["data"]["git_url"] == payload["git_url"])
-    assert(jsn['data']["data"]["email_ids"] == payload["email_ids"])
+    assert(jsn['data']["data"]["git_sha"] == payload["git-sha"])
+    assert(jsn['data']["data"]["git_url"] == payload["git-url"])
+    assert(jsn['data']["data"]["email_ids"] == payload["email-ids"])

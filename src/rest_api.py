@@ -65,7 +65,7 @@ def register():
         resp_dict["success"] = False
         resp_dict["summary"] = "New Repo Scan Initializtion Failure"
         return flask.jsonify(resp_dict), 500
-    rep_summary = resp_dict["summary"].format(input_json['git_url'])
+    rep_summary = resp_dict["summary"].format(input_json['git-url'])
     resp_dict["summary"] = rep_summary
     return flask.jsonify(resp_dict), 200
 

@@ -3,9 +3,12 @@ import flask
 from flask import Flask, request
 from flask_cors import CORS
 from utils import DatabaseIngestion, scan_repo, validate_request_data
+from f8a_worker.setup_celery import init_selinon
 
 app = Flask(__name__)
 CORS(app)
+
+init_selinon()
 
 
 @app.route('/api/v1/readiness')
@@ -37,9 +40,9 @@ def register():
     updates existing repo information.
     """
     resp_dict = {
-                 "data": [],
-                 "success": True,
-                 "summary": "{} successfully registered"
+        "data": [],
+        "success": True,
+        "summary": "{} successfully registered"
     }
     input_json = request.get_json()
     if request.content_type != 'application/json':

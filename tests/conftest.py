@@ -3,7 +3,7 @@
 import os
 
 from flask import current_app
-from f8a_worker.models import OSIORegisteredRepos
+from f8a_worker.models import OSIORegisteredRepos, WorkerResult
 from sqlalchemy import create_engine
 from f8a_worker.models import Base
 import pytest
@@ -35,3 +35,4 @@ def create_database():
     engine = create_engine(connection)
     Base.metadata.drop_all(engine)
     OSIORegisteredRepos.__table__.create(engine)
+    WorkerResult.__table__.create(engine)

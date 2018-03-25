@@ -200,10 +200,8 @@ def server_run_flow(flow_name, flow_args):
     """
     logger.info('Running flow {}'.format(flow_name))
     start = datetime.datetime.now()
-
     init_celery(result_backend=False)
     dispacher_id = run_flow(flow_name, flow_args)
-
     elapsed_seconds = (datetime.datetime.now() - start).total_seconds()
     logger.info("It took {t} seconds to start {f} flow.".format(
         t=elapsed_seconds, f=flow_name))

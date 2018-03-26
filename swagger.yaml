@@ -83,7 +83,7 @@ paths:
           description: List of registered repositories. Wildcard character '*' is supported for all repositories.
           required: true
           schema:
-            $ref: '#/definitions/Repo'
+            $ref: '#/definitions/ScanInput'
       responses:
         '201':
           schema:
@@ -146,6 +146,12 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/Dependency'
+  ScanInput:
+    title: Input for Scan Endpoint
+    description: Input for Scan Endpoint
+    properties:
+      git-url:
+        type: string
   Repo:
     title: Github Details
     description: Github Details

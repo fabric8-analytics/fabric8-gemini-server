@@ -1,18 +1,18 @@
 """Utility classes and functions."""
+from flask import current_app
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy.orm.exc import NoResultFound
+from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
-from f8a_worker.models import OSIORegisteredRepos
+from f8a_worker.models import OSIORegisteredRepos, WorkerResult
 from f8a_worker.setup_celery import init_celery
 from selinon import run_flow
 import datetime
 import requests
 import os
 import logging
-
 
 logger = logging.getLogger(__name__)
 
@@ -31,7 +31,7 @@ class Postgres:
     def __init__(self):
         """Postgres utility class constructor."""
         con_string = 'postgresql://{user}' + ':{passwd}@{pg_host}:' \
-            + '{pg_port}/{db}?sslmode=disable'
+                     + '{pg_port}/{db}?sslmode=disable'
 
         self.connection = con_string.format(
             user=os.getenv('POSTGRESQL_USER'),
@@ -54,6 +54,29 @@ class Postgres:
 
 
 _rdb = Postgres()
+
+
+def retrieve_worker_result(external_request_id, worker):
+    """Retrieve results for selected worker from RDB."""
+    start = datetime.datetime.now()
+    session = get_session()
+    try:
+        query = session.query(WorkerResult) \
+            .filter(WorkerResult.external_request_id == external_request_id,
+                    WorkerResult.worker == worker)
+        result = query.one()
+    except (NoResultFound, MultipleResultsFound):
+        return None
+    except SQLAlchemyError:
+        session.rollback()
+        raise
+    result_dict = result.to_dict()
+    elapsed_seconds = (datetime.datetime.now() - start).total_seconds()
+    msg = "It took {t} seconds to retrieve {w} " \
+          "worker results for {r}.".format(t=elapsed_seconds, w=worker, r=external_request_id)
+    current_app.logger.debug(msg)
+
+    return result_dict
 
 
 def get_session():
@@ -83,7 +106,7 @@ def get_session_retry(retries=3, backoff_factor=0.2,
 def validate_request_data(input_json):
     """Validate the data.
 
-    :param data: dict, describing data
+    :param input_json: dict, describing data
     :return: boolean, result
     """
     validate_string = "{} cannot be empty"
@@ -112,25 +135,31 @@ def _to_object_dict(data):
     return return_dict
 
 
-class DatabaseIngestion():
+class DatabaseIngestion:
     """Class to ingest data into Database."""
 
     @staticmethod
-    def _update_data(session, data):
+    def update_data(data):
+        """Update existing record in the database.
+
+        :param data: dict, describing github data
+        :return: None
+        """
         try:
-            entries = session.query(OSIORegisteredRepos).\
-                filter(OSIORegisteredRepos.git_url == data["git-url"]).\
+            session = get_session()
+            session.query(OSIORegisteredRepos). \
+                filter(OSIORegisteredRepos.git_url == data["git-url"]). \
                 update(_to_object_dict(data))
             session.commit()
         except NoResultFound:
-            raise Exception("Record trying to update doesnot exist")
+            raise Exception("Record trying to update does not exist")
         except SQLAlchemyError:
             session.rollback()
             raise Exception("Error in updating data")
 
     @classmethod
     def store_record(cls, data):
-        """Store new record and update old ones.
+        """Store new record in the database.
 
         :param data: dict, describing github data
         :return: boolean based on completion of process
@@ -141,11 +170,6 @@ class DatabaseIngestion():
             raise Exception("github Url not found")
         try:
             session = get_session()
-            check_existing = cls.get_info(git_url)
-            if check_existing["is_valid"]:
-                cls._update_data(session, data)
-                return check_existing["data"]
-
             entry = OSIORegisteredRepos(
                 git_url=data['git-url'],
                 git_sha=data['git-sha'],
@@ -165,7 +189,7 @@ class DatabaseIngestion():
     def get_info(cls, search_key):
         """Get information about github url.
 
-        :param search_key: github url to serach database
+        :param search_key: github url to search database
         :return: record from database if exists
         """
         if not search_key:
@@ -175,17 +199,17 @@ class DatabaseIngestion():
 
         try:
             entry = session.query(OSIORegisteredRepos) \
-                    .filter(OSIORegisteredRepos.git_url == search_key).one()
+                .filter(OSIORegisteredRepos.git_url == search_key).one()
         except NoResultFound:
             logger.info("No info for search_key '%s' was found", search_key)
             return {'error': 'No information in the records', 'is_valid': False}
         except SQLAlchemyError:
             session.rollback()
-            raise Exception("Error in storing the record in current session")
+            raise Exception("Error in retrieving the record in current session")
         except Exception as e:
             raise {
-                  'error': 'Error in getting info due to {}'.format(e),
-                  'is_valid': False
+                'error': 'Error in getting info due to {}'.format(e),
+                'is_valid': False
             }
 
         return {'is_valid': True, 'data': entry.to_dict()}

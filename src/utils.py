@@ -178,9 +178,10 @@ class DatabaseIngestion:
             )
             session.add(entry)
             session.commit()
-        except SQLAlchemyError:
+        except SQLAlchemyError as e:
             session.rollback()
-            raise Exception("Error in storing the record in current session")
+            raise Exception("Error in storing the record in current session due to {}"
+                            .format(e))
         except Exception as e:
             raise Exception("Error in storing the record due to {}".format(e))
         return cls.get_info(data["git-url"])

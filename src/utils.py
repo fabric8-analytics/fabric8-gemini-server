@@ -118,10 +118,6 @@ def validate_request_data(input_json):
         validate_string = validate_string.format("git-sha")
         return False, validate_string
 
-    if 'email-ids' not in input_json:
-        validate_string = validate_string.format("email-ids")
-        return False, validate_string
-
     return True, None
 
 
@@ -129,7 +125,7 @@ def _to_object_dict(data):
     """Convert the object of type JobToken into a dictionary."""
     return_dict = {OSIORegisteredRepos.git_url: data["git-url"],
                    OSIORegisteredRepos.git_sha: data["git-sha"],
-                   OSIORegisteredRepos.email_ids: data["email-ids"],
+                   OSIORegisteredRepos.email_ids: data.get('email-ids', 'dummy'),
                    OSIORegisteredRepos.last_scanned_at: datetime.datetime.now()
                    }
     return return_dict
@@ -173,7 +169,7 @@ class DatabaseIngestion:
             entry = OSIORegisteredRepos(
                 git_url=data['git-url'],
                 git_sha=data['git-sha'],
-                email_ids=data['email-ids'],
+                email_ids=data.get('email-ids', 'dummy'),
                 last_scanned_at=datetime.datetime.now()
             )
             session.add(entry)
@@ -236,7 +232,7 @@ def scan_repo(data):
     """Scan function."""
     args = {'github_repo': data['git-url'],
             'github_sha': data['git-sha'],
-            'email_ids': data['email-ids']}
+            'email_ids': data.get('email-ids', 'dummy')}
     d_id = server_run_flow('osioAnalysisFlow', args)
     logger.info("DISPATCHER ID = {}".format(d_id))
     return True

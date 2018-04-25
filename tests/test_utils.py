@@ -17,8 +17,8 @@ def test_validate_request_data():
 
     valid, result = validate_request_data({"git-url": "something",
                                            "git-sha": "something"})
-    assert not valid
-    assert result == "email-ids cannot be empty"
+    assert valid
+    assert not result
 
     valid, result = validate_request_data({"git-url": "something",
                                            "git-sha": "something",

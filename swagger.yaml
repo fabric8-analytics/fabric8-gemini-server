@@ -26,28 +26,7 @@ paths:
       responses:
         '200':
           description: Service is ready
-  '/reports/{name}':
-    get:
-      tags:
-        - Scan Services
-      operationId: f8a_scanner.api_v1.get_repo_report
-      summary: Get scan report for a registered repository
-      parameters:
-        - in: path
-          name: name
-          type: string
-          required: true
-          description: github repository name
-      responses:
-        '200':
-          schema:
-            $ref: "#/definitions/Report"
-          description: Scan report for given registered repository
-        '401':
-          description: No suitable permissions
-        '404':
-          description: No matching repository found
-  '/register':
+  /register:
     post:
       tags:
         - Scan Services
@@ -71,28 +50,32 @@ paths:
           description: Repository registered
         '401':
           description: No suitable permissions
-  '/scan':
-    post:
+  /report:
+    get:
       tags:
         - Scan Services
-      operationId: f8a_scanner.api_v1.scan_repo
-      summary: Scan registered repositories
+      operationId: f8a_scanner.api_v1.get_repo_report
+      summary: Get scan report for a registered repository
       parameters:
-        - in: body
-          name: repos
-          description: List of registered repositories. Wildcard character '*' is supported for all repositories.
+        - in: query
+          name: git-url
+          type: string
           required: true
-          schema:
-            $ref: '#/definitions/ScanInput'
+          description: git repository name
+        - in: query
+          name: git-sha
+          type: string
+          required: true
+          description: git commit hash
       responses:
-        '201':
+        '200':
           schema:
-            $ref: "#/definitions/RegisterResponse"
-          description: Repository registered
+            $ref: "#/definitions/Report"
+          description: Scan report for given registered repository
         '401':
           description: No suitable permissions
         '404':
-          description: No image found
+          description: Data not found
 definitions:
   RegisterResponse:
     title: Response Data for Register Endpoint
@@ -146,12 +129,6 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/Dependency'
-  ScanInput:
-    title: Input for Scan Endpoint
-    description: Input for Scan Endpoint
-    properties:
-      git-url:
-        type: string
   Repo:
     title: Github Details
     description: Github Details
@@ -159,7 +136,5 @@ definitions:
       git-url:
         type: string
       git-sha:
-        type: string
-      email-ids:
         type: string
 

@@ -108,8 +108,6 @@ definitions:
         format: float
       cve_id_for_highest_cvss_score:
         type: string
-      latest_version:
-        type: string
       licenses:
         type: array
         items:

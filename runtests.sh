@@ -65,4 +65,3 @@ echo "*****************************************"
 python3 `which pytest` --cov=src/ --cov-report term-missing -vv tests/
 
 rm -rf venv/
-

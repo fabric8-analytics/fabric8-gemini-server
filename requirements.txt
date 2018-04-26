@@ -11,3 +11,4 @@ semantic_version
 psycopg2
 sqlalchemy
 pytest-mock
+radon

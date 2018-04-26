@@ -48,6 +48,19 @@ for i in {1..60}; do
     sleep 1
 done;
 
+echo "*****************************************"
+echo "*** Cyclomatic complexity measurement ***"
+echo "*****************************************"
+radon cc -s -a -i venv .
+
+echo "*****************************************"
+echo "*** Maintainability Index measurement ***"
+echo "*****************************************"
+radon mi -s -i venv .
+
+echo "*****************************************"
+echo "*** Unit tests ***"
+echo "*****************************************"
 python3 `which pytest` --cov=src/ --cov-report term-missing -vv tests/
 
 rm -rf venv/

@@ -31,7 +31,6 @@ function prepare_venv() {
 prepare_venv
 pip3 install -r requirements.txt
 pip3 install git+https://github.com/fabric8-analytics/fabric8-analytics-worker.git@6f2c826
-pip3 install -r tests/requirements.txt
 
 export DEPLOYMENT_PREFIX="${USER}"
 export WORKER_ADMINISTRATION_REGION=api

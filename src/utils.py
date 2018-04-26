@@ -68,13 +68,17 @@ def retrieve_worker_result(external_request_id, worker):
     except SQLAlchemyError:
         session.rollback()
         raise
-    result_dict = result.to_dict()
-    elapsed_seconds = (datetime.datetime.now() - start).total_seconds()
-    msg = "It took {t} seconds to retrieve {w} " \
-          "worker results for {r}.".format(t=elapsed_seconds, w=worker, r=external_request_id)
-    current_app.logger.debug(msg)
 
-    return result_dict
+    if result:
+        result_dict = result.to_dict()
+        elapsed_seconds = (datetime.datetime.now() - start).total_seconds()
+        msg = "It took {t} seconds to retrieve {w} " \
+            "worker results for {r}.".format(t=elapsed_seconds, w=worker, r=external_request_id)
+        current_app.logger.debug(msg)
+
+        return result_dict
+
+    return None
 
 
 def get_session():

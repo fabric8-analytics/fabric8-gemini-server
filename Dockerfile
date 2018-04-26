@@ -20,3 +20,4 @@ ADD scripts/entrypoint.sh /bin/entrypoint.sh
 RUN chmod 777 /bin/entrypoint.sh
 
 ENTRYPOINT ["/bin/entrypoint.sh"]
+

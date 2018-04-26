@@ -59,11 +59,11 @@ def register():
         repo_info = DatabaseIngestion.get_info(input_json.get('git-url'))
         if repo_info.get('is_valid'):
             data = repo_info.get('data')
-            git_sha = data["git_sha"]
             # Update the record to reflect new git_sha if any.
             DatabaseIngestion.update_data(input_json)
         else:
             try:
+                # First time ingestion
                 DatabaseIngestion.store_record(input_json)
                 status = scan_repo(input_json)
                 if status is not True:
@@ -89,25 +89,15 @@ def register():
             .format(input_json.get('git-url'))
         return flask.jsonify(resp_dict), 500
 
-    # Checks if data is defined and compares new git_sha with old.
-    is_new_commit_hash = input_json.get("git-sha") != data["git_sha"]
+    worker_result = retrieve_worker_result(input_json.get("git-sha"),
+                                           "ReportGenerationTask")
 
-    worker_result = retrieve_worker_result(git_sha, "ReportGenerationTask")
     if worker_result:
         resp_dict["summary"] = "Repository {} with commit-hash {} " \
                                "has already been registered and scanned. " \
                                "Please check the scan report for details. " \
             .format(input_json.get('git-url'),
                     input_json.get('git-sha'))
-
-        if is_new_commit_hash:
-            resp_dict["summary"] = "Repository {} with commit-hash {} " \
-                                   "has already been registered and scanned. " \
-                                   "Please check the scan report for details. " \
-                                   "You can check the report for commit-hash {} after" \
-                                   "some time." \
-                .format(input_json.get('git-url'),
-                        data["git_sha"], input_json.get("git-sha"))
 
         task_result = worker_result.get('task_result')
         if task_result:
@@ -121,10 +111,17 @@ def register():
             resp_dict["summary"] = "Failed to retrieve scan report."
             return flask.jsonify(resp_dict), 500
 
+    # Scan the repository for input commit hash if no report is available.
+    status = scan_repo(input_json)
+    if status is not True:
+        resp_dict["success"] = False
+        resp_dict["summary"] = "New Repo Scan Initialization Failure"
+        return flask.jsonify(resp_dict), 500
+
     resp_dict.update({
         "summary": "Repository {} was already registered, but no report for "
                    "commit-hash {} was found. Please check back later."
-                   .format(input_json.get('git-url'), git_sha),
+                   .format(input_json.get('git-url'), input_json.get('git-sha')),
         "last_scanned_at": data['last_scanned_at'],
         "last_scan_report": None
     })

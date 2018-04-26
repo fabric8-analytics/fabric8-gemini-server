@@ -64,9 +64,7 @@ def retrieve_worker_result(external_request_id, worker):
         query = session.query(WorkerResult) \
             .filter(WorkerResult.external_request_id == external_request_id,
                     WorkerResult.worker == worker)
-        result = query.one()
-    except (NoResultFound, MultipleResultsFound):
-        return None
+        result = query.first()
     except SQLAlchemyError:
         session.rollback()
         raise

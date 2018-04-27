@@ -1,9 +1,11 @@
 """Definition of the routes for gemini server."""
 import flask
-from flask import Flask, request, current_app
+from flask import Flask, request
 from flask_cors import CORS
 from utils import DatabaseIngestion, scan_repo, validate_request_data, retrieve_worker_result
 from f8a_worker.setup_celery import init_selinon
+from auth import login_required
+from exceptions import HTTPError
 
 app = Flask(__name__)
 CORS(app)
@@ -32,6 +34,7 @@ def scan():
 
 
 @app.route('/api/v1/register', methods=['POST'])
+@login_required
 def register():
     """
     Endpoint for registering a new repository.
@@ -130,6 +133,7 @@ def register():
 
 
 @app.route('/api/v1/report')
+@login_required
 def report():
     """Endpoint for fetching generated scan report."""
     repo = request.args.get('git-url')
@@ -158,6 +162,14 @@ def report():
             "message": "No report found for this repository"
         })
         return flask.jsonify(response), 404
+
+
+@app.errorhandler(HTTPError)
+def handle_error(e):
+    """Handle http error response."""
+    return flask.jsonify({
+        "error": e.error
+    }), e.status_code
 
 
 if __name__ == "__main__":

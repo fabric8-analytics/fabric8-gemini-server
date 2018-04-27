@@ -90,6 +90,13 @@ objects:
             value: "api"
           - name: SENTRY_DSN
             value: "${SENTRY_DSN}"
+          - name: BAYESIAN_FETCH_PUBLIC_KEY
+            valueFrom:
+              configMapKeyRef:
+                name: bayesian-config
+                key: keycloak-url
+          - name: BAYESIAN_JWT_AUDIENCE
+            value: "fabric8-online-platform,openshiftio-public"
           image: "${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${IMAGE_TAG}"
           name: fabric8-gemini-server
           ports:

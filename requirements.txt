@@ -12,3 +12,5 @@ psycopg2
 sqlalchemy
 pytest-mock
 radon
+cryptography
+pyjwt>=1.6.1

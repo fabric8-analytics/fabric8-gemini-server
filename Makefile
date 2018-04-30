@@ -1,4 +1,10 @@
-REGISTRY?=registry.devshift.net
+ifeq ($(TARGET),rhel)
+  DOCKERFILE := Dockerfile.rhel
+  REGISTRY := push.registry.devshift.net/osio-prod
+else
+  DOCKERFILE := Dockerfile
+  REGISTRY := push.registry.devshift.net
+endif
 REPOSITORY?=fabric8-analytics/fabric8-gemini-server
 DEFAULT_TAG=latest
 
@@ -7,10 +13,10 @@ DEFAULT_TAG=latest
 all: fast-docker-build
 
 docker-build:
-	docker build --no-cache -t $(REGISTRY)/$(REPOSITORY):$(DEFAULT_TAG) -f Dockerfile .
+	docker build --no-cache -t $(REGISTRY)/$(REPOSITORY):$(DEFAULT_TAG) -f $(DOCKERFILE) .
 
 fast-docker-build:
-	docker build -t $(REGISTRY)/$(REPOSITORY):$(DEFAULT_TAG) -f Dockerfile .
+	docker build -t $(REGISTRY)/$(REPOSITORY):$(DEFAULT_TAG) -f $(DOCKERFILE) .
 
 test:
 	./runtests.sh
@@ -27,3 +33,5 @@ get-image-name:
 get-image-repository:
 	@echo $(REPOSITORY)
 
+get-push-registry:
+	@echo $(REGISTRY)

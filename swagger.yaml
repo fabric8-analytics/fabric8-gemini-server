@@ -44,12 +44,18 @@ paths:
           schema:
             $ref: '#/definitions/Repo'
       responses:
-        '201':
+        '200':
           schema:
             $ref: "#/definitions/RegisterResponse"
           description: Repository registered
+        '400':
+          description: Bad request from the client
         '401':
-          description: No suitable permissions
+          description: Request unauthorized
+        '404':
+          description: Data not found
+        '500':
+          description: Internal server error
   /report:
     get:
       tags:
@@ -73,7 +79,7 @@ paths:
             $ref: "#/definitions/Report"
           description: Scan report for given registered repository
         '401':
-          description: No suitable permissions
+          description: Request unauthorized
         '404':
           description: Data not found
 definitions:

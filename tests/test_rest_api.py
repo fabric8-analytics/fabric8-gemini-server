@@ -42,3 +42,17 @@ def test_liveness_endpoint(client):
     response = client.get(api_route_for("liveness"))
     assert response.status_code == 200
     json_data = get_json_from_response(response)
+
+
+def test_report_endpoint(client):
+    """Test the /api/v1/report endpoint."""
+    response = client.get(api_route_for("report"))
+    assert response.status_code == 401
+    json_data = get_json_from_response(response)
+    assert "error" in json_data
+    assert json_data["error"] == "Authentication failed - could not decode JWT token"
+
+
+def test_register_endpoint(client):
+    """Test the /api/v1/register endpoint."""
+    pass

@@ -86,35 +86,14 @@ def register():
                 resp_dict["summary"] = "Database Ingestion Failure due to: {}" \
                     .format(e)
                 return flask.jsonify(resp_dict), 500
-    except Exception:
+    except Exception as e:
         resp_dict["success"] = False
-        resp_dict["summary"] = "Cannot get information about repository {}" \
-            .format(input_json.get('git-url'))
+        resp_dict["summary"] = "Cannot get information about repository {} " \
+                               "due to {}" \
+            .format(input_json.get('git-url'), e)
         return flask.jsonify(resp_dict), 500
 
-    worker_result = retrieve_worker_result(input_json.get("git-sha"),
-                                           "ReportGenerationTask")
-
-    if worker_result:
-        resp_dict["summary"] = "Repository {} with commit-hash {} " \
-                               "has already been registered and scanned. " \
-                               "Please check the scan report for details. " \
-            .format(input_json.get('git-url'),
-                    input_json.get('git-sha'))
-
-        task_result = worker_result.get('task_result')
-        if task_result:
-            resp_dict.update({
-                "last_scanned_at": task_result.get('scanned_at'),
-                "last_scan_report": task_result.get('dependencies')
-            })
-            return flask.jsonify(resp_dict), 200
-        else:
-            resp_dict["success"] = False
-            resp_dict["summary"] = "Failed to retrieve scan report."
-            return flask.jsonify(resp_dict), 500
-
-    # Scan the repository for input commit hash if no report is available.
+    # Scan the repository irrespective of report is available or not.
     status = scan_repo(input_json)
     if status is not True:
         resp_dict["success"] = False

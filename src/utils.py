@@ -3,7 +3,7 @@ from flask import current_app
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
+from sqlalchemy.orm.exc import NoResultFound
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 from f8a_worker.models import OSIORegisteredRepos, WorkerResult
@@ -63,7 +63,8 @@ def retrieve_worker_result(external_request_id, worker):
     try:
         query = session.query(WorkerResult) \
             .filter(WorkerResult.external_request_id == external_request_id,
-                    WorkerResult.worker == worker)
+                    WorkerResult.worker == worker) \
+            .order_by(WorkerResult.ended_at.desc())
         result = query.first()
     except SQLAlchemyError:
         session.rollback()

@@ -29,8 +29,37 @@ def liveness():
 def scan():
     """Scan endpoint for consumption of the scheduled job."""
     input_json = request.get_json()
-    r = {input_json}
-    return flask.jsonify(r), 200
+    git_url = input_json.get('git_url')
+    r = {"success": True, "summary": ""}
+    if git_url:
+        try:
+            repo_info = DatabaseIngestion.get_info(git_url)
+            if repo_info.get('is_valid'):
+                data = repo_info.get('data')
+                git_sha = data['git_sha']
+                email_ids = data['email_ids']
+                scan_repo({
+                    "git_url": git_url,
+                    "git_sha": git_sha,
+                    "email_ids": email_ids
+                })
+                r["summary"] = "Repository with git_url {} and git_sha {} has been" \
+                               "successfully scheduled for scanning."\
+                    .format(git_url, git_sha)
+                return flask.jsonify(r), 200
+            else:
+                r["success"] = False
+                r["summary"] = repo_info.get("error")
+                return flask.jsonify(r), 500
+        except Exception as e:
+            r["success"] = False
+            r["summary"] = str(e)
+            return flask.jsonify(r), 500
+    else:
+        # TODO: Do scan for all repos if git_url is not present
+        r["summary"] = "Please provide git_url to scan."
+        r["success"] = False
+        return flask.jsonify(r), 500
 
 
 @app.route('/api/v1/register', methods=['POST'])

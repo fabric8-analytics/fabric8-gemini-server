@@ -26,7 +26,7 @@ function prepare_venv() {
         # python34 which is in CentOS does not have virtualenv binary
         VIRTUALENV=`which virtualenv-3`
     fi
-    ${VIRTUALENV} -p `which python3` venv && source venv/bin/activate
+    ${VIRTUALENV} -p python3 venv && source venv/bin/activate
 }
 prepare_venv
 pip3 install -r requirements.txt
@@ -63,4 +63,6 @@ echo "*** Unit tests ***"
 echo "*****************************************"
 python3 `which pytest` --cov=src/ --cov-report term-missing -vv tests/
 
+# deactivate virtual env before deleting it
+deactivate
 rm -rf venv/

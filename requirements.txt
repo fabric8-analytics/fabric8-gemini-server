@@ -6,9 +6,9 @@
 #
 asn1crypto==0.24.0        # via cryptography
 attrs==18.1.0             # via pytest
-certifi==2018.4.16        # via requests
+certifi        # via requests
 cffi==1.11.5              # via cryptography
-chardet==3.0.4            # via requests
+chardet            # via requests
 click==6.7                # via flask
 colorama==0.3.9           # via radon
 coverage==4.5.1
@@ -38,10 +38,10 @@ pytest-cov==2.5.1
 pytest-mock==1.10.0
 pytest==3.5.1
 radon==2.2.0
-requests-futures==0.9.7
-requests==2.18.4
+requests-futures
+requests
 semantic-version==2.6.0
 six==1.11.0               # via cryptography, flask-cors, mando, more-itertools, pytest
 sqlalchemy==1.2.7
-urllib3==1.22             # via requests
+urllib3             # via requests
 werkzeug==0.14.1          # via flask

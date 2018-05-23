@@ -1,5 +1,14 @@
 #!/usr/bin/bash -ex
 
+export TERM=xterm
+TERM=${TERM:-xterm}
+
+# set up terminal colors
+NORMAL=$(tput sgr0)
+RED=$(tput bold && tput setaf 1)
+GREEN=$(tput bold && tput setaf 2)
+YELLOW=$(tput bold && tput setaf 3)
+
 gc() {
   retval=$?
   docker-compose -f docker-compose.yml down -v || :
@@ -22,13 +31,24 @@ export PYTHONPATH=`pwd`/src
 echo "Create Virtualenv for Python deps ..."
 function prepare_venv() {
     VIRTUALENV=`which virtualenv`
-    if [ $? -eq 1 ]; then   
+    if [ $? -eq 1 ]
+    then
         # python34 which is in CentOS does not have virtualenv binary
         VIRTUALENV=`which virtualenv-3`
     fi
+
     ${VIRTUALENV} -p python3 venv && source venv/bin/activate
+    if [ $? -ne 0 ]
+    then
+        printf "${RED}Python virtual environment can't be initialized${NORMAL}"
+        exit 1
+    fi
 }
+
 prepare_venv
+
+# now we are surely in the Python virtual environment
+
 pip3 install -r requirements.txt
 pip3 install git+https://github.com/fabric8-analytics/fabric8-analytics-worker.git@6f2c826
 

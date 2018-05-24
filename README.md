@@ -1,4 +1,7 @@
 # fabric8-gemini-server
+
+[![Build Status](https://ci.centos.org/buildStatus/icon?job=devtools-fabric8-gemini-server-f8a-build-master)](https://ci.centos.org/job/devtools-fabric8-gemini-server-f8a-build-master/)
+
 Fabric8-server analytics powered services to initiate and report the readiness of
 all registered services
 

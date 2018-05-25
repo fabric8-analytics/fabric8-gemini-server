@@ -25,14 +25,6 @@ def liveness():
     return flask.jsonify({}), 200
 
 
-@app.route('/api/v1/scan', methods=['POST'])
-def scan():
-    """Scan endpoint for consumption of the scheduled job."""
-    input_json = request.get_json()
-    r = {input_json}
-    return flask.jsonify(r), 200
-
-
 @app.route('/api/v1/register', methods=['POST'])
 @login_required
 def register():

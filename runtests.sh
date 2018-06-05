@@ -63,6 +63,7 @@ export POSTGRESQL_USER='coreapi'
 export POSTGRESQL_PASSWORD='coreapipostgres'
 export POSTGRESQL_DATABASE='coreapi'
 export PGBOUNCER_SERVICE_HOST='0.0.0.0'
+export DISABLE_AUTHENTICATION=1
 
 psql_conn_str="postgres://${POSTGRESQL_USER}:${POSTGRESQL_PASSWORD}@${PGBOUNCER_SERVICE_HOST}:${5432}/${POSTGRESQL_DATABASE}"
 for i in {1..60}; do

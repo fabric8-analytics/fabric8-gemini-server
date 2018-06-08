@@ -48,7 +48,7 @@ def get_audiences():
     return getenv('BAYESIAN_JWT_AUDIENCE').split(',')
 
 
-def login_required(view):
+def login_required(view):  # pragma: no cover
     """Check if the login is required and if the user can be authorized."""
     # NOTE: the actual authentication 401 failures are commented out for now and will be
     # uncommented as soon as we know everything works fine; right now this is purely for

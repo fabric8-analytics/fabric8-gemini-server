@@ -56,16 +56,26 @@ class Postgres:
 _rdb = Postgres()
 
 
+def query_worker_result(session, external_request_id, worker):  # pragma: no cover
+    """Query worker_result table."""
+    return session.query(WorkerResult) \
+        .filter(WorkerResult.external_request_id == external_request_id,
+                WorkerResult.worker == worker) \
+        .order_by(WorkerResult.ended_at.desc())
+
+
+def get_first_query_result(query):  # pragma: no cover
+    """Return first result of query."""
+    return query.first()
+
+
 def retrieve_worker_result(external_request_id, worker):
     """Retrieve results for selected worker from RDB."""
     start = datetime.datetime.now()
     session = get_session()
     try:
-        query = session.query(WorkerResult) \
-            .filter(WorkerResult.external_request_id == external_request_id,
-                    WorkerResult.worker == worker) \
-            .order_by(WorkerResult.ended_at.desc())
-        result = query.first()
+        query = query_worker_result(session, external_request_id, worker)
+        result = get_first_query_result(query)
     except SQLAlchemyError:
         session.rollback()
         raise
@@ -124,7 +134,7 @@ def validate_request_data(input_json):
     return True, None
 
 
-def _to_object_dict(data):
+def _to_object_dict(data):  # pragma: no cover
     """Convert the object of type JobToken into a dictionary."""
     return_dict = {OSIORegisteredRepos.git_url: data["git-url"],
                    OSIORegisteredRepos.git_sha: data["git-sha"],
@@ -132,6 +142,24 @@ def _to_object_dict(data):
                    OSIORegisteredRepos.last_scanned_at: datetime.datetime.now()
                    }
     return return_dict
+
+
+def update_osio_registered_repos(session, data):  # pragma: no cover
+    """Update osio_registered_repos table."""
+    session.query(OSIORegisteredRepos). \
+        filter(OSIORegisteredRepos.git_url == data["git-url"]). \
+        update(_to_object_dict(data))
+
+
+def add_entry_to_osio_registered_repos(session, entry):  # pragma: no cover
+    """Add single entry to osio_registered_repos table."""
+    session.add(entry)
+
+
+def get_one_result_from_osio_registered_repos(session, search_key):  # pragma no cover
+    """Get one result from osio_registered_repos table."""
+    return session.query(OSIORegisteredRepos) \
+        .filter(OSIORegisteredRepos.git_url == search_key).one()
 
 
 class DatabaseIngestion:
@@ -146,9 +174,7 @@ class DatabaseIngestion:
         """
         try:
             session = get_session()
-            session.query(OSIORegisteredRepos). \
-                filter(OSIORegisteredRepos.git_url == data["git-url"]). \
-                update(_to_object_dict(data))
+            update_osio_registered_repos(session, data)
             session.commit()
         except NoResultFound:
             raise Exception("Record trying to update does not exist")
@@ -175,7 +201,7 @@ class DatabaseIngestion:
                 email_ids=data.get('email-ids', 'dummy'),
                 last_scanned_at=datetime.datetime.now()
             )
-            session.add(entry)
+            add_entry_to_osio_registered_repos(entry)
             session.commit()
         except SQLAlchemyError:
             session.rollback()
@@ -197,8 +223,8 @@ class DatabaseIngestion:
         session = get_session()
 
         try:
-            entry = session.query(OSIORegisteredRepos) \
-                .filter(OSIORegisteredRepos.git_url == search_key).one()
+            entry = get_one_result_from_osio_registered_repos(
+                session, search_key)
         except NoResultFound:
             logger.info("No info for search_key '%s' was found", search_key)
             return {'error': 'No information in the records', 'is_valid': False}

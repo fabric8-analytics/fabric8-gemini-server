@@ -136,12 +136,12 @@ def report():
 
 
 @app.errorhandler(HTTPError)
-def handle_error(e):
+def handle_error(e):  # pragma: no cover
     """Handle http error response."""
     return flask.jsonify({
         "error": e.error
     }), e.status_code
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     app.run()

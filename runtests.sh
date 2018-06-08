@@ -1,5 +1,7 @@
 #!/usr/bin/bash -ex
 
+COVERAGE_THRESHOLD=90
+
 export TERM=xterm
 TERM=${TERM:-xterm}
 
@@ -87,7 +89,7 @@ radon mi -s -i venv .
 echo "*****************************************"
 echo "*** Unit tests ***"
 echo "*****************************************"
-python3 `which pytest` --cov=src/ --cov-report term-missing -vv tests/
+python3 `which pytest` --cov=src/ --cov-report term-missing --cov-fail-under=$COVERAGE_THRESHOLD -vv tests/
 
 # deactivate virtual env before deleting it
 deactivate

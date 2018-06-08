@@ -1,8 +1,22 @@
 """Test module for classes and functions found in the utils module."""
-import requests
-import os
-
+from rest_api import app
 from src.utils import *
+from unittest.mock import patch
+import pytest
+
+
+class MockResponse:
+    """Mocks the requests.get call."""
+
+    def __init__(self, json_data, status_code, text):
+        """Initialize the object."""
+        self.json_data = json_data
+        self.status_code = status_code
+        self.text = text
+
+    def json(self):
+        """Return json representation of data."""
+        return self.json_data
 
 
 def test_validate_request_data():
@@ -27,5 +41,169 @@ def test_validate_request_data():
     assert not result
 
 
-if __name__ == '__main__':
-    test_validate_request_data()
+def test_get_session():
+    """Test the function get_session."""
+    session = get_session()
+    assert session is not None
+
+
+@patch("src.utils.query_worker_result", side_effect=SQLAlchemyError())
+def test_retrieve_worker_result(query):
+    """Test the function retrieve_worker_result."""
+    with pytest.raises(SQLAlchemyError):
+        retrieve_worker_result("test", "test")
+
+
+@patch("src.utils.query_worker_result", return_value=None)
+@patch("src.utils.get_first_query_result", return_value=None)
+def test_retrieve_worker_result_1(a, b):
+    """Test the function retrieve_worker_result."""
+    response = retrieve_worker_result("test", "test")
+    assert response is None
+
+
+@patch("src.utils.query_worker_result", return_value=None)
+@patch("src.utils.get_first_query_result", **{"return_value.to_dict.return_value": 1})
+@patch("src.utils.get_first_query_result", return_value={"test": "test"})
+def test_retrieve_worker_result_2(a, b, c):
+    """Test the function retrieve_worker_result."""
+    with app.app_context():
+        response = retrieve_worker_result("test", "test")
+        assert response is 1
+
+
+def test_get_session_retry():
+    """Test get_session_retry."""
+    resp = get_session_retry()
+    assert resp is not None
+
+
+@patch("src.utils.update_osio_registered_repos", return_value=None)
+def test_update_data_1(a):
+    """Test update_data."""
+    DatabaseIngestion.update_data(None)
+
+
+@patch("src.utils.update_osio_registered_repos", side_effect=NoResultFound())
+def test_update_data_2(a):
+    """Test update_data."""
+    with pytest.raises(Exception):
+        DatabaseIngestion.update_data(None)
+    a.side_effect = SQLAlchemyError()
+    with pytest.raises(Exception):
+        DatabaseIngestion.update_data(None)
+
+
+def test_get_store_record():
+    """Test get_store_record."""
+    with pytest.raises(Exception):
+        DatabaseIngestion.store_record({
+            "test": "test"
+        })
+
+
+@patch.object(DatabaseIngestion, "get_info", return_value="get_info")
+@patch("src.utils.add_entry_to_osio_registered_repos", return_value=None)
+def test_get_store_record_1(a, b):
+    """Test get_store_record."""
+    payload = {
+        "email-ids": "abcd@gmail.com",
+        "git-sha": "somesha",
+        "git-url": "test"
+    }
+    resp = DatabaseIngestion.store_record(payload)
+    assert resp is "get_info"
+
+
+@patch("src.utils.add_entry_to_osio_registered_repos", side_effect=SQLAlchemyError)
+def test_get_store_record_2(a):
+    """Test get_store_record."""
+    with pytest.raises(Exception):
+        payload = {
+            "email-ids": "abcd@gmail.com",
+            "git-sha": "somesha",
+            "git-url": "test"
+        }
+        DatabaseIngestion.store_record(payload)
+    a.side_effect = Exception()
+    with pytest.raises(Exception):
+        payload = {
+            "email-ids": "abcd@gmail.com",
+            "git-sha": "somesha",
+            "git-url": "test"
+        }
+        DatabaseIngestion.store_record(payload)
+
+
+def test_get_info():
+    """Test get_info."""
+    resp = DatabaseIngestion.get_info(None)
+    assert resp == {'error': 'No key found', 'is_valid': False}
+
+
+@patch("src.utils.get_one_result_from_osio_registered_repos",
+       side_effect=NoResultFound)
+def test_get_info_1(a):
+    """Test get_info."""
+    resp = DatabaseIngestion.get_info("test")
+    assert resp == {'error': 'No information in the records', 'is_valid': False}
+    a.side_effect = SQLAlchemyError()
+    with pytest.raises(Exception):
+        DatabaseIngestion.get_info("test")
+    a.side_effect = Exception()
+    with pytest.raises(Exception):
+        DatabaseIngestion.get_info("test")
+
+
+@patch("src.utils.init_celery", return_value=None)
+@patch("src.utils.run_flow", return_value='dispatcher_id')
+def test_server_run_flow(a, b):
+    """Test server_run_flow."""
+    resp = server_run_flow("test", "test")
+    assert resp == 'dispatcher_id'
+
+
+@patch("src.utils.server_run_flow", return_value="d_id")
+def test_scan_repo(a):
+    """Test scan_repo."""
+    payload = {
+        "email-ids": "abcd@gmail.com",
+        "git-sha": "somesha",
+        "git-url": "test"
+    }
+    resp = scan_repo(payload)
+    assert resp is True
+
+
+def mocked_requests_get_1(*args, **kwargs):
+    """Mock 1 for requests.get."""
+    return MockResponse({"public_key": "test"}, 200, "test")
+
+
+def mocked_requests_get_2(*args, **kwargs):
+    """Mock 2 for requests.get."""
+    return MockResponse({"public_key": "test"}, 404, "test")
+
+
+@patch("src.utils.requests.get", side_effect=requests.exceptions.Timeout())
+def test_fetch_public_key(a):
+    """Test fetch_public_key."""
+    resp = fetch_public_key(app)
+    assert resp == ''
+
+
+@patch("src.utils.requests.get",
+       side_effect=mocked_requests_get_2)
+def test_fetch_public_key_1(a):
+    """Test fetch_public_key."""
+    resp = fetch_public_key(app)
+    assert resp == ''
+
+
+@patch("src.utils.requests.get",
+       side_effect=mocked_requests_get_1)
+def test_fetch_public_key_2(a):
+    """Test fetch_public_key."""
+    resp = fetch_public_key(app)
+    assert resp == \
+        '-----BEGIN PUBLIC KEY-----\ntest\n-----END PUBLIC KEY-----'

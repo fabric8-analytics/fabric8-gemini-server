@@ -10,9 +10,8 @@ from exceptions import HTTPError
 from utils import fetch_public_key
 
 
-def decode_token():
+def decode_token(token):
     """Decode the authorization token read from the request header."""
-    token = request.headers.get('Authorization')
     if token is None:
         return {}
 
@@ -20,7 +19,8 @@ def decode_token():
         _, token = token.split(' ', 1)
 
     pub_key = fetch_public_key(current_app)
-    audiences = getenv('BAYESIAN_JWT_AUDIENCE').split(',')
+    audiences = get_audiences()
+    decoded_token = None
 
     for aud in audiences:
         try:
@@ -38,7 +38,17 @@ def decode_token():
     return decoded_token
 
 
-def login_required(view):
+def get_token_from_auth_header():
+    """Get the authorization token read from the request header."""
+    return request.headers.get('Authorization')
+
+
+def get_audiences():
+    """Retrieve all JWT audiences."""
+    return getenv('BAYESIAN_JWT_AUDIENCE').split(',')
+
+
+def login_required(view):  # pragma: no cover
     """Check if the login is required and if the user can be authorized."""
     # NOTE: the actual authentication 401 failures are commented out for now and will be
     # uncommented as soon as we know everything works fine; right now this is purely for
@@ -52,7 +62,7 @@ def login_required(view):
         lgr = current_app.logger
 
         try:
-            decoded = decode_token()
+            decoded = decode_token(get_token_from_auth_header())
             if not decoded:
                 lgr.exception('Provide an Authorization token with the API request')
                 raise HTTPError(401, 'Authentication failed - token missing')

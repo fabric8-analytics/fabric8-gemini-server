@@ -6,7 +6,7 @@ set -ex
 
 # not needed for tests, but we can check that the image actually builds
 build_image
+push_image
 
 ./runtests.sh
 
-push_image

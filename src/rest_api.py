@@ -2,7 +2,8 @@
 import flask
 from flask import Flask, request
 from flask_cors import CORS
-from utils import DatabaseIngestion, scan_repo, validate_request_data, retrieve_worker_result
+from utils import DatabaseIngestion, scan_repo, validate_request_data,\
+    retrieve_worker_result, alert_user
 from f8a_worker.setup_celery import init_selinon
 from auth import login_required
 from exceptions import HTTPError
@@ -133,6 +134,84 @@ def report():
             "message": "No report found for this repository"
         })
         return flask.jsonify(response), 404
+
+
+@app.route('/api/v1/user-repo/scan', methods=['POST'])
+@login_required
+def user_repo_scan():
+    """
+    Endpoint for scanning an OSIO user's repository.
+
+    Runs a scan to find out security vulnerability in a user's repository
+    """
+    resp_dict = {
+        "status": "success",
+        "summary": ""
+    }
+
+    # Request validation section
+    input_json = request.get_json()
+    if request.content_type != 'application/json':
+        resp_dict["success"] = False
+        resp_dict["summary"] = "Set content type to application/json"
+        return flask.jsonify(resp_dict), 400
+
+    validate_string = "{} cannot be empty"
+    if 'git-url' not in input_json:
+        validate_string = validate_string.format("git-url")
+        return False, validate_string
+
+    # Call the worker flow to run a user repository scan asynchronously
+    status = alert_user(input_json)
+    if status is not True:
+        resp_dict["status"] = "failure"
+        resp_dict["summary"] = "Scan initialization failure"
+        return flask.jsonify(resp_dict), 500
+
+    resp_dict.update({
+        "summary": "Report for {} is being generated in the background. You will be notified"
+                   "via your preferred openshift.io notification mechanism on its completion.".
+            format(input_json.get('git-url')),
+    })
+
+    return flask.jsonify(resp_dict), 200
+
+
+@app.route('/api/v1/user-repo/notify', methods=['POST'])
+@login_required
+def user_repo_scan():
+    """
+    Endpoint for scanning an OSIO user's repository.
+
+    Runs a scan to find out security vulnerability in a user's repository
+    """
+    # Request validation section
+    input_json = request.get_json()
+    resp_dict = {}
+    if request.content_type != 'application/json':
+        resp_dict["success"] = False
+        resp_dict["summary"] = "Set content type to application/json"
+        return flask.jsonify(resp_dict), 400
+
+    validate_string = "{} cannot be empty"
+    if 'vulnerable-components' not in input_json:
+        validate_string = validate_string.format("vulnerable-components")
+        return False, validate_string
+
+    # Call the worker flow to run a user repository scan asynchronously
+    status = alert_user(input_json, skip_dep_tree=True)
+    if status is not True:
+        resp_dict["status"] = "failure"
+        resp_dict["summary"] = "Scan initialization failure"
+        return flask.jsonify(resp_dict), 500
+
+    resp_dict.update({
+        "summary": "Report for {} is being generated in the background. You will be notified"
+                   "via your preferred openshift.io notification mechanism on its completion.".
+            format(input_json.get('git-url')),
+    })
+
+    return flask.jsonify(resp_dict), 200
 
 
 @app.errorhandler(HTTPError)

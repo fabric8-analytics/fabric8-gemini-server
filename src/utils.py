@@ -267,6 +267,15 @@ def scan_repo(data):
     return True
 
 
+def alert_user(data, skip_dep_tree=False):
+    """Invoke worker flow to scan user repository."""
+    data['skip_dep_tree'] = skip_dep_tree
+    flow_name = 'osioUserNotificationFlow'
+    d_id = server_run_flow(flow_name, data)
+    logger.info("DISPATCHER ID = {}".format(d_id))
+    return True
+
+
 def fetch_public_key(app):
     """Get public key and caches it on the app object for future use."""
     # TODO: even though saving the key on the app object is not very nice,

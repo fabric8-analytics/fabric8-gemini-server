@@ -169,9 +169,9 @@ def user_repo_scan():
         return flask.jsonify(resp_dict), 500
 
     resp_dict.update({
-        "summary": "Report for {} is being generated in the background. You will be notified"
-                   "via your preferred openshift.io notification mechanism on its completion.".
-            format(input_json.get('git-url')),
+        "summary": "Report for {} is being generated in the background. You will "
+                   "be notified via your preferred openshift.io notification mechanism "
+                   "on its completion.".format(input_json.get('git-url')),
     })
 
     return flask.jsonify(resp_dict), 200
@@ -179,7 +179,7 @@ def user_repo_scan():
 
 @app.route('/api/v1/user-repo/notify', methods=['POST'])
 @login_required
-def user_repo_scan():
+def notify_user():
     """
     Endpoint for scanning an OSIO user's repository.
 
@@ -206,9 +206,9 @@ def user_repo_scan():
         return flask.jsonify(resp_dict), 500
 
     resp_dict.update({
-        "summary": "Report for {} is being generated in the background. You will be notified"
-                   "via your preferred openshift.io notification mechanism on its completion.".
-            format(input_json.get('git-url')),
+        "summary": "Report for {} is being generated in the background. You will "
+                   "be notified via your preferred openshift.io notification mechanism "
+                   "on its completion.".format(input_json.get('git-url')),
     })
 
     return flask.jsonify(resp_dict), 200

@@ -82,6 +82,90 @@ paths:
           description: Request unauthorized
         '404':
           description: Data not found
+  '/user-repo/scan':
+    post:
+      tags:
+        - Scan Services
+      operationId: f8a_scanner.api_v1.scan
+      summary: Scan an OSIO user repository. This will be called by the OSIO platform whenever a new repository is added to a space. The client request requires OSIO user token in the authorization header.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: repo
+          description: repository url
+          required: true
+          schema:
+            $ref: '#/definitions/UserRepoInput'
+      responses:
+        '200':
+          description: Repository scan initiated
+        '400':
+          description: Bad request from the client
+        '401':
+          description: Request unauthorized
+        '404':
+          description: Data not found
+        '500':
+          description: Internal server error
+  '/user-repo/notify':
+    post:
+      tags:
+        - Scan Services
+      operationId: f8a_scanner.api_v1.notify
+      summary: Call the notification service with the scan report.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: repo
+          description: List of ecosystem-package-version
+          required: true
+          schema:
+            $ref: '#/definitions/UserRepoInput'
+      responses:
+        '200':
+          description: Notification service called
+        '400':
+          description: Bad request from the client
+        '401':
+          description: Request unauthorized
+        '404':
+          description: Data not found
+        '500':
+          description: Internal server error
+  '/user-repo/drop':
+    post:
+      tags:
+        - Scan Services
+      operationId: f8a_scanner.api_v1.drop
+      summary: Stop monitoring an OSIO user repository. This will be triggered by the platform whenever a codebase is removed from a space. The client request requires OSIO user token in the authorization header.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: repo
+          description: repository url and email id
+          required: true
+          schema:
+            $ref: '#/definitions/UserRepoInput'
+      responses:
+        '200':
+          description: Repository scan unsubscribed
+        '400':
+          description: Bad request from the client
+        '401':
+          description: Request unauthorized
+        '404':
+          description: Data not found
+        '500':
+          description: Internal server error
 definitions:
   RegisterResponse:
     title: Response Data for Register Endpoint
@@ -141,4 +225,9 @@ definitions:
         type: string
       git-sha:
         type: string
-
+  UserRepoInput:
+    title: User Repository Scan Inputs
+    description: Parameters to call user repository scan
+    properties:
+      git-url:
+        type: string

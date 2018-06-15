@@ -11,7 +11,7 @@ RED=$(tput bold && tput setaf 1)
 GREEN=$(tput bold && tput setaf 2)
 YELLOW=$(tput bold && tput setaf 3)
 
-printf "${NORMAL}Shutting down docker-compose ..."
+printf "%sShutting down docker-compose ..." "${NORMAL}"
 
 gc() {
   retval=$?
@@ -31,21 +31,23 @@ function start_gemini_service {
 
 start_gemini_service
 
-export PYTHONPATH=`pwd`/src
-printf "${NORMAL}Create Virtualenv for Python deps ..."
+PYTHONPATH=$(pwd)/src
+export PYTHONPATH
+
+printf "%sCreate Virtualenv for Python deps ..." "${NORMAL}"
 
 function prepare_venv() {
-    VIRTUALENV=`which virtualenv`
+    VIRTUALENV=$(which virtualenv)
     if [ $? -eq 1 ]
     then
         # python34 which is in CentOS does not have virtualenv binary
-        VIRTUALENV=`which virtualenv-3`
+        VIRTUALENV=$(which virtualenv-3)
     fi
 
     ${VIRTUALENV} -p python3 venv && source venv/bin/activate
     if [ $? -ne 0 ]
     then
-        printf "${RED}Python virtual environment can't be initialized${NORMAL}"
+        printf "%sPython virtual environment can't be initialized%s" "${RED}" "${NORMAL}"
         exit 1
     fi
 }
@@ -70,11 +72,13 @@ export BAYESIAN_JWT_AUDIENCE='a,b'
 export BAYESIAN_FETCH_PUBLIC_KEY='test'
 
 psql_conn_str="postgres://${POSTGRESQL_USER}:${POSTGRESQL_PASSWORD}@${PGBOUNCER_SERVICE_HOST}:${5432}/${POSTGRESQL_DATABASE}"
-for i in {1..60}; do
-    rc=`psql -q "${psql_conn_str}" -c ''; echo $?`
+for i in {1..60}
+do
+    printf "%sWaiting for Postgres%s" "${YELLOW}" "${NORMAL}"
+    rc=$(psql -q "${psql_conn_str}" -c ''; echo $?)
     [ "$rc" == "0" ] && break
     sleep 1
-done;
+done
 
 echo "*****************************************"
 echo "*** Cyclomatic complexity measurement ***"
@@ -89,7 +93,8 @@ radon mi -s -i venv .
 echo "*****************************************"
 echo "*** Unit tests ***"
 echo "*****************************************"
-python3 `which pytest` --cov=src/ --cov-report term-missing --cov-fail-under=$COVERAGE_THRESHOLD -vv tests/
+python3 "$(which pytest)" --cov=src/ --cov-report term-missing --cov-fail-under=$COVERAGE_THRESHOLD -vv tests/
+printf "%stests passed%s\n\n" "${GREEN}" "${NORMAL}"
 
 # deactivate virtual env before deleting it
 deactivate

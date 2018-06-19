@@ -74,7 +74,7 @@ export BAYESIAN_FETCH_PUBLIC_KEY='test'
 psql_conn_str="postgres://${POSTGRESQL_USER}:${POSTGRESQL_PASSWORD}@${PGBOUNCER_SERVICE_HOST}:${5432}/${POSTGRESQL_DATABASE}"
 for i in {1..60}
 do
-    printf "%sWaiting for Postgres%s" "${YELLOW}" "${NORMAL}"
+    printf "%sWaiting for Postgres: %s/60 %s\n" "${YELLOW}" "${i}" "${NORMAL}"
     rc=$(psql -q "${psql_conn_str}" -c ''; echo $?)
     [ "$rc" == "0" ] && break
     sleep 1

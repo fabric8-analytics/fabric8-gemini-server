@@ -84,11 +84,13 @@ echo "*****************************************"
 echo "*** Cyclomatic complexity measurement ***"
 echo "*****************************************"
 radon cc -s -a -i venv .
+printf "%sCyclomatic complexity measurement passed%s\n\n" "${GREEN}" "${NORMAL}"
 
 echo "*****************************************"
 echo "*** Maintainability Index measurement ***"
 echo "*****************************************"
 radon mi -s -i venv .
+printf "%sMaintainability Index measurement passed%s\n\n" "${GREEN}" "${NORMAL}"
 
 echo "*****************************************"
 echo "*** Unit tests ***"

@@ -8,6 +8,7 @@ set -ex
 build_image
 push_image
 
+chmod +x ./runtests.sh
 cat ./runtests.sh
 ./runtests.sh
 

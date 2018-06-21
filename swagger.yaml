@@ -231,3 +231,7 @@ definitions:
     properties:
       git-url:
         type: string
+      email-ids:
+        type: array
+        items:
+          type: string

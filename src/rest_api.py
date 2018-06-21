@@ -151,6 +151,11 @@ def user_repo_scan():
 
     # Request validation section
     input_json = request.get_json()
+
+    # Return a dummy response for the endpoint while the development is in progress
+    if not 'dev' in input_json:
+        return flask.jsonify({'summary': 'Repository scan initiated'}), 200
+
     if request.content_type != 'application/json':
         resp_dict["success"] = False
         resp_dict["summary"] = "Set content type to application/json"
@@ -181,12 +186,17 @@ def user_repo_scan():
 @login_required
 def notify_user():
     """
-    Endpoint for scanning an OSIO user's repository.
+    Endpoint for notifying security vulnerability in a repository.
 
     Runs a scan to find out security vulnerability in a user's repository
     """
     # Request validation section
     input_json = request.get_json()
+
+    # Return a dummy response for the endpoint while the development is in progress
+    if not 'dev' in input_json:
+        return flask.jsonify({'summary': 'Notification service called'}), 200
+
     resp_dict = {}
     if request.content_type != 'application/json':
         resp_dict["success"] = False
@@ -212,6 +222,23 @@ def notify_user():
     })
 
     return flask.jsonify(resp_dict), 200
+
+
+@app.route('/api/v1/user-repo/drop', methods=['POST'])
+@login_required
+def drop():
+    """
+    Endpoint for scanning an OSIO user's repository.
+
+    Runs a scan to find out security vulnerability in a user's repository
+    """
+    # Request validation section
+    input_json = request.get_json()
+
+    # Return a dummy response for the endpoint while the development is in progress
+    if not 'dev' in input_json:
+        return flask.jsonify({'summary': 'Repository scan unsubscribed'}), 200
+
 
 
 @app.errorhandler(HTTPError)

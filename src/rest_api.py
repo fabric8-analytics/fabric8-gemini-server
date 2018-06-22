@@ -228,7 +228,7 @@ def notify_user():
 @login_required
 def drop():
     """
-    Endpoint for scanning an OSIO user's repository.
+    Endpoint to stop monitoring OSIO users' repository.
 
     Runs a scan to find out security vulnerability in a user's repository
     """

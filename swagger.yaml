@@ -126,7 +126,7 @@ paths:
           description: List of ecosystem-package-version
           required: true
           schema:
-            $ref: '#/definitions/UserRepoInput'
+            $ref: '#/definitions/EPVList'
       responses:
         '200':
           description: Notification service called
@@ -235,3 +235,21 @@ definitions:
         type: array
         items:
           type: string
+  EPV:
+    title: EPV
+    description: Describes EPV
+    properties:
+      ecosystem:
+        type: string
+      name:
+        type: string
+      version:
+        type: string
+  EPVList:
+    title: User Repository notify inputs
+    description: Parameters to call user repository notify
+    properties:
+      epv_list:
+        type: array
+        items:
+          $ref: '#/definitions/EPV'

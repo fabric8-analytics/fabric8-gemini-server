@@ -14,7 +14,7 @@ RUN pip3 install --upgrade pip>=10.0.0 &&\
 COPY ./src /src
 
 #RUN pip3 install git+https://github.com/fabric8-analytics/fabric8-analytics-worker.git@${F8A_WORKER_VERSION}
-RUN pip3 install git+https://github.com/samuzzal-choudhury/fabric8-analytics-worker.git@47064a2
+RUN pip3 install git+https://github.com/samuzzal-choudhury/fabric8-analytics-worker.git@289ae6e
 
 ADD scripts/entrypoint.sh /bin/entrypoint.sh
 

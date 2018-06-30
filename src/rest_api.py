@@ -1,17 +1,25 @@
 """Definition of the routes for gemini server."""
 import flask
+import requests
 from flask import Flask, request
 from flask_cors import CORS
 from utils import DatabaseIngestion, scan_repo, validate_request_data,\
     retrieve_worker_result, alert_user
 from f8a_worker.setup_celery import init_selinon
-from auth import login_required
+from auth import login_required, init_auth_sa_token
 from exceptions import HTTPError
 
 app = Flask(__name__)
 CORS(app)
 
 init_selinon()
+
+SERVICE_TOKEN='token'
+try:
+    SERVICE_TOKEN = init_auth_sa_token()
+except requests.exceptions.RequestException as e:
+    print('Unable to set authentication token for internal service calls. {}'
+          .format(e))
 
 
 @app.route('/api/v1/readiness')
@@ -61,7 +69,7 @@ def register():
             try:
                 # First time ingestion
                 DatabaseIngestion.store_record(input_json)
-                status = scan_repo(input_json)
+                status = scan_repo(input_json, SERVICE_TOKEN)
                 if status is not True:
                     resp_dict["success"] = False
                     resp_dict["summary"] = "New Repo Scan Initialization Failure"
@@ -149,17 +157,17 @@ def user_repo_scan():
         "summary": ""
     }
 
-    # Request validation section
+    if request.content_type != 'application/json':
+        resp_dict["status"] = "failure"
+        resp_dict["summary"] = "Set content type to application/json"
+        return flask.jsonify(resp_dict), 400
+
     input_json = request.get_json()
 
     # Return a dummy response for the endpoint while the development is in progress
     if not 'dev' in input_json:
         return flask.jsonify({'summary': 'Repository scan initiated'}), 200
 
-    if request.content_type != 'application/json':
-        resp_dict["success"] = False
-        resp_dict["summary"] = "Set content type to application/json"
-        return flask.jsonify(resp_dict), 400
 
     validate_string = "{} cannot be empty"
     if 'git-url' not in input_json:
@@ -167,7 +175,7 @@ def user_repo_scan():
         return False, validate_string
 
     # Call the worker flow to run a user repository scan asynchronously
-    status = alert_user(input_json)
+    status = alert_user(input_json, SERVICE_TOKEN)
     if status is not True:
         resp_dict["status"] = "failure"
         resp_dict["summary"] = "Scan initialization failure"
@@ -190,26 +198,31 @@ def notify_user():
 
     Runs a scan to find out security vulnerability in a user's repository
     """
-    # Request validation section
+    resp_dict = {
+        "status": "success",
+        "summary": ""
+    }
+
+    if request.content_type != 'application/json':
+        resp_dict["status"] = "failure"
+        resp_dict["summary"] = "Set content type to application/json"
+        return flask.jsonify(resp_dict), 400
+
     input_json = request.get_json()
 
     # Return a dummy response for the endpoint while the development is in progress
     if not 'dev' in input_json:
         return flask.jsonify({'summary': 'Notification service called'}), 200
 
-    resp_dict = {}
-    if request.content_type != 'application/json':
-        resp_dict["success"] = False
-        resp_dict["summary"] = "Set content type to application/json"
+    validate_string = "{} cannot be empty"
+    if 'epv_list' not in input_json:
+        resp_dict["status"] = "failure"
+        resp_dict["summary"] = "Required parameter 'epv_list' is missing " \
+                               "in the request"
         return flask.jsonify(resp_dict), 400
 
-    validate_string = "{} cannot be empty"
-    if 'vulnerable-components' not in input_json:
-        validate_string = validate_string.format("vulnerable-components")
-        return False, validate_string
-
     # Call the worker flow to run a user repository scan asynchronously
-    status = alert_user(input_json, skip_dep_tree=True)
+    status = alert_user(input_json, SERVICE_TOKEN, epv_list=input_json['epv_list'])
     if status is not True:
         resp_dict["status"] = "failure"
         resp_dict["summary"] = "Scan initialization failure"
@@ -232,7 +245,16 @@ def drop():
 
     Runs a scan to find out security vulnerability in a user's repository
     """
-    # Request validation section
+    resp_dict = {
+        "status": "success",
+        "summary": ""
+    }
+
+    if request.content_type != 'application/json':
+        resp_dict["status"] = "failure"
+        resp_dict["summary"] = "Set content type to application/json"
+        return flask.jsonify(resp_dict), 400
+
     input_json = request.get_json()
 
     # Return a dummy response for the endpoint while the development is in progress

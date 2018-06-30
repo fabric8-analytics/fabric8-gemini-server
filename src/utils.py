@@ -267,11 +267,14 @@ def scan_repo(data):
     return True
 
 
-def alert_user(data, skip_dep_tree=False):
+def alert_user(data, service_token=None, epv_list=[]):
     """Invoke worker flow to scan user repository."""
-    data['skip_dep_tree'] = skip_dep_tree
-    flow_name = 'osioUserNotificationFlow'
-    d_id = server_run_flow(flow_name, data)
+    args = {'github_repo': data['git-url'],
+            'service_token': service_token,
+            'email_ids': data.get('email-ids', 'dummy'),
+            'epv_list': epv_list}
+
+    d_id = server_run_flow('osioUserNotificationFlow', args)
     logger.info("DISPATCHER ID = {}".format(d_id))
     return True
 

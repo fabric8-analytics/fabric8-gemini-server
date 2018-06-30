@@ -267,6 +267,18 @@ def scan_repo(data):
     return True
 
 
+def alert_user(data, service_token=None, epv_list=[]):
+    """Invoke worker flow to scan user repository."""
+    args = {'github_repo': data['git-url'],
+            'service_token': service_token,
+            'email_ids': data.get('email-ids', 'dummy'),
+            'epv_list': epv_list}
+
+    d_id = server_run_flow('osioUserNotificationFlow', args)
+    logger.info("DISPATCHER ID = {}".format(d_id))
+    return True
+
+
 def fetch_public_key(app):
     """Get public key and caches it on the app object for future use."""
     # TODO: even though saving the key on the app object is not very nice,

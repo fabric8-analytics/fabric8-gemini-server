@@ -3,6 +3,7 @@ from functools import wraps
 
 from flask import current_app, request
 import jwt
+import requests
 from os import getenv
 
 
@@ -46,6 +47,33 @@ def get_token_from_auth_header():
 def get_audiences():
     """Retrieve all JWT audiences."""
     return getenv('BAYESIAN_JWT_AUDIENCE').split(',')
+
+
+def init_auth_sa_token():
+    """Initiate a service token from auth service."""
+    auth_server_url = getenv('AUTH_SERVER_URL', 'https://auth.openshift.io')
+    endpoint = '{url}/api/token'.format(url=auth_server_url)
+
+    client_id = getenv('SA_CLIENT_ID', '37df5ca3-a075-4ba3-8756-9d4afafd6884')
+    client_secret = getenv('SA_CLIENT_SECRET', 'secret')
+
+    payload = {"grant_type": "client_credentials",
+               "client_id": client_id,
+               "client_secret": client_secret}
+    try:
+        resp = requests.post(endpoint, json=payload)
+    except requests.exceptions.RequestException as e:
+        raise e
+
+    if resp.status_code == 200:
+        data = resp.json()
+        try:
+            access_token = data['access_token']
+        except IndexError as e:
+            raise requests.exceptions.RequestException
+        return access_token
+    else:
+        raise requests.exceptions.RequestException
 
 
 def login_required(view):  # pragma: no cover

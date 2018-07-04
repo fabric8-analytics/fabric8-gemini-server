@@ -135,6 +135,78 @@ def report():
         return flask.jsonify(response), 404
 
 
+@app.route('/api/v1/user-repo/scan', methods=['POST'])
+@login_required
+def user_repo_scan():
+    """
+    Endpoint for scanning an OSIO user's repository.
+
+    Runs a scan to find out security vulnerability in a user's repository
+    """
+    resp_dict = {
+        "status": "success",
+        "summary": ""
+    }
+
+    if request.content_type != 'application/json':
+        resp_dict["status"] = "failure"
+        resp_dict["summary"] = "Set content type to application/json"
+        return flask.jsonify(resp_dict), 400
+
+    input_json = request.get_json()
+
+    # Return a dummy response for the endpoint while the development is in progress
+    return flask.jsonify({'summary': 'Repository scan initiated'}), 200
+
+
+@app.route('/api/v1/user-repo/notify', methods=['POST'])
+@login_required
+def notify_user():
+    """
+    Endpoint for notifying security vulnerability in a repository.
+
+    Runs a scan to find out security vulnerability in a user's repository
+    """
+    resp_dict = {
+        "status": "success",
+        "summary": ""
+    }
+
+    if request.content_type != 'application/json':
+        resp_dict["status"] = "failure"
+        resp_dict["summary"] = "Set content type to application/json"
+        return flask.jsonify(resp_dict), 400
+
+    input_json = request.get_json()
+
+    # Return a dummy response for the endpoint while the development is in progress
+    return flask.jsonify({'summary': 'Notification service called'}), 200
+
+
+@app.route('/api/v1/user-repo/drop', methods=['POST'])
+@login_required
+def drop():
+    """
+    Endpoint to stop monitoring OSIO users' repository.
+
+    Runs a scan to find out security vulnerability in a user's repository
+    """
+    resp_dict = {
+        "status": "success",
+        "summary": ""
+    }
+
+    if request.content_type != 'application/json':
+        resp_dict["status"] = "failure"
+        resp_dict["summary"] = "Set content type to application/json"
+        return flask.jsonify(resp_dict), 400
+
+    input_json = request.get_json()
+
+    # Return a dummy response for the endpoint while the development is in progress
+    return flask.jsonify({'summary': 'Repository scan unsubscribed'}), 200
+
+
 @app.errorhandler(HTTPError)
 def handle_error(e):  # pragma: no cover
     """Handle http error response."""

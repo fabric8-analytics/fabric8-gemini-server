@@ -292,3 +292,28 @@ def fetch_public_key(app):
             app.public_key = None
 
     return app.public_key
+
+
+def fetch_service_public_keys(app):  # pragma: no cover
+    """Get public keys for OSIO service account. Currently, there are three public keys."""
+    if not getattr(app, "service_public_keys", []):
+        auth_url = os.getenv('BAYESIAN_AUTH_PUBLIC_KEYS_URL', '')
+        if auth_url:
+            try:
+                auth_url = auth_url.strip('/') + '/api/token/keys?format=pem'
+                result = requests.get(auth_url, timeout=0.5)
+                app.logger.info('Fetching public key from %s, status %d, result: %s',
+                                auth_url, result.status_code, result.text)
+            except requests.exceptions.Timeout:
+                app.logger.error('Timeout fetching public key from %s', auth_url)
+                return ''
+            if result.status_code != 200:
+                return ''
+
+            keys = result.json().get('keys', [])
+            app.service_public_keys = keys
+
+        else:
+            app.service_public_keys = None
+
+    return app.service_public_keys

@@ -4,7 +4,7 @@ from flask import Flask, request
 from flask_cors import CORS
 from utils import DatabaseIngestion, scan_repo, validate_request_data, retrieve_worker_result
 from f8a_worker.setup_celery import init_selinon
-from auth import login_required
+from auth import login_required, service_token_required
 from exceptions import HTTPError
 
 app = Flask(__name__)
@@ -160,7 +160,7 @@ def user_repo_scan():
 
 
 @app.route('/api/v1/user-repo/notify', methods=['POST'])
-@login_required
+@service_token_required
 def notify_user():
     """
     Endpoint for notifying security vulnerability in a repository.

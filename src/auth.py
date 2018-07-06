@@ -51,17 +51,17 @@ def get_audiences():
 
 def init_auth_sa_token():
     """Initiate a service token from auth service."""
-    auth_server_url = getenv('AUTH_SERVER_URL', 'https://auth.openshift.io')
+    auth_server_url = getenv('AUTH_SERVER_URL', 'https://auth.prod-preview.openshift.io')
     endpoint = '{url}/api/token'.format(url=auth_server_url)
 
-    client_id = getenv('SA_CLIENT_ID', '37df5ca3-a075-4ba3-8756-9d4afafd6884')
-    client_secret = getenv('SA_CLIENT_SECRET', 'secret')
+    client_id = getenv('GEIMINI_SA_CLIENT_ID', 'id')
+    client_secret = getenv('GEMINI_SA_CLIENT_SECRET', 'secret')
 
     payload = {"grant_type": "client_credentials",
                "client_id": client_id,
                "client_secret": client_secret}
     try:
-        resp = requests.post(endpoint, json=payload)
+        resp = requests.post(endpoint, json=payload, verify=False)
     except requests.exceptions.RequestException as e:
         raise e
 

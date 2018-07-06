@@ -73,6 +73,21 @@ objects:
               secretKeyRef:
                 name: aws
                 key: s3-secret-access-key
+          - name: GEIMINI_SA_CLIENT_ID
+            valueFrom:
+              secretKeyRef:
+               name: gemini-server
+               key: gemini-sa-client-id
+          - name: GEMINI_SA_CLIENT_SECRET
+            valueFrom:
+              secretKeyRef:
+               name: gemini-server
+               key: gemini-sa-client-secret
+          - name: AUTH_SERVICE_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: bayesian-config
+                key: auth-url
           - name: GEMINI_API_SERVICE_PORT
             value: "5000"
           - name: GEMINI_API_SERVICE_TIMEOUT

@@ -267,7 +267,7 @@ def scan_repo(data):
     return True
 
 
-def alert_user(data, service_token=None, epv_list=[]):
+def alert_user(data, service_token="", epv_list=[]):
     """Invoke worker flow to scan user repository."""
     args = {'github_repo': data['git-url'],
             'service_token': service_token,

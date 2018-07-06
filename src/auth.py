@@ -50,7 +50,7 @@ def get_audiences():
 
 
 def init_auth_sa_token():
-    """Initiate a service token from auth service."""
+    """Initialize a service token from auth service."""
     auth_server_url = getenv('AUTH_SERVER_URL', 'https://auth.prod-preview.openshift.io')
     endpoint = '{url}/api/token'.format(url=auth_server_url)
 

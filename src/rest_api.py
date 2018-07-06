@@ -14,7 +14,7 @@ CORS(app)
 
 init_selinon()
 
-SERVICE_TOKEN='token'
+SERVICE_TOKEN = 'token'
 try:
     SERVICE_TOKEN = init_auth_sa_token()
 except requests.exceptions.RequestException as e:
@@ -165,9 +165,8 @@ def user_repo_scan():
     input_json = request.get_json()
 
     # Return a dummy response for the endpoint while the development is in progress
-    if not 'dev' in input_json:
+    if 'dev' not in input_json:
         return flask.jsonify({'summary': 'Repository scan initiated'}), 200
-
 
     validate_string = "{} cannot be empty"
     if 'git-url' not in input_json:
@@ -211,7 +210,7 @@ def notify_user():
     input_json = request.get_json()
 
     # Return a dummy response for the endpoint while the development is in progress
-    if not 'dev' in input_json:
+    if 'dev' not in input_json:
         return flask.jsonify({'summary': 'Notification service called'}), 200
 
     validate_string = "{} cannot be empty"
@@ -258,9 +257,8 @@ def drop():
     input_json = request.get_json()
 
     # Return a dummy response for the endpoint while the development is in progress
-    if not 'dev' in input_json:
+    if 'dev' not in input_json:
         return flask.jsonify({'summary': 'Repository scan unsubscribed'}), 200
-
 
 
 @app.errorhandler(HTTPError)

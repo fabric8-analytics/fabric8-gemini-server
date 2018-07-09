@@ -1,16 +1,25 @@
 """Definition of the routes for gemini server."""
 import flask
+import requests
 from flask import Flask, request
 from flask_cors import CORS
-from utils import DatabaseIngestion, scan_repo, validate_request_data, retrieve_worker_result
+from utils import DatabaseIngestion, scan_repo, validate_request_data,\
+    retrieve_worker_result, alert_user
 from f8a_worker.setup_celery import init_selinon
-from auth import login_required
+from auth import login_required, init_auth_sa_token
 from exceptions import HTTPError
 
 app = Flask(__name__)
 CORS(app)
 
 init_selinon()
+
+SERVICE_TOKEN = 'token'
+try:
+    SERVICE_TOKEN = init_auth_sa_token()
+except requests.exceptions.RequestException as e:
+    print('Unable to set authentication token for internal service calls. {}'
+          .format(e))
 
 
 @app.route('/api/v1/readiness')
@@ -140,7 +149,6 @@ def report():
 def user_repo_scan():
     """
     Endpoint for scanning an OSIO user's repository.
-
     Runs a scan to find out security vulnerability in a user's repository
     """
     resp_dict = {
@@ -155,8 +163,25 @@ def user_repo_scan():
 
     input_json = request.get_json()
 
-    # Return a dummy response for the endpoint while the development is in progress
-    return flask.jsonify({'summary': 'Repository scan initiated'}), 200
+    validate_string = "{} cannot be empty"
+    if 'git-url' not in input_json:
+        validate_string = validate_string.format("git-url")
+        return False, validate_string
+
+    # Call the worker flow to run a user repository scan asynchronously
+    status = alert_user(input_json, SERVICE_TOKEN)
+    if status is not True:
+        resp_dict["status"] = "failure"
+        resp_dict["summary"] = "Scan initialization failure"
+        return flask.jsonify(resp_dict), 500
+
+    resp_dict.update({
+        "summary": "Report for {} is being generated in the background. You will "
+                   "be notified via your preferred openshift.io notification mechanism "
+                   "on its completion.".format(input_json.get('git-url')),
+    })
+
+    return flask.jsonify(resp_dict), 200
 
 
 @app.route('/api/v1/user-repo/notify', methods=['POST'])
@@ -164,7 +189,6 @@ def user_repo_scan():
 def notify_user():
     """
     Endpoint for notifying security vulnerability in a repository.
-
     Runs a scan to find out security vulnerability in a user's repository
     """
     resp_dict = {
@@ -179,8 +203,27 @@ def notify_user():
 
     input_json = request.get_json()
 
-    # Return a dummy response for the endpoint while the development is in progress
-    return flask.jsonify({'summary': 'Notification service called'}), 200
+    validate_string = "{} cannot be empty"
+    if 'epv_list' not in input_json:
+        resp_dict["status"] = "failure"
+        resp_dict["summary"] = "Required parameter 'epv_list' is missing " \
+                               "in the request"
+        return flask.jsonify(resp_dict), 400
+
+    # Call the worker flow to run a user repository scan asynchronously
+    status = alert_user(input_json, SERVICE_TOKEN, epv_list=input_json['epv_list'])
+    if status is not True:
+        resp_dict["status"] = "failure"
+        resp_dict["summary"] = "Scan initialization failure"
+        return flask.jsonify(resp_dict), 500
+
+    resp_dict.update({
+        "summary": "Report for {} is being generated in the background. You will "
+                   "be notified via your preferred openshift.io notification mechanism "
+                   "on its completion.".format(input_json.get('git-url')),
+    })
+
+    return flask.jsonify(resp_dict), 200
 
 
 @app.route('/api/v1/user-repo/drop', methods=['POST'])

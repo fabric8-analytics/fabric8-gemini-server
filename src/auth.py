@@ -51,17 +51,20 @@ def get_audiences():
 
 def init_auth_sa_token():
     """Initialize a service token from auth service."""
-    auth_server_url = getenv('AUTH_SERVER_URL', 'https://auth.prod-preview.openshift.io')
+    auth_server_url = getenv('AUTH_SERVICE_HOST', 'https://auth.prod-preview.openshift.io')
     endpoint = '{url}/api/token'.format(url=auth_server_url)
 
     client_id = getenv('GEIMINI_SA_CLIENT_ID', 'id')
     client_secret = getenv('GEMINI_SA_CLIENT_SECRET', 'secret')
 
     payload = {"grant_type": "client_credentials",
-               "client_id": client_id,
-               "client_secret": client_secret}
+               "client_id": client_id.strip(),
+               "client_secret": client_secret.strip()}
     try:
-        resp = requests.post(endpoint, json=payload, verify=False)
+        print('TOKEN GENERATION: endpoint is %s' % endpoint)
+        print('TOKEN GENERATION: payload  is %r' % payload)
+        resp = requests.post(endpoint, json=payload)
+        print("RESPONSE STATUS = %d" % resp.status_code)
     except requests.exceptions.RequestException as e:
         raise e
 
@@ -69,10 +72,13 @@ def init_auth_sa_token():
         data = resp.json()
         try:
             access_token = data['access_token']
+            print("Access token has been generated successfully")
         except IndexError as e:
+            print("requests.exceptions.RequestException during Access token generation")
             raise requests.exceptions.RequestException
         return access_token
     else:
+        print("Unexpected HTTP response. Raised requests.exceptions.RequestException")
         raise requests.exceptions.RequestException
 
 

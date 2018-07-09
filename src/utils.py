@@ -201,7 +201,7 @@ class DatabaseIngestion:
                 email_ids=data.get('email-ids', 'dummy'),
                 last_scanned_at=datetime.datetime.now()
             )
-            add_entry_to_osio_registered_repos(entry)
+            add_entry_to_osio_registered_repos(session, entry)
             session.commit()
         except SQLAlchemyError:
             session.rollback()

@@ -43,6 +43,21 @@ objects:
               secretKeyRef:
                 name: coreapi-postgres
                 key: database
+          - name: GEMINI_SA_CLIENT_ID
+            valueFrom:
+              secretKeyRef:
+               name: gemini-server
+               key: gemini-sa-client-id
+          - name: GEMINI_SA_CLIENT_SECRET
+            valueFrom:
+              secretKeyRef:
+               name: gemini-server
+               key: gemini-sa-client-secret
+          - name: AUTH_SERVICE_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: bayesian-config
+                key: auth-url
           - name: POSTGRESQL_PASSWORD
             valueFrom:
               secretKeyRef:

@@ -2,7 +2,7 @@
 
 FROM prod.registry.devshift.net/osio-prod/base/python3:latest
 
-ENV F8A_WORKER_VERSION=6f2c826
+ENV F8A_WORKER_VERSION=6503230
 
 COPY ./requirements.txt /
 

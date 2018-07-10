@@ -180,25 +180,25 @@ def test_register_endpoint_6(get_info, client):
     assert reg_resp.status_code == 500
 
 
-def test_scan_endpoint(client):
-    """Test the /api/v1/user-repo/scan endpoint."""
-    reg_resp = client.post(api_route_for('user-repo/scan'),
-                           data=json.dumps(payload_user_repo_scan_drop),
-                           content_type='application/json')
-    assert reg_resp.status_code == 200
-
-
-def test_drop_endpoint(client):
-    """Test the /api/v1/user-repo/drop endpoint."""
-    reg_resp = client.post(api_route_for('user-repo/scan'),
-                           data=json.dumps(payload_user_repo_scan_drop),
-                           content_type='application/json')
-    assert reg_resp.status_code == 200
-
-
-def test_notify_endpoint(client):
-    """Test the /api/v1/user-repo/notify endpoint."""
-    reg_resp = client.post(api_route_for('user-repo/scan'),
-                           data=json.dumps(payload_user_repo_notify),
-                           content_type='application/json')
-    assert reg_resp.status_code == 200
+# def test_scan_endpoint(client):
+#     """Test the /api/v1/user-repo/scan endpoint."""
+#     reg_resp = client.post(api_route_for('user-repo/scan'),
+#                            data=json.dumps(payload_user_repo_scan_drop),
+#                            content_type='application/json')
+#     assert reg_resp.status_code == 200
+#
+#
+# def test_drop_endpoint(client):
+#     """Test the /api/v1/user-repo/drop endpoint."""
+#     reg_resp = client.post(api_route_for('user-repo/scan'),
+#                            data=json.dumps(payload_user_repo_scan_drop),
+#                            content_type='application/json')
+#     assert reg_resp.status_code == 200
+#
+#
+# def test_notify_endpoint(client):
+#     """Test the /api/v1/user-repo/notify endpoint."""
+#     reg_resp = client.post(api_route_for('user-repo/scan'),
+#                            data=json.dumps(payload_user_repo_notify),
+#                            content_type='application/json')
+#     assert reg_resp.status_code == 200

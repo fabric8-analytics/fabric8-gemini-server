@@ -1,12 +1,13 @@
+REGISTRY := quay.io
+DEFAULT_TAG := latest
+
 ifeq ($(TARGET),rhel)
   DOCKERFILE := Dockerfile.rhel
-  REGISTRY := push.registry.devshift.net/osio-prod
+  REPOSITORY := openshiftio/rhel-fabric8-analytics-fabric8-gemini-server
 else
   DOCKERFILE := Dockerfile
-  REGISTRY := push.registry.devshift.net
+  REPOSITORY := openshiftio/fabric8-analytics-fabric8-gemini-server
 endif
-REPOSITORY?=fabric8-analytics/fabric8-gemini-server
-DEFAULT_TAG=latest
 
 .PHONY: all docker-build fast-docker-build test get-image-name get-image-repository
 

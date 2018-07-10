@@ -1,12 +1,19 @@
 #!/bin/bash -ex
 
 load_jenkins_vars() {
-    if [ -e "jenkins-env" ]; then
-        cat jenkins-env \
-          | grep -E "(DEVSHIFT_TAG_LEN|DEVSHIFT_USERNAME|DEVSHIFT_PASSWORD|JENKINS_URL|GIT_BRANCH|GIT_COMMIT|BUILD_NUMBER|ghprbSourceBranch|ghprbActualCommit|BUILD_URL|ghprbPullId)=" \
-          | sed 's/^/export /g' \
-          > ~/.jenkins-env
-        source ~/.jenkins-env
+    if [ -e "jenkins-env.json" ]; then
+        eval "$(./env-toolkit load -f jenkins-env.json \
+                  DEVSHIFT_TAG_LEN \
+                  QUAY_USERNAME \
+                  QUAY_PASSWORD \
+                  JENKINS_URL \
+                  GIT_BRANCH \
+                  GIT_COMMIT \
+                  BUILD_NUMBER \
+                  ghprbSourceBranch \
+                  ghprbActualCommit \
+                  BUILD_URL \
+                  ghprbPullId)"
     fi
 }
 
@@ -42,11 +49,11 @@ tag_push() {
 push_image() {
     local image_name
     local image_repository
-    local short_commit 
+    local short_commit
     local push_registry
     image_name=$(make get-image-name)
     image_repository=$(make get-image-repository)
-    short_commit=$(git rev-parse --short=7 HEAD)
+    short_commit=$(git rev-parse --short=$DEVSHIFT_TAG_LEN HEAD)
     push_registry=$(make get-push-registry)
 
     if [ -n "${ghprbPullId}" ]; then

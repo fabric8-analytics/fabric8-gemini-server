@@ -146,9 +146,10 @@ def report():
 
 @app.route('/api/v1/user-repo/scan', methods=['POST'])
 @login_required
-def user_repo_scan():
+def user_repo_scan():  # pragma: no cover
     """
     Endpoint for scanning an OSIO user's repository.
+
     Runs a scan to find out security vulnerability in a user's repository
     """
     resp_dict = {
@@ -186,9 +187,10 @@ def user_repo_scan():
 
 @app.route('/api/v1/user-repo/notify', methods=['POST'])
 @login_required
-def notify_user():
+def notify_user():  # pragma: no cover
     """
     Endpoint for notifying security vulnerability in a repository.
+
     Runs a scan to find out security vulnerability in a user's repository
     """
     resp_dict = {
@@ -228,7 +230,7 @@ def notify_user():
 
 @app.route('/api/v1/user-repo/drop', methods=['POST'])
 @login_required
-def drop():
+def drop():  # pragma: no cover
     """
     Endpoint to stop monitoring OSIO users' repository.
 

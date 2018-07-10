@@ -83,7 +83,7 @@ def login_required(view):  # pragma: no cover
 
 def init_auth_sa_token():  # pragma: no cover
     """Initialize a service token from auth service."""
-    auth_server_url = getenv('AUTH_SERVICE_HOST', 'https://auth.prod-preview.openshift.io')
+    auth_server_url = getenv('AUTH_SERVICE_HOST', '')
     endpoint = '{url}/api/token'.format(url=auth_server_url)
 
     client_id = getenv('GEMINI_SA_CLIENT_ID', 'id')

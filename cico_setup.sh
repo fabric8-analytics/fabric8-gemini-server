@@ -30,8 +30,8 @@ build_image() {
     local push_registry
     push_registry=$(make get-push-registry)
     # login before build to be able to pull RHEL parent image
-    if [ -n "${DEVSHIFT_USERNAME}" -a -n "${DEVSHIFT_PASSWORD}" ]; then
-        docker login -u ${DEVSHIFT_USERNAME} -p ${DEVSHIFT_PASSWORD} ${push_registry}
+    if [ -n "${QUAY_USERNAME}" -a -n "${QUAY_PASSWORD}" ]; then
+        docker login -u ${QUAY_USERNAME} -p ${QUAY_PASSWORD} ${push_registry}
     else
         echo "Could not login, missing credentials for the registry"
         exit 1
@@ -51,6 +51,7 @@ push_image() {
     local image_repository
     local short_commit
     local push_registry
+
     image_name=$(make get-image-name)
     image_repository=$(make get-image-repository)
     short_commit=$(git rev-parse --short=$DEVSHIFT_TAG_LEN HEAD)

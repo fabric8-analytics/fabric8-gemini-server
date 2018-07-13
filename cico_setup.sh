@@ -14,6 +14,9 @@ load_jenkins_vars() {
                   ghprbActualCommit \
                   BUILD_URL \
                   ghprbPullId)"
+        if [ -z "${DEVSHIFT_TAG_LEN}" ]; then
+            DEVSHIFT_TAG_LEN=7
+        fi
     fi
 }
 

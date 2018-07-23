@@ -207,3 +207,14 @@ def test_fetch_public_key_2(a):
     resp = fetch_public_key(app)
     assert resp == \
         '-----BEGIN PUBLIC KEY-----\ntest\n-----END PUBLIC KEY-----'
+
+
+@patch("src.utils.server_run_flow", return_value="d_id")
+def test_alert_user(server_run_flow):
+    """Test alert user mechanism."""
+    resp = alert_user({
+        'git-url': 'git-repo',
+        'email-ids': 'dummy'
+    }, service_token='test', epv_list=['test'])
+
+    assert resp is True

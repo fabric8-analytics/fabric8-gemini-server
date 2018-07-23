@@ -180,25 +180,72 @@ def test_register_endpoint_6(get_info, client):
     assert reg_resp.status_code == 500
 
 
-# def test_scan_endpoint(client):
-#     """Test the /api/v1/user-repo/scan endpoint."""
-#     reg_resp = client.post(api_route_for('user-repo/scan'),
-#                            data=json.dumps(payload_user_repo_scan_drop),
-#                            content_type='application/json')
-#     assert reg_resp.status_code == 200
-#
-#
-# def test_drop_endpoint(client):
-#     """Test the /api/v1/user-repo/drop endpoint."""
-#     reg_resp = client.post(api_route_for('user-repo/scan'),
-#                            data=json.dumps(payload_user_repo_scan_drop),
-#                            content_type='application/json')
-#     assert reg_resp.status_code == 200
-#
-#
-# def test_notify_endpoint(client):
-#     """Test the /api/v1/user-repo/notify endpoint."""
-#     reg_resp = client.post(api_route_for('user-repo/scan'),
-#                            data=json.dumps(payload_user_repo_notify),
-#                            content_type='application/json')
-#     assert reg_resp.status_code == 200
+def test_user_repo_scan_endpoint(client):
+    """Test the /api/v1/user-repo/scan endpoint."""
+    resp = client.post(api_route_for('user-repo/scan'),
+                       data=json.dumps(payload))
+
+    assert resp.status_code == 400
+
+
+def test_user_repo_scan_endpoint_1(client):
+    """Test the /api/v1/user-repo/scan endpoint."""
+    resp = client.post(api_route_for('user-repo/scan'),
+                       data=json.dumps(payload_1),
+                       content_type='application/json')
+
+    assert resp.status_code == 400
+
+
+@patch("src.rest_api.alert_user")
+def test_user_repo_scan_endpoint_2(alert_user, client):
+    """Test the /api/v1/user-repo/scan endpoint."""
+    alert_user.return_value = False
+    resp = client.post(api_route_for('user-repo/scan'),
+                       data=json.dumps(payload),
+                       content_type='application/json')
+
+    assert resp.status_code == 500
+
+    alert_user.return_value = True
+    resp = client.post(api_route_for('user-repo/scan'),
+                       data=json.dumps(payload),
+                       content_type='application/json')
+
+    assert resp.status_code == 200
+
+
+def test_notify_user_endpoint(client):
+    """Test the /api/v1/user-repo/notify endpoint."""
+    resp = client.post(api_route_for('user-repo/notify'),
+                       data=json.dumps(payload))
+
+    assert resp.status_code == 400
+
+
+def test_notify_user_endpoint_1(client):
+    """Test the /api/v1/user-repo/notify endpoint."""
+    resp = client.post(api_route_for('user-repo/notify'),
+                       data=json.dumps(payload),
+                       content_type='application/json')
+
+    assert resp.status_code == 400
+
+
+@patch('src.rest_api.alert_user')
+def test_notify_user_endpoint_2(alert_user, client):
+    """Test the /api/v1/user-repo/notify endpoint."""
+    alert_user.return_value = False
+    resp = client.post(api_route_for('user-repo/notify'),
+                       data=json.dumps(payload_user_repo_notify),
+                       content_type='application/json')
+
+    assert resp.status_code == 500
+
+    alert_user.return_value = True
+
+    resp = client.post(api_route_for('user-repo/notify'),
+                       data=json.dumps(payload_user_repo_notify),
+                       content_type='application/json')
+
+    assert resp.status_code == 200

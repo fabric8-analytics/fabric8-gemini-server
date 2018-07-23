@@ -146,7 +146,7 @@ def report():
 
 @app.route('/api/v1/user-repo/scan', methods=['POST'])
 @login_required
-def user_repo_scan():  # pragma: no cover
+def user_repo_scan():
     """
     Endpoint for scanning an OSIO user's repository.
 
@@ -167,7 +167,9 @@ def user_repo_scan():  # pragma: no cover
     validate_string = "{} cannot be empty"
     if 'git-url' not in input_json:
         validate_string = validate_string.format("git-url")
-        return False, validate_string
+        resp_dict["status"] = 'failure'
+        resp_dict["summary"] = validate_string
+        return flask.jsonify(resp_dict), 400
 
     # Call the worker flow to run a user repository scan asynchronously
     status = alert_user(input_json, SERVICE_TOKEN)
@@ -187,7 +189,7 @@ def user_repo_scan():  # pragma: no cover
 
 @app.route('/api/v1/user-repo/notify', methods=['POST'])
 @login_required
-def notify_user():  # pragma: no cover
+def notify_user():
     """
     Endpoint for notifying security vulnerability in a repository.
 
@@ -208,8 +210,7 @@ def notify_user():  # pragma: no cover
     validate_string = "{} cannot be empty"
     if 'epv_list' not in input_json:
         resp_dict["status"] = "failure"
-        resp_dict["summary"] = "Required parameter 'epv_list' is missing " \
-                               "in the request"
+        resp_dict["summary"] = validate_string.format('epv_list')
         return flask.jsonify(resp_dict), 400
 
     # Call the worker flow to run a user repository scan asynchronously

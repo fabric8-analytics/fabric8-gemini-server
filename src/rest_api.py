@@ -144,6 +144,17 @@ def report():
         return flask.jsonify(response), 404
 
 
+@app.route('/api/v1/user-repo/scan/experimental', methods=['POST'])
+@login_required
+def user_repo_scan_experimental():
+    """
+    Experimental endpoint.
+    """
+    files = request.files.getlist('dependencyFile[]')
+    print("Files, ", files)
+    print("Printing request  ", request.get_json(force=True))
+
+
 @app.route('/api/v1/user-repo/scan', methods=['POST'])
 @login_required
 def user_repo_scan():
@@ -152,14 +163,16 @@ def user_repo_scan():
 
     Runs a scan to find out security vulnerability in a user's repository
     """
+    print("Calling user repository scan")
     resp_dict = {
         "status": "success",
         "summary": ""
     }
 
-    if request.content_type != 'application/json':
+    if request.content_type not in ('application/json', 'multipart/form-data'):
         resp_dict["status"] = "failure"
-        resp_dict["summary"] = "Set content type to application/json"
+        resp_dict["summary"] = "Set content type to application/json or " \
+                               "multipart/form-data"
         return flask.jsonify(resp_dict), 400
 
     input_json = request.get_json()

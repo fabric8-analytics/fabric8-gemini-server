@@ -8,6 +8,9 @@ from utils import DatabaseIngestion, scan_repo, validate_request_data, \
 from f8a_worker.setup_celery import init_selinon
 from auth import login_required, init_auth_sa_token
 from exceptions import HTTPError
+from parsers.maven_parser import MavenParser
+from repo_dependency_creator import RepoDependencyCreator
+from notification.user_notification import UserNotification
 
 app = Flask(__name__)
 CORS(app)
@@ -150,6 +153,80 @@ def report():
             "message": "No report found for this repository"
         })
         return flask.jsonify(response), 404
+
+
+@app.route('/api/v1/user-repo/scan/experimental', methods=['POST'])
+@login_required
+def user_repo_scan_experimental():  # pragma: no cover
+    """Experimental endpoint."""
+    input_json = request.get_json()
+
+    resp_dict = {
+        "status": "success",
+        "summary": ""
+    }
+
+    files = request.files.getlist("dependencyFile[]")
+
+    validate_string = "{} cannot be empty"
+
+    if 'git-url' not in input_json:
+        validate_string = validate_string.format("git-url")
+        resp_dict["status"] = 'failure'
+        resp_dict["summary"] = validate_string
+        return flask.jsonify(resp_dict), 400
+
+    if not files:
+        validate_string = validate_string.format("files")
+        resp_dict["status"] = 'failure'
+        resp_dict["summary"] = validate_string
+        return flask.jsonify(resp_dict), 400
+
+    for file in files:
+        if file.filename == 'direct-dependencies.txt':
+            direct_dependencies_string = file.read().decode('utf-8')
+        elif file.filename == 'transitive-dependencies.txt':
+            transitive_dependencies_string = file.read().decode('utf-8')
+        else:
+            resp_dict["status"] = 'failure'
+            resp_dict["summary"] = "File name should be either direct-dependencies.txt or" \
+                                   "transitive-dependencies.txt"
+            return flask.jsonify(resp_dict), 400
+
+    github_repo = input_json.get('git-url')
+
+    set_direct_dependencies = MavenParser.parse_output_file(direct_dependencies_string)
+    set_transitive_dependencies = MavenParser.parse_output_file(transitive_dependencies_string)
+
+    dependencies = {
+        'direct': list(set_direct_dependencies),
+        'transitive': list(set_transitive_dependencies)
+    }
+
+    try:
+        repo_cves = RepoDependencyCreator.create_repo_node_and_get_cve(
+            github_repo=github_repo, deps_list=dependencies)
+
+        # We get a list of reports here since the functionality is meant to be
+        # re-used for '/notify' call as well.
+        repo_reports = RepoDependencyCreator.generate_report(repo_cves=repo_cves,
+                                                             deps_list=dependencies)
+        for repo_report in repo_reports:
+            notification = UserNotification.generate_notification(report=repo_report)
+            UserNotification.send_notification(notification=notification,
+                                               token=SERVICE_TOKEN)
+    except Exception as ex:
+        return flask.jsonify({
+            "error": ex.__str__()
+        }), 500
+
+    resp_dict.update({
+        "summary": "Report for {} is being generated in the background. You will "
+                   "be notified via your preferred openshift.io notification mechanism "
+                   "on its completion.".format(input_json.get('git-url')),
+    })
+
+    return flask.jsonify(resp_dict), 200
 
 
 @app.route('/api/v1/user-repo/scan', methods=['POST'])

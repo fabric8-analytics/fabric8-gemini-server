@@ -171,6 +171,9 @@ def user_repo_scan():
         resp_dict["summary"] = validate_string
         return flask.jsonify(resp_dict), 400
 
+    url = input_json['git-url'].replace('git@github.com:', 'https://github.com/')
+    input_json['git-url'] = url
+
     # Call the worker flow to run a user repository scan asynchronously
     status = alert_user(input_json, SERVICE_TOKEN)
     if status is not True:

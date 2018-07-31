@@ -267,9 +267,23 @@ def scan_repo(data):
     return True
 
 
+def convert_git_ssh_to_https(ssh_url):
+    """Convert an SSH Git URL to HTTPS one."""
+    orig_url_arr = ssh_url.split(':')
+    if orig_url_arr[0] == 'https':
+        logger.info("The Git URL is already an HTTPS one")
+        return ssh_url
+
+    url = orig_url_arr[0].split('@')[1]
+    https_url = 'https://{}/{}'.format(url, orig_url_arr[1])
+    logger.info("The converted Git HTTPS URL is: {}".format(https_url))
+    return https_url
+
+
 def alert_user(data, service_token="", epv_list=[]):
     """Invoke worker flow to scan user repository."""
-    args = {'github_repo': data['git-url'],
+    git_url = convert_git_ssh_to_https(data['git-url'])
+    args = {'github_repo': git_url,
             'service_token': service_token,
             'email_ids': data.get('email-ids', 'dummy'),
             'epv_list': epv_list}

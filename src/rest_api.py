@@ -3,8 +3,8 @@ import flask
 import requests
 from flask import Flask, request
 from flask_cors import CORS
-from utils import DatabaseIngestion, scan_repo, validate_request_data,\
-    retrieve_worker_result, alert_user
+from utils import DatabaseIngestion, scan_repo, validate_request_data, \
+    retrieve_worker_result, alert_user, GREMLIN_SERVER_URL_REST
 from f8a_worker.setup_celery import init_selinon
 from auth import login_required, init_auth_sa_token
 from exceptions import HTTPError
@@ -252,8 +252,27 @@ def drop():  # pragma: no cover
 
     input_json = request.get_json()
 
-    # Return a dummy response for the endpoint while the development is in progress
-    return flask.jsonify({'summary': 'Repository scan unsubscribed'}), 200
+    validate_string = "{} cannot be empty"
+
+    if 'git-url' not in input_json:
+        resp_dict["status"] = "failure"
+        resp_dict["summary"] = validate_string.format('git-url')
+        return flask.jsonify(resp_dict), 400
+
+    gremlin_query = "g.V().has('repo_url', '{git_url}').outE().drop().iterate()" \
+                    .format(git_url=input_json.get('git-url'))
+    payload = {
+        "gremlin": gremlin_query
+    }
+
+    raw_response = requests.post(url=GREMLIN_SERVER_URL_REST, json=payload)
+
+    if raw_response.status_code != 200:
+        # This raises an HTTPError which will be handled by `handle_error()`.
+        raw_response.raise_for_status()
+
+    resp_dict['summary'] = 'Repository scan unsubscribed'
+    return flask.jsonify(resp_dict), 200
 
 
 @app.errorhandler(HTTPError)

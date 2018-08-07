@@ -7,7 +7,7 @@ from sqlalchemy import create_engine
 from f8a_worker.models import Base
 import pytest
 
-from src.rest_api import *
+from src.rest_api import app
 
 
 @pytest.fixture

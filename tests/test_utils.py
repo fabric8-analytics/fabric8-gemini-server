@@ -1,7 +1,15 @@
 """Test module for classes and functions found in the utils module."""
 from rest_api import app
-from src.utils import *
+
+from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.orm.exc import NoResultFound
+
+from src.utils import DatabaseIngestion
+from src.utils import alert_user, fetch_public_key, get_session, get_session_retry
+from src.utils import retrieve_worker_result, scan_repo, server_run_flow, validate_request_data
+
 from unittest.mock import patch
+import requests
 import pytest
 
 
@@ -48,7 +56,7 @@ def test_get_session():
 
 
 @patch("src.utils.query_worker_result", side_effect=SQLAlchemyError())
-def test_retrieve_worker_result(query):
+def test_retrieve_worker_result(_query):
     """Test the function retrieve_worker_result."""
     with pytest.raises(SQLAlchemyError):
         retrieve_worker_result("test", "test")
@@ -56,7 +64,7 @@ def test_retrieve_worker_result(query):
 
 @patch("src.utils.query_worker_result", return_value=None)
 @patch("src.utils.get_first_query_result", return_value=None)
-def test_retrieve_worker_result_1(a, b):
+def test_retrieve_worker_result_1(_a, _b):
     """Test the function retrieve_worker_result."""
     response = retrieve_worker_result("test", "test")
     assert response is None
@@ -65,7 +73,7 @@ def test_retrieve_worker_result_1(a, b):
 @patch("src.utils.query_worker_result", return_value=None)
 @patch("src.utils.get_first_query_result", **{"return_value.to_dict.return_value": 1})
 @patch("src.utils.get_first_query_result", return_value={"test": "test"})
-def test_retrieve_worker_result_2(a, b, c):
+def test_retrieve_worker_result_2(_a, _b, _c):
     """Test the function retrieve_worker_result."""
     with app.app_context():
         response = retrieve_worker_result("test", "test")
@@ -104,7 +112,7 @@ def test_get_store_record():
 
 @patch.object(DatabaseIngestion, "get_info", return_value="get_info")
 @patch("src.utils.add_entry_to_osio_registered_repos", return_value=None)
-def test_get_store_record_1(a, b):
+def test_get_store_record_1(_a, _b):
     """Test get_store_record."""
     payload = {
         "email-ids": "abcd@gmail.com",
@@ -157,7 +165,7 @@ def test_get_info_1(a):
 
 @patch("src.utils.init_celery", return_value=None)
 @patch("src.utils.run_flow", return_value='dispatcher_id')
-def test_server_run_flow(a, b):
+def test_server_run_flow(_a, _b):
     """Test server_run_flow."""
     resp = server_run_flow("test", "test")
     assert resp == 'dispatcher_id'
@@ -175,12 +183,12 @@ def test_scan_repo(a):
     assert resp is True
 
 
-def mocked_requests_get_1(*args, **kwargs):
+def mocked_requests_get_1(*_args, **_kwargs):
     """Mock 1 for requests.get."""
     return MockResponse({"public_key": "test"}, 200, "test")
 
 
-def mocked_requests_get_2(*args, **kwargs):
+def mocked_requests_get_2(*_args, **_kwargs):
     """Mock 2 for requests.get."""
     return MockResponse({"public_key": "test"}, 404, "test")
 

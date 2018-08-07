@@ -101,7 +101,7 @@ def init_auth_sa_token():  # pragma: no cover
         data = resp.json()
         try:
             access_token = data['access_token']
-        except IndexError as e:
+        except IndexError:
             raise requests.exceptions.RequestException
         return access_token
     else:

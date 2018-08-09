@@ -72,7 +72,7 @@ def test_report_endpoint(mocker, client):
         "task_result": None
     }
     response = client.get(api_route_for('report?git-url=test&git-sha=test'))
-    assert response.status_code == 404
+    assert response.status_code == 500
     json_data = get_json_from_response(response)
     assert json_data == {
         "status": "failure",
@@ -92,6 +92,25 @@ def test_report_endpoint(mocker, client):
         "git_sha": "test",
         "scanned_at": "1",
         "dependencies": []
+    }
+    mocker.return_value = {
+        "task_result": {
+            "scanned_at": "1",
+            "dependencies": [],
+            "lock_file_absent": True,
+            "message": "test"
+        }
+    }
+    response = client.get(api_route_for('report?git-url=test&git-sha=test'))
+    assert response.status_code == 400
+    json_data = get_json_from_response(response)
+    assert json_data == {
+        "git_url": "test",
+        "git_sha": "test",
+        "scanned_at": "1",
+        "dependencies": [],
+        "lock_file_absent": True,
+        "message": "test"
     }
 
 

@@ -78,10 +78,14 @@ paths:
           schema:
             $ref: "#/definitions/Report"
           description: Scan report for given registered repository
+        '400':
+          description: Bad request from the client
         '401':
           description: Request unauthorized
         '404':
           description: Data not found
+        '500':
+          description: Internal server error
   '/user-repo/scan':
     post:
       tags:
@@ -217,6 +221,10 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/Dependency'
+      lock_file_absent:
+        type: boolean
+      message:
+        type: string
   Repo:
     title: Github Details
     description: Github Details

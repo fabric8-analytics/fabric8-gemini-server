@@ -129,13 +129,21 @@ def report():
                 "scanned_at": task_result.get("scanned_at"),
                 "dependencies": task_result.get("dependencies")
             })
+
+            if task_result.get('lock_file_absent'):
+                response.update({
+                    "lock_file_absent": task_result.get("lock_file_absent"),
+                    "message": task_result.get("message")
+                })
+                return flask.jsonify(response), 400
+
             return flask.jsonify(response), 200
         else:
             response.update({
                 "status": "failure",
                 "message": "Failed to retrieve scan report"
             })
-            return flask.jsonify(response), 404
+            return flask.jsonify(response), 500
     else:
         response.update({
             "status": "failure",

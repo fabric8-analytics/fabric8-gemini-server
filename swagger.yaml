@@ -47,15 +47,15 @@ paths:
         '200':
           schema:
             $ref: "#/definitions/RegisterResponse"
-          description: Repository registered
+          description: Git repository is registered for scan at Gemini API server.
         '400':
           description: Bad request from the client
         '401':
-          description: Request unauthorized
+          description: Unauthorized request from the client. Kindly if check access token is valid or expired.
         '404':
           description: Data not found
         '500':
-          description: Internal server error
+          description: Internal server error!
   /report:
     get:
       tags:
@@ -77,15 +77,15 @@ paths:
         '200':
           schema:
             $ref: "#/definitions/Report"
-          description: Scan report for given registered repository
+          description: Scan report is generated at the Gemini API server.
         '400':
-          description: Bad request from the client
+          description: dependency/version-lock/manifest file is absent in the referenced git repo at provided git-sha. Unable to scan and generate report at the Gemini API server.
         '401':
-          description: Request unauthorized
+          description: Unauthorized request from the client. Kindly check if the access token is valid or expired.
         '404':
-          description: Data not found
+          description: Report is not found at the Gemini API server, processing is in progress, kindly check back in sometime.
         '500':
-          description: Internal server error
+          description: Internal server error!
   '/user-repo/scan':
     post:
       tags:

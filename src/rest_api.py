@@ -159,7 +159,8 @@ def report():
 @login_required
 def user_repo_scan_experimental():  # pragma: no cover
     """Experimental endpoint."""
-    input_json = request.get_json()
+    # json data and files cannot be a part of same request. Hence, we need to use form data here.
+    git_url = request.form.get('git-url')
 
     resp_dict = {
         "status": "success",
@@ -170,7 +171,7 @@ def user_repo_scan_experimental():  # pragma: no cover
 
     validate_string = "{} cannot be empty"
 
-    if 'git-url' not in input_json:
+    if not git_url:
         validate_string = validate_string.format("git-url")
         resp_dict["status"] = 'failure'
         resp_dict["summary"] = validate_string
@@ -193,8 +194,6 @@ def user_repo_scan_experimental():  # pragma: no cover
                                    "transitive-dependencies.txt"
             return flask.jsonify(resp_dict), 400
 
-    github_repo = input_json.get('git-url')
-
     set_direct_dependencies = MavenParser.parse_output_file(direct_dependencies_string)
     set_transitive_dependencies = MavenParser.parse_output_file(transitive_dependencies_string)
 
@@ -205,7 +204,7 @@ def user_repo_scan_experimental():  # pragma: no cover
 
     try:
         repo_cves = RepoDependencyCreator.create_repo_node_and_get_cve(
-            github_repo=github_repo, deps_list=dependencies)
+            github_repo=git_url, deps_list=dependencies)
 
         # We get a list of reports here since the functionality is meant to be
         # re-used for '/notify' call as well.
@@ -223,7 +222,7 @@ def user_repo_scan_experimental():  # pragma: no cover
     resp_dict.update({
         "summary": "Report for {} is being generated in the background. You will "
                    "be notified via your preferred openshift.io notification mechanism "
-                   "on its completion.".format(input_json.get('git-url')),
+                   "on its completion.".format(git_url)
     })
 
     return flask.jsonify(resp_dict), 200

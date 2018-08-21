@@ -8,6 +8,6 @@ class Parser(ABC):
 
     @staticmethod
     @abstractmethod
-    def parse_output_file(content):
+    def parse_output_file(_content):
         """Parse output file."""
         raise NotImplementedError("Please implement this method")

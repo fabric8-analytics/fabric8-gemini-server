@@ -196,6 +196,8 @@ def user_repo_scan_experimental():  # pragma: no cover
 
     set_direct_dependencies = MavenParser.parse_output_file(direct_dependencies_string)
     set_transitive_dependencies = MavenParser.parse_output_file(transitive_dependencies_string)
+    # we need to remove direct dependencies from the transitive ones.
+    set_transitive_dependencies = set_transitive_dependencies - set_direct_dependencies
 
     dependencies = {
         'direct': list(set_direct_dependencies),

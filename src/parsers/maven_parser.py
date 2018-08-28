@@ -31,8 +31,8 @@ class MavenParser(Parser):
         a = {'groupId': '',
              'artifactId': '',
              'packaging': '',
-             'classifier': '',
-             'version': ''}
+             'version': '',
+             'classifier': ''}
 
         ncolons = coordinates_str.count(':')
         if ncolons == 1:
@@ -42,7 +42,9 @@ class MavenParser(Parser):
         elif ncolons == 3:
             a['groupId'], a['artifactId'], a['packaging'], a['version'] = coordinates_str.split(':')
         elif ncolons == 4:
-            a['groupId'], a['artifactId'], a['packaging'], a['classifier'], a['version'] = \
+            # Usually, it's groupId:artifactId:packaging:classifier:version but here it's
+            # groupId:artifactId:packaging:version:classifier
+            a['groupId'], a['artifactId'], a['packaging'], a['version'], a['classifier'] = \
                 coordinates_str.split(':')
         else:
             raise ValueError('Invalid Maven coordinates %s', coordinates_str)

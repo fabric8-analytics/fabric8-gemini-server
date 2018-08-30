@@ -1,5 +1,6 @@
 .env
 env.example
+.idea/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

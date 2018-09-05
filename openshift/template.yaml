@@ -38,6 +38,8 @@ objects:
             value: bayesian-api
           - name: COREAPI_SERVICE_PORT
             value: "5000"
+          - name: FLASK_LOGGING_LEVEL
+            value: ${FLASK_LOGGING_LEVEL}
           - name: POSTGRESQL_DATABASE
             valueFrom:
               secretKeyRef:
@@ -234,3 +236,8 @@ parameters:
   name: SENTRY_DSN
   value: ""
 
+- description: "Flask logging level (see: https://docs.python.org/3/library/logging.html#levels)"
+  displayName: Flask logging level
+  required: false
+  name: FLASK_LOGGING_LEVEL
+  value: "INFO"

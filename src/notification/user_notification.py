@@ -40,10 +40,21 @@ class UserNotification:
         result["data"]["attributes"]["custom"]["scanned_at"] = \
             strftime("%a, %d %B %Y %T GMT", gmtime())
         vulnerable_deps = result["data"]["attributes"]["custom"]["vulnerable_deps"]
+        del result["data"]["attributes"]["custom"]["vulnerable_deps"]
         total_cve_count = 0
+        transitive_updates = list()
+        direct_updates = list()
 
         for deps in vulnerable_deps:
+            is_transitive = deps.get("is_transitive", None)
+            if is_transitive:
+                transitive_updates.append(deps)
+            else:
+                direct_updates.append(deps)
             total_cve_count += int(deps['cve_count'])
+        result["data"]["attributes"]["custom"]["total_dependencies"] = len(vulnerable_deps)
         result["data"]["attributes"]["custom"]["cve_count"] = total_cve_count
-
+        result["data"]["attributes"]["custom"]["transitive_updates"] = transitive_updates
+        result["data"]["attributes"]["custom"]["direct_updates"] = direct_updates
+        logger.info("Notification Payload %s", result)
         return result

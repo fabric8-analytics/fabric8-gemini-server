@@ -5,6 +5,11 @@ from time import strftime, gmtime
 from uuid import uuid4
 
 import requests
+import logging
+
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 class UserNotification:

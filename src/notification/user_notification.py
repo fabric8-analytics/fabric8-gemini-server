@@ -61,5 +61,5 @@ class UserNotification:
         result["data"]["attributes"]["custom"]["cve_count"] = total_cve_count
         result["data"]["attributes"]["custom"]["transitive_updates"] = transitive_updates
         result["data"]["attributes"]["custom"]["direct_updates"] = direct_updates
-        logger.info("Notification Payload %s", result)
+        logger.error("Notification Payload %s", result)
         return result

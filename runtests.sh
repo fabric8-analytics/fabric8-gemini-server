@@ -58,6 +58,7 @@ prepare_venv
 
 pip3 install -r requirements.txt
 pip3 install git+https://github.com/fabric8-analytics/fabric8-analytics-worker.git@6503230
+pip3 install git+https://github.com/fabric8-analytics/fabric8-analytics-auth.git
 
 export DEPLOYMENT_PREFIX="${USER}"
 export WORKER_ADMINISTRATION_REGION=api
@@ -70,6 +71,7 @@ export PGBOUNCER_SERVICE_HOST='0.0.0.0'
 export DISABLE_AUTHENTICATION=1
 export BAYESIAN_JWT_AUDIENCE='a,b'
 export BAYESIAN_FETCH_PUBLIC_KEY='test'
+export FABRIC8_AUTH_URL='https://auth.openshift.io'
 
 psql_conn_str="postgres://${POSTGRESQL_USER}:${POSTGRESQL_PASSWORD}@${PGBOUNCER_SERVICE_HOST}:${5432}/${POSTGRESQL_DATABASE}"
 for i in {1..60}

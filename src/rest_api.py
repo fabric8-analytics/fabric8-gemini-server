@@ -6,7 +6,7 @@ from flask_cors import CORS
 from utils import DatabaseIngestion, scan_repo, validate_request_data, \
     retrieve_worker_result, alert_user, GREMLIN_SERVER_URL_REST
 from f8a_worker.setup_celery import init_selinon
-from auth import login_required, init_auth_sa_token
+from fabric8a_auth.auth import login_required, init_service_account_token
 from exceptions import HTTPError
 from parsers.maven_parser import MavenParser
 from repo_dependency_creator import RepoDependencyCreator
@@ -19,7 +19,7 @@ init_selinon()
 
 SERVICE_TOKEN = 'token'
 try:
-    SERVICE_TOKEN = init_auth_sa_token()
+    SERVICE_TOKEN = init_service_account_token(app)
 except requests.exceptions.RequestException as e:
     print('Unable to set authentication token for internal service calls. {}'
           .format(e))

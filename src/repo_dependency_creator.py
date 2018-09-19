@@ -49,12 +49,12 @@ class RepoDependencyCreator:
             rawresp = requests.post(url=GREMLIN_SERVER_URL_REST, json=payload)
             resp = rawresp.json()
             if rawresp.status_code != 200:
-                raise {"Error creating repository node for {repo_url} - "
-                       "{resp}".format(repo_url=github_repo, resp=resp)}
+                raise Exception("Error creating repository node for {repo_url} - "
+                                "{resp}".format(repo_url=github_repo, resp=resp))
 
         except Exception:
-            raise {
-                "Error creating repository node for {repo_url}".format(repo_url=github_repo)}
+            raise Exception(
+                "Error creating repository node for {repo_url}".format(repo_url=github_repo))
 
         return resp
 

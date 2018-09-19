@@ -1,0 +1,2620 @@
+{
+    "requestId": "8473ad86-ef9d-45da-945e-2348fd765bc5",
+    "status": {
+        "message": "",
+        "code": 200,
+        "attributes": {}
+    },
+    "result": {
+        "data": [
+            {
+                "rp": {
+                    "repo_url": [
+                        "https://github.com/abs51295/maven-simple.git"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Repo"
+                    ],
+                    "id": 6964060264
+                },
+                "ed": {
+                    "label": "has_transitive_dependency",
+                    "id": "eattg5p-3767zag-12h3p-157k"
+                },
+                "epv": {
+                    "last_updated": [
+                        1517226508.74
+                    ],
+                    "shipped_as_downstream": [
+                        false
+                    ],
+                    "pname": [
+                        "asm:asm"
+                    ],
+                    "label": "Version",
+                    "vertex_label": [
+                        "Version"
+                    ],
+                    "description": [
+                        "A very small and fast Java bytecode manipulation framework"
+                    ],
+                    "version": [
+                        "3.1"
+                    ],
+                    "dependents_count": [
+                        -1
+                    ],
+                    "licenses": [
+                        "LBNL BSD"
+                    ],
+                    "cm_avg_cyclomatic_complexity": [
+                        5.77
+                    ],
+                    "pecosystem": [
+                        "maven"
+                    ],
+                    "relative_used": [
+                        ""
+                    ],
+                    "cm_loc": [
+                        12362
+                    ],
+                    "id": 53408,
+                    "cm_num_files": [
+                        25
+                    ]
+                }
+            },
+            {
+                "rp": {
+                    "repo_url": [
+                        "https://github.com/abs51295/maven-simple.git"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Repo"
+                    ],
+                    "id": 6964060264
+                },
+                "ed": {
+                    "label": "has_transitive_dependency",
+                    "id": "eattmvh-3767zag-12h3p-275k"
+                },
+                "epv": {
+                    "last_updated": [
+                        1517228283.94
+                    ],
+                    "shipped_as_downstream": [
+                        false
+                    ],
+                    "pname": [
+                        "org.apache.geronimo.specs:geronimo-jms_1.1_spec"
+                    ],
+                    "label": "Version",
+                    "vertex_label": [
+                        "Version"
+                    ],
+                    "description": [
+                        "Provides opensource implementations of Sun specifications."
+                    ],
+                    "version": [
+                        "1.1.1"
+                    ],
+                    "dependents_count": [
+                        -1
+                    ],
+                    "licenses": [
+                        "ASL 2.0"
+                    ],
+                    "cm_avg_cyclomatic_complexity": [
+                        1.01
+                    ],
+                    "declared_licenses": [
+                        " Version 2.0",
+                        "The Apache Software License"
+                    ],
+                    "pecosystem": [
+                        "maven"
+                    ],
+                    "relative_used": [
+                        ""
+                    ],
+                    "cm_loc": [
+                        2730
+                    ],
+                    "id": 102584,
+                    "cm_num_files": [
+                        58
+                    ]
+                }
+            },
+            {
+                "rp": {
+                    "repo_url": [
+                        "https://github.com/abs51295/maven-simple.git"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Repo"
+                    ],
+                    "id": 6964060264
+                },
+                "ed": {
+                    "label": "has_transitive_dependency",
+                    "id": "eattki5-3767zag-12h3p-5cx4"
+                },
+                "epv": {
+                    "last_updated": [
+                        1490878363.001667
+                    ],
+                    "shipped_as_downstream": [
+                        false
+                    ],
+                    "pecosystem": [
+                        "maven"
+                    ],
+                    "pname": [
+                        "log4j:log4j"
+                    ],
+                    "label": "Version",
+                    "vertex_label": [
+                        "Version"
+                    ],
+                    "description": [
+                        ""
+                    ],
+                    "id": 250024,
+                    "version": [
+                        "1.2.15"
+                    ],
+                    "dependents_count": [
+                        -1
+                    ]
+                }
+            },
+            {
+                "rp": {
+                    "repo_url": [
+                        "https://github.com/abs51295/maven-simple.git"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Repo"
+                    ],
+                    "id": 6964060264
+                },
+                "ed": {
+                    "label": "has_transitive_dependency",
+                    "id": "eattnnx-3767zag-12h3p-6xvc"
+                },
+                "epv": {
+                    "last_updated": [
+                        1490718320.365539
+                    ],
+                    "shipped_as_downstream": [
+                        false
+                    ],
+                    "pecosystem": [
+                        "maven"
+                    ],
+                    "pname": [
+                        "org.apache.geronimo.specs:geronimo-j2ee-connector_1.5_spec"
+                    ],
+                    "label": "Version",
+                    "vertex_label": [
+                        "Version"
+                    ],
+                    "description": [
+                        ""
+                    ],
+                    "id": 323832,
+                    "version": [
+                        "2.0.0"
+                    ],
+                    "dependents_count": [
+                        -1
+                    ]
+                }
+            },
+            {
+                "rp": {
+                    "repo_url": [
+                        "https://github.com/abs51295/maven-simple.git"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Repo"
+                    ],
+                    "id": 6964060264
+                },
+                "ed": {
+                    "label": "has_transitive_dependency",
+                    "id": "eattmh9-3767zag-12h3p-n01s"
+                },
+                "epv": {
+                    "last_updated": [
+                        1492815603.35
+                    ],
+                    "shipped_as_downstream": [
+                        false
+                    ],
+                    "pname": [
+                        "org.apache.geronimo.specs:geronimo-jta_1.1_spec"
+                    ],
+                    "label": "Version",
+                    "vertex_label": [
+                        "Version"
+                    ],
+                    "description": [
+                        ""
+                    ],
+                    "version": [
+                        "1.1.1"
+                    ],
+                    "dependents_count": [
+                        -1
+                    ],
+                    "cm_avg_cyclomatic_complexity": [
+                        -1
+                    ],
+                    "pecosystem": [
+                        "maven"
+                    ],
+                    "cm_loc": [
+                        -1
+                    ],
+                    "id": 1073152,
+                    "cm_num_files": [
+                        -1
+                    ]
+                }
+            },
+            {
+                "rp": {
+                    "repo_url": [
+                        "https://github.com/abs51295/maven-simple.git"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Repo"
+                    ],
+                    "id": 6964060264
+                },
+                "ed": {
+                    "label": "has_transitive_dependency",
+                    "id": "eattq19-3767zag-12h3p-qotc"
+                },
+                "epv": {
+                    "last_updated": [
+                        1491910251.15
+                    ],
+                    "shipped_as_downstream": [
+                        false
+                    ],
+                    "pname": [
+                        "org.apache.geronimo.specs:geronimo-jaspic_1.0_spec"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Version"
+                    ],
+                    "description": [
+                        "java authentication service provider interface for containers jsr196 api"
+                    ],
+                    "version": [
+                        "1.0"
+                    ],
+                    "dependents_count": [
+                        -1
+                    ],
+                    "licenses": [
+                        "ASL 2.0"
+                    ],
+                    "cm_avg_cyclomatic_complexity": [
+                        -1
+                    ],
+                    "pecosystem": [
+                        "maven"
+                    ],
+                    "cm_loc": [
+                        1081
+                    ],
+                    "id": 1245216,
+                    "cm_num_files": [
+                        23
+                    ]
+                }
+            },
+            {
+                "rp": {
+                    "repo_url": [
+                        "https://github.com/abs51295/maven-simple.git"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Repo"
+                    ],
+                    "id": 6964060264
+                },
+                "ed": {
+                    "label": "has_transitive_dependency",
+                    "id": "eatthql-3767zag-12h3p-10m3s"
+                },
+                "epv": {
+                    "last_updated": [
+                        1492815449.3
+                    ],
+                    "shipped_as_downstream": [
+                        false
+                    ],
+                    "pname": [
+                        "com.thoughtworks.xstream:xstream"
+                    ],
+                    "label": "Version",
+                    "vertex_label": [
+                        "Version"
+                    ],
+                    "description": [
+                        ""
+                    ],
+                    "version": [
+                        "1.3"
+                    ],
+                    "dependents_count": [
+                        -1
+                    ],
+                    "licenses": [
+                        "Free Art"
+                    ],
+                    "cm_avg_cyclomatic_complexity": [
+                        -1
+                    ],
+                    "pecosystem": [
+                        "maven"
+                    ],
+                    "relative_used": [
+                        ""
+                    ],
+                    "cm_loc": [
+                        23318
+                    ],
+                    "id": 1708264,
+                    "cm_num_files": [
+                        244
+                    ]
+                }
+            },
+            {
+                "rp": {
+                    "repo_url": [
+                        "https://github.com/abs51295/maven-simple.git"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Repo"
+                    ],
+                    "id": 6964060264
+                },
+                "ed": {
+                    "label": "has_transitive_dependency",
+                    "id": "eattk3x-3767zag-12h3p-11r54"
+                },
+                "epv": {
+                    "last_updated": [
+                        1492817996.27
+                    ],
+                    "shipped_as_downstream": [
+                        false
+                    ],
+                    "pname": [
+                        "com.sun.xml.bind:jaxb-impl"
+                    ],
+                    "label": "Version",
+                    "vertex_label": [
+                        "Version"
+                    ],
+                    "description": [
+                        ""
+                    ],
+                    "version": [
+                        "2.1.7"
+                    ],
+                    "dependents_count": [
+                        -1
+                    ],
+                    "licenses": [
+                        "BSD",
+                        "ECL 2.0",
+                        "Free Art",
+                        "ImageMagick",
+                        "LDPL",
+                        "MPLv1.0"
+                    ],
+                    "cm_avg_cyclomatic_complexity": [
+                        -1
+                    ],
+                    "pecosystem": [
+                        "maven"
+                    ],
+                    "relative_used": [
+                        ""
+                    ],
+                    "cm_loc": [
+                        63341
+                    ],
+                    "id": 1761448,
+                    "cm_num_files": [
+                        474
+                    ]
+                }
+            },
+            {
+                "rp": {
+                    "repo_url": [
+                        "https://github.com/abs51295/maven-simple.git"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Repo"
+                    ],
+                    "id": 6964060264
+                },
+                "ed": {
+                    "label": "has_transitive_dependency",
+                    "id": "eattkwd-3767zag-12h3p-259bk"
+                },
+                "epv": {
+                    "last_updated": [
+                        1517222228.36
+                    ],
+                    "shipped_as_downstream": [
+                        true
+                    ],
+                    "pname": [
+                        "xpp3:xpp3_min"
+                    ],
+                    "label": "Version",
+                    "vertex_label": [
+                        "Version"
+                    ],
+                    "description": [
+                        "MXP1 is a stable XmlPull parsing engine that is based on ideas from XPP and in particular XPP2 but completely revised and rewritten to take the best advantage of latest JIT JVMs such as Hotspot in JDK 1.4."
+                    ],
+                    "version": [
+                        "1.1.4c"
+                    ],
+                    "dependents_count": [
+                        -1
+                    ],
+                    "licenses": [
+                        "Forbidden Phrase",
+                        "xpp"
+                    ],
+                    "cm_avg_cyclomatic_complexity": [
+                        8.78
+                    ],
+                    "declared_licenses": [
+                        " Public Domain",
+                        " vesion 1.1.1",
+                        "Indiana University Extreme! Lab Software License"
+                    ],
+                    "pecosystem": [
+                        "maven"
+                    ],
+                    "relative_used": [
+                        ""
+                    ],
+                    "cm_loc": [
+                        4532
+                    ],
+                    "id": 3604592,
+                    "cm_num_files": [
+                        4
+                    ]
+                }
+            },
+            {
+                "rp": {
+                    "repo_url": [
+                        "https://github.com/abs51295/maven-simple.git"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Repo"
+                    ],
+                    "id": 6964060264
+                },
+                "ed": {
+                    "label": "has_transitive_dependency",
+                    "id": "eattudp-3767zag-12h3p-25p4g"
+                },
+                "epv": {
+                    "last_updated": [
+                        1517228181.99
+                    ],
+                    "shipped_as_downstream": [
+                        false
+                    ],
+                    "pname": [
+                        "cglib:cglib-nodep"
+                    ],
+                    "label": "Version",
+                    "vertex_label": [
+                        "Version"
+                    ],
+                    "description": [
+                        ""
+                    ],
+                    "version": [
+                        "2.1_3"
+                    ],
+                    "dependents_count": [
+                        -1
+                    ],
+                    "licenses": [
+                        "ASL 2.0"
+                    ],
+                    "cm_avg_cyclomatic_complexity": [
+                        1.97
+                    ],
+                    "pecosystem": [
+                        "maven"
+                    ],
+                    "cm_loc": [
+                        13357
+                    ],
+                    "id": 3625072,
+                    "cm_num_files": [
+                        122
+                    ]
+                }
+            },
+            {
+                "rp": {
+                    "repo_url": [
+                        "https://github.com/abs51295/maven-simple.git"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Repo"
+                    ],
+                    "id": 6964060264
+                },
+                "ed": {
+                    "label": "has_transitive_dependency",
+                    "id": "eattrm5-3767zag-12h3p-29ncg"
+                },
+                "epv": {
+                    "last_updated": [
+                        1492815783.45
+                    ],
+                    "shipped_as_downstream": [
+                        false
+                    ],
+                    "pname": [
+                        "commons-cli:commons-cli"
+                    ],
+                    "label": "Version",
+                    "vertex_label": [
+                        "Version"
+                    ],
+                    "description": [
+                        "commons cli provides a simple api for working with the command line arguments and options"
+                    ],
+                    "version": [
+                        "1.0"
+                    ],
+                    "dependents_count": [
+                        -1
+                    ],
+                    "licenses": [
+                        "ASL 1.1"
+                    ],
+                    "cm_avg_cyclomatic_complexity": [
+                        -1
+                    ],
+                    "pecosystem": [
+                        "maven"
+                    ],
+                    "relative_used": [
+                        ""
+                    ],
+                    "cm_loc": [
+                        4166
+                    ],
+                    "id": 3809392,
+                    "cm_num_files": [
+                        20
+                    ]
+                }
+            },
+            {
+                "rp": {
+                    "repo_url": [
+                        "https://github.com/abs51295/maven-simple.git"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Repo"
+                    ],
+                    "id": 6964060264
+                },
+                "ed": {
+                    "label": "has_transitive_dependency",
+                    "id": "eattxxp-3767zag-12h3p-2ayr4"
+                },
+                "epv": {
+                    "last_updated": [
+                        1517222368.93
+                    ],
+                    "shipped_as_downstream": [
+                        false
+                    ],
+                    "pname": [
+                        "xml-resolver:xml-resolver"
+                    ],
+                    "label": "Version",
+                    "vertex_label": [
+                        "Version"
+                    ],
+                    "description": [
+                        ""
+                    ],
+                    "version": [
+                        "1.2"
+                    ],
+                    "dependents_count": [
+                        -1
+                    ],
+                    "licenses": [
+                        "ASL 2.0"
+                    ],
+                    "cm_avg_cyclomatic_complexity": [
+                        4.5
+                    ],
+                    "pecosystem": [
+                        "maven"
+                    ],
+                    "relative_used": [
+                        ""
+                    ],
+                    "cm_loc": [
+                        10069
+                    ],
+                    "id": 3870832,
+                    "cm_num_files": [
+                        40
+                    ]
+                }
+            },
+            {
+                "rp": {
+                    "repo_url": [
+                        "https://github.com/abs51295/maven-simple.git"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Repo"
+                    ],
+                    "id": 6964060264
+                },
+                "ed": {
+                    "label": "has_transitive_dependency",
+                    "id": "eatto25-3767zag-12h3p-2digo"
+                },
+                "epv": {
+                    "last_updated": [
+                        1531132282.53
+                    ],
+                    "shipped_as_downstream": [
+                        true
+                    ],
+                    "source_repo": [
+                        "maven"
+                    ],
+                    "pname": [
+                        "jline:jline"
+                    ],
+                    "label": "Version",
+                    "vertex_label": [
+                        "Version"
+                    ],
+                    "description": [
+                        "JLine is a java library for reading and editing user input in console applications. It features tabcompletion command history password masking customizable keybindings and passthrough handlers to use to chain to other console applications."
+                    ],
+                    "cve_ids": [
+                        "CVE-2013-2035:3.3"
+                    ],
+                    "version": [
+                        "0.9.94"
+                    ],
+                    "dependents_count": [
+                        -1
+                    ],
+                    "cm_avg_cyclomatic_complexity": [
+                        2.57
+                    ],
+                    "declared_licenses": [
+                        "BSD"
+                    ],
+                    "pecosystem": [
+                        "maven"
+                    ],
+                    "relative_used": [
+                        ""
+                    ],
+                    "cm_loc": [
+                        5377
+                    ],
+                    "id": 3989688,
+                    "cm_num_files": [
+                        22
+                    ]
+                }
+            },
+            {
+                "rp": {
+                    "repo_url": [
+                        "https://github.com/abs51295/maven-simple.git"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Repo"
+                    ],
+                    "id": 6964060264
+                },
+                "ed": {
+                    "label": "has_transitive_dependency",
+                    "id": "eattvyl-3767zag-12h3p-2je9k"
+                },
+                "epv": {
+                    "last_updated": [
+                        1501067272.96
+                    ],
+                    "shipped_as_downstream": [
+                        false
+                    ],
+                    "pname": [
+                        "org.apache.ant:ant"
+                    ],
+                    "label": "Version",
+                    "vertex_label": [
+                        "Version"
+                    ],
+                    "description": [
+                        ""
+                    ],
+                    "version": [
+                        "1.7.1"
+                    ],
+                    "dependents_count": [
+                        -1
+                    ],
+                    "licenses": [
+                        "ASL 2.0"
+                    ],
+                    "cm_avg_cyclomatic_complexity": [
+                        -1
+                    ],
+                    "pecosystem": [
+                        "maven"
+                    ],
+                    "relative_used": [
+                        ""
+                    ],
+                    "cm_loc": [
+                        -1
+                    ],
+                    "id": 4264184,
+                    "cm_num_files": [
+                        -1
+                    ]
+                }
+            },
+            {
+                "rp": {
+                    "repo_url": [
+                        "https://github.com/abs51295/maven-simple.git"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Repo"
+                    ],
+                    "id": 6964060264
+                },
+                "ed": {
+                    "label": "has_transitive_dependency",
+                    "id": "eattwr1-3767zag-12h3p-2qi80"
+                },
+                "epv": {
+                    "last_updated": [
+                        1490718013.041476
+                    ],
+                    "shipped_as_downstream": [
+                        false
+                    ],
+                    "pecosystem": [
+                        "maven"
+                    ],
+                    "pname": [
+                        "org.apache.geronimo.specs:geronimo-j2ee-management_1.1_spec"
+                    ],
+                    "label": "Version",
+                    "vertex_label": [
+                        "Version"
+                    ],
+                    "description": [
+                        ""
+                    ],
+                    "id": 4595904,
+                    "version": [
+                        "1.0.1"
+                    ],
+                    "dependents_count": [
+                        -1
+                    ]
+                }
+            },
+            {
+                "rp": {
+                    "repo_url": [
+                        "https://github.com/abs51295/maven-simple.git"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Repo"
+                    ],
+                    "id": 6964060264
+                },
+                "ed": {
+                    "label": "has_transitive_dependency",
+                    "id": "eatturx-3767zag-12h3p-2rqg0"
+                },
+                "epv": {
+                    "last_updated": [
+                        1490718613.27536
+                    ],
+                    "shipped_as_downstream": [
+                        false
+                    ],
+                    "pecosystem": [
+                        "maven"
+                    ],
+                    "pname": [
+                        "org.apache.geronimo.components:geronimo-transaction"
+                    ],
+                    "label": "Version",
+                    "vertex_label": [
+                        "Version"
+                    ],
+                    "description": [
+                        ""
+                    ],
+                    "id": 4653216,
+                    "version": [
+                        "2.2.1"
+                    ],
+                    "dependents_count": [
+                        -1
+                    ]
+                }
+            },
+            {
+                "rp": {
+                    "repo_url": [
+                        "https://github.com/abs51295/maven-simple.git"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Repo"
+                    ],
+                    "id": 6964060264
+                },
+                "ed": {
+                    "label": "has_transitive_dependency",
+                    "id": "eattfrh-3767zag-12h3p-2rzsw"
+                },
+                "epv": {
+                    "last_updated": [
+                        1517226437.24
+                    ],
+                    "shipped_as_downstream": [
+                        false
+                    ],
+                    "pname": [
+                        "org.apache.geronimo.specs:geronimo-stax-api_1.0_spec"
+                    ],
+                    "label": "Version",
+                    "vertex_label": [
+                        "Version"
+                    ],
+                    "description": [
+                        ""
+                    ],
+                    "version": [
+                        "1.0.1"
+                    ],
+                    "dependents_count": [
+                        -1
+                    ],
+                    "licenses": [
+                        "ASL 2.0"
+                    ],
+                    "cm_avg_cyclomatic_complexity": [
+                        1.08
+                    ],
+                    "pecosystem": [
+                        "maven"
+                    ],
+                    "relative_used": [
+                        ""
+                    ],
+                    "cm_loc": [
+                        1920
+                    ],
+                    "id": 4665344,
+                    "cm_num_files": [
+                        36
+                    ]
+                }
+            },
+            {
+                "rp": {
+                    "repo_url": [
+                        "https://github.com/abs51295/maven-simple.git"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Repo"
+                    ],
+                    "id": 6964060264
+                },
+                "ed": {
+                    "label": "has_transitive_dependency",
+                    "id": "eattpn1-3767zag-12h3p-2t1q8"
+                },
+                "epv": {
+                    "last_updated": [
+                        1490746072.602232
+                    ],
+                    "shipped_as_downstream": [
+                        false
+                    ],
+                    "pecosystem": [
+                        "maven"
+                    ],
+                    "pname": [
+                        "org.apache.geronimo.specs:geronimo-annotation_1.0_spec"
+                    ],
+                    "label": "Version",
+                    "vertex_label": [
+                        "Version"
+                    ],
+                    "description": [
+                        ""
+                    ],
+                    "id": 4714496,
+                    "version": [
+                        "1.1.1"
+                    ],
+                    "dependents_count": [
+                        -1
+                    ]
+                }
+            },
+            {
+                "rp": {
+                    "repo_url": [
+                        "https://github.com/abs51295/maven-simple.git"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Repo"
+                    ],
+                    "id": 6964060264
+                },
+                "ed": {
+                    "label": "has_transitive_dependency",
+                    "id": "eattx59-3767zag-12h3p-2txgo"
+                },
+                "epv": {
+                    "last_updated": [
+                        1490780502.382369
+                    ],
+                    "shipped_as_downstream": [
+                        false
+                    ],
+                    "pecosystem": [
+                        "maven"
+                    ],
+                    "pname": [
+                        "org.objectweb.howl:howl"
+                    ],
+                    "label": "Version",
+                    "vertex_label": [
+                        "Version"
+                    ],
+                    "description": [
+                        ""
+                    ],
+                    "id": 4755624,
+                    "version": [
+                        "1.0.1-1"
+                    ],
+                    "dependents_count": [
+                        -1
+                    ]
+                }
+            },
+            {
+                "rp": {
+                    "repo_url": [
+                        "https://github.com/abs51295/maven-simple.git"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Repo"
+                    ],
+                    "id": 6964060264
+                },
+                "ed": {
+                    "label": "has_transitive_dependency",
+                    "id": "eattn9p-3767zag-12h3p-2vrpc"
+                },
+                "epv": {
+                    "last_updated": [
+                        1490857902.526696
+                    ],
+                    "shipped_as_downstream": [
+                        false
+                    ],
+                    "pecosystem": [
+                        "maven"
+                    ],
+                    "pname": [
+                        "org.apache.geronimo.specs:geronimo-ejb_3.0_spec"
+                    ],
+                    "label": "Version",
+                    "vertex_label": [
+                        "Version"
+                    ],
+                    "description": [
+                        ""
+                    ],
+                    "id": 4841472,
+                    "version": [
+                        "1.0.1"
+                    ],
+                    "dependents_count": [
+                        -1
+                    ]
+                }
+            },
+            {
+                "rp": {
+                    "repo_url": [
+                        "https://github.com/abs51295/maven-simple.git"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Repo"
+                    ],
+                    "id": 6964060264
+                },
+                "ed": {
+                    "label": "has_transitive_dependency",
+                    "id": "eatti4t-3767zag-12h3p-2wk5c"
+                },
+                "epv": {
+                    "last_updated": [
+                        1517222380.6
+                    ],
+                    "shipped_as_downstream": [
+                        false
+                    ],
+                    "pname": [
+                        "org.apache.ant:ant-launcher"
+                    ],
+                    "label": "Version",
+                    "vertex_label": [
+                        "Version"
+                    ],
+                    "description": [
+                        "master POM"
+                    ],
+                    "version": [
+                        "1.7.1"
+                    ],
+                    "dependents_count": [
+                        -1
+                    ],
+                    "cm_avg_cyclomatic_complexity": [
+                        -1
+                    ],
+                    "pecosystem": [
+                        "maven"
+                    ],
+                    "cm_loc": [
+                        -1
+                    ],
+                    "id": 4878336,
+                    "cm_num_files": [
+                        -1
+                    ]
+                }
+            },
+            {
+                "rp": {
+                    "repo_url": [
+                        "https://github.com/abs51295/maven-simple.git"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Repo"
+                    ],
+                    "id": 6964060264
+                },
+                "ed": {
+                    "label": "has_transitive_dependency",
+                    "id": "eattgy5-3767zag-12h3p-3ap68"
+                },
+                "epv": {
+                    "last_updated": [
+                        1517224732.22
+                    ],
+                    "shipped_as_downstream": [
+                        false
+                    ],
+                    "pname": [
+                        "org.apache.geronimo.specs:geronimo-servlet_2.5_spec"
+                    ],
+                    "label": "Version",
+                    "vertex_label": [
+                        "Version"
+                    ],
+                    "description": [
+                        ""
+                    ],
+                    "version": [
+                        "1.2"
+                    ],
+                    "dependents_count": [
+                        -1
+                    ],
+                    "licenses": [
+                        "ASL 2.0",
+                        "W3C"
+                    ],
+                    "cm_avg_cyclomatic_complexity": [
+                        1.32
+                    ],
+                    "pecosystem": [
+                        "maven"
+                    ],
+                    "relative_used": [
+                        ""
+                    ],
+                    "cm_loc": [
+                        11519
+                    ],
+                    "id": 5538032,
+                    "cm_num_files": [
+                        50
+                    ]
+                }
+            },
+            {
+                "rp": {
+                    "repo_url": [
+                        "https://github.com/abs51295/maven-simple.git"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Repo"
+                    ],
+                    "id": 6964060264
+                },
+                "ed": {
+                    "label": "has_transitive_dependency",
+                    "id": "eattp8t-3767zag-12h3p-3df40"
+                },
+                "epv": {
+                    "last_updated": [
+                        1490735065.293103
+                    ],
+                    "shipped_as_downstream": [
+                        false
+                    ],
+                    "pecosystem": [
+                        "maven"
+                    ],
+                    "pname": [
+                        "org.apache.geronimo.specs:geronimo-el_1.0_spec"
+                    ],
+                    "label": "Version",
+                    "vertex_label": [
+                        "Version"
+                    ],
+                    "description": [
+                        ""
+                    ],
+                    "id": 5664960,
+                    "version": [
+                        "1.0.1"
+                    ],
+                    "dependents_count": [
+                        -1
+                    ]
+                }
+            },
+            {
+                "rp": {
+                    "repo_url": [
+                        "https://github.com/abs51295/maven-simple.git"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Repo"
+                    ],
+                    "id": 6964060264
+                },
+                "ed": {
+                    "label": "has_transitive_dependency",
+                    "id": "eattjbh-3767zag-12h3p-3eh0g"
+                },
+                "epv": {
+                    "last_updated": [
+                        1490857802.388947
+                    ],
+                    "shipped_as_downstream": [
+                        false
+                    ],
+                    "pecosystem": [
+                        "maven"
+                    ],
+                    "pname": [
+                        "org.apache.geronimo.specs:geronimo-interceptor_3.0_spec"
+                    ],
+                    "label": "Version",
+                    "vertex_label": [
+                        "Version"
+                    ],
+                    "description": [
+                        ""
+                    ],
+                    "id": 5714080,
+                    "version": [
+                        "1.0.1"
+                    ],
+                    "dependents_count": [
+                        -1
+                    ]
+                }
+            },
+            {
+                "rp": {
+                    "repo_url": [
+                        "https://github.com/abs51295/maven-simple.git"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Repo"
+                    ],
+                    "id": 6964060264
+                },
+                "ed": {
+                    "label": "has_transitive_dependency",
+                    "id": "eattv65-3767zag-12h3p-3sfk0"
+                },
+                "epv": {
+                    "last_updated": [
+                        1492844858.2
+                    ],
+                    "shipped_as_downstream": [
+                        false
+                    ],
+                    "pname": [
+                        "org.apache.xmlbeans:xmlbeans"
+                    ],
+                    "label": "Version",
+                    "vertex_label": [
+                        "Version"
+                    ],
+                    "description": [
+                        "xmlbeans main jar"
+                    ],
+                    "version": [
+                        "2.3.0"
+                    ],
+                    "dependents_count": [
+                        -1
+                    ],
+                    "licenses": [
+                        "ASL 2.0"
+                    ],
+                    "cm_avg_cyclomatic_complexity": [
+                        -1
+                    ],
+                    "pecosystem": [
+                        "maven"
+                    ],
+                    "cm_loc": [
+                        -1
+                    ],
+                    "id": 6365376,
+                    "cm_num_files": [
+                        -1
+                    ]
+                }
+            },
+            {
+                "rp": {
+                    "repo_url": [
+                        "https://github.com/abs51295/maven-simple.git"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Repo"
+                    ],
+                    "id": 6964060264
+                },
+                "ed": {
+                    "label": "has_transitive_dependency",
+                    "id": "eattt71-3767zag-12h3p-4bkl4"
+                },
+                "epv": {
+                    "last_updated": [
+                        1492831736.28
+                    ],
+                    "shipped_as_downstream": [
+                        false
+                    ],
+                    "pname": [
+                        "org.codehaus.woodstox:wstx-asl"
+                    ],
+                    "label": "Version",
+                    "vertex_label": [
+                        "Version"
+                    ],
+                    "description": [
+                        "woodstox is a highperformance xml processor that implements stax jsr173 api"
+                    ],
+                    "version": [
+                        "3.2.1"
+                    ],
+                    "dependents_count": [
+                        -1
+                    ],
+                    "licenses": [
+                        "ECL 2.0",
+                        "Free Art"
+                    ],
+                    "cm_avg_cyclomatic_complexity": [
+                        -1
+                    ],
+                    "pecosystem": [
+                        "maven"
+                    ],
+                    "relative_used": [
+                        ""
+                    ],
+                    "cm_loc": [
+                        67024
+                    ],
+                    "id": 7258360,
+                    "cm_num_files": [
+                        252
+                    ]
+                }
+            },
+            {
+                "rp": {
+                    "repo_url": [
+                        "https://github.com/abs51295/maven-simple.git"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Repo"
+                    ],
+                    "id": 6964060264
+                },
+                "ed": {
+                    "label": "has_transitive_dependency",
+                    "id": "eatts0d-3767zag-12h3p-4th80"
+                },
+                "epv": {
+                    "last_updated": [
+                        1517225530.25
+                    ],
+                    "shipped_as_downstream": [
+                        false
+                    ],
+                    "pname": [
+                        "javax.servlet:jstl"
+                    ],
+                    "label": "Version",
+                    "vertex_label": [
+                        "Version"
+                    ],
+                    "description": [
+                        ""
+                    ],
+                    "version": [
+                        "1.2"
+                    ],
+                    "dependents_count": [
+                        -1
+                    ],
+                    "cm_avg_cyclomatic_complexity": [
+                        3.29
+                    ],
+                    "pecosystem": [
+                        "maven"
+                    ],
+                    "relative_used": [
+                        ""
+                    ],
+                    "cm_loc": [
+                        40188
+                    ],
+                    "id": 8093808,
+                    "cm_num_files": [
+                        246
+                    ]
+                }
+            },
+            {
+                "rp": {
+                    "repo_url": [
+                        "https://github.com/abs51295/maven-simple.git"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Repo"
+                    ],
+                    "id": 6964060264
+                },
+                "ed": {
+                    "label": "has_transitive_dependency",
+                    "id": "eattlal-3767zag-12h3p-5msqo"
+                },
+                "epv": {
+                    "last_updated": [
+                        1492828154.27
+                    ],
+                    "shipped_as_downstream": [
+                        true
+                    ],
+                    "pname": [
+                        "wsdl4j:wsdl4j"
+                    ],
+                    "label": "Version",
+                    "vertex_label": [
+                        "Version"
+                    ],
+                    "description": [
+                        "java stub generator for wsdl"
+                    ],
+                    "version": [
+                        "1.6.2"
+                    ],
+                    "dependents_count": [
+                        -1
+                    ],
+                    "licenses": [
+                        "Forbidden Phrase",
+                        "Free Art"
+                    ],
+                    "cm_avg_cyclomatic_complexity": [
+                        -1
+                    ],
+                    "pecosystem": [
+                        "maven"
+                    ],
+                    "relative_used": [
+                        ""
+                    ],
+                    "cm_loc": [
+                        19910
+                    ],
+                    "id": 9461760,
+                    "cm_num_files": [
+                        143
+                    ]
+                }
+            },
+            {
+                "rp": {
+                    "repo_url": [
+                        "https://github.com/abs51295/maven-simple.git"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Repo"
+                    ],
+                    "id": 6964060264
+                },
+                "ed": {
+                    "label": "has_transitive_dependency",
+                    "id": "eattvkd-3767zag-12h3p-63hf4"
+                },
+                "epv": {
+                    "last_updated": [
+                        1490817112.650203
+                    ],
+                    "shipped_as_downstream": [
+                        false
+                    ],
+                    "pecosystem": [
+                        "maven"
+                    ],
+                    "pname": [
+                        "asm:asm-commons"
+                    ],
+                    "label": "Version",
+                    "vertex_label": [
+                        "Version"
+                    ],
+                    "description": [
+                        ""
+                    ],
+                    "id": 10240240,
+                    "version": [
+                        "3.1"
+                    ],
+                    "dependents_count": [
+                        -1
+                    ]
+                }
+            },
+            {
+                "rp": {
+                    "repo_url": [
+                        "https://github.com/abs51295/maven-simple.git"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Repo"
+                    ],
+                    "id": 6964060264
+                },
+                "ed": {
+                    "label": "has_transitive_dependency",
+                    "id": "eatthcd-3767zag-12h3p-6rvxs"
+                },
+                "epv": {
+                    "last_updated": [
+                        1517225275.22
+                    ],
+                    "shipped_as_downstream": [
+                        false
+                    ],
+                    "pname": [
+                        "org.apache.geronimo.specs:geronimo-jsp_2.1_spec"
+                    ],
+                    "label": "Version",
+                    "vertex_label": [
+                        "Version"
+                    ],
+                    "description": [
+                        "Provides opensource implementations of Sun specifications."
+                    ],
+                    "version": [
+                        "1.0.1"
+                    ],
+                    "dependents_count": [
+                        -1
+                    ],
+                    "licenses": [
+                        "ASL 2.0"
+                    ],
+                    "cm_avg_cyclomatic_complexity": [
+                        1.58
+                    ],
+                    "declared_licenses": [
+                        " Version 2.0",
+                        "The Apache Software License"
+                    ],
+                    "pecosystem": [
+                        "maven"
+                    ],
+                    "relative_used": [
+                        ""
+                    ],
+                    "cm_loc": [
+                        9335
+                    ],
+                    "id": 11378800,
+                    "cm_num_files": [
+                        57
+                    ]
+                }
+            },
+            {
+                "rp": {
+                    "repo_url": [
+                        "https://github.com/abs51295/maven-simple.git"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Repo"
+                    ],
+                    "id": 6964060264
+                },
+                "ed": {
+                    "label": "has_transitive_dependency",
+                    "id": "eatttl9-3767zag-12h3p-6s8ukw"
+                },
+                "epv": {
+                    "last_updated": [
+                        1492037505.08
+                    ],
+                    "shipped_as_downstream": [
+                        false
+                    ],
+                    "pname": [
+                        "org.apache.geronimo.specs:geronimo-jpa_1.0_spec"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Version"
+                    ],
+                    "description": [
+                        "the java persistence architecture jpa 10 api part of ejb 30 spec"
+                    ],
+                    "version": [
+                        "1.1.2"
+                    ],
+                    "dependents_count": [
+                        -1
+                    ],
+                    "licenses": [
+                        "ASL 2.0"
+                    ],
+                    "cm_avg_cyclomatic_complexity": [
+                        -1
+                    ],
+                    "pecosystem": [
+                        "maven"
+                    ],
+                    "cm_loc": [
+                        3936
+                    ],
+                    "id": 410239184,
+                    "cm_num_files": [
+                        91
+                    ]
+                }
+            },
+            {
+                "rp": {
+                    "repo_url": [
+                        "https://github.com/abs51295/maven-simple.git"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Repo"
+                    ],
+                    "id": 6964060264
+                },
+                "ed": {
+                    "label": "has_transitive_dependency",
+                    "id": "eatttzh-3767zag-12h3p-6sb4q0"
+                },
+                "epv": {
+                    "last_updated": [
+                        1491878425.42
+                    ],
+                    "shipped_as_downstream": [
+                        false
+                    ],
+                    "pname": [
+                        "org.apache.geronimo.framework:geronimo-security"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Version"
+                    ],
+                    "description": [
+                        "apache geronimo the javaee server project of the apache software foundation"
+                    ],
+                    "cve_ids": [
+                        "CVE-2008-0732:2.1",
+                        "CVE-2011-5034:7.8"
+                    ],
+                    "version": [
+                        "2.2.1"
+                    ],
+                    "dependents_count": [
+                        -1
+                    ],
+                    "licenses": [
+                        "ASL 2.0"
+                    ],
+                    "cm_avg_cyclomatic_complexity": [
+                        3.02
+                    ],
+                    "pecosystem": [
+                        "maven"
+                    ],
+                    "cm_loc": [
+                        12532
+                    ],
+                    "id": 410345640,
+                    "cm_num_files": [
+                        107
+                    ]
+                }
+            },
+            {
+                "rp": {
+                    "repo_url": [
+                        "https://github.com/abs51295/maven-simple.git"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Repo"
+                    ],
+                    "id": 6964060264
+                },
+                "ed": {
+                    "label": "has_transitive_dependency",
+                    "id": "eattoul-3767zag-12h3p-6supig"
+                },
+                "epv": {
+                    "last_updated": [
+                        1491913164.23
+                    ],
+                    "shipped_as_downstream": [
+                        false
+                    ],
+                    "pname": [
+                        "org.apache.geronimo.specs:geronimo-jacc_1.1_spec"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Version"
+                    ],
+                    "description": [
+                        "java access control for containers 11 api"
+                    ],
+                    "version": [
+                        "1.0.2"
+                    ],
+                    "dependents_count": [
+                        -1
+                    ],
+                    "licenses": [
+                        "ASL 2.0"
+                    ],
+                    "cm_avg_cyclomatic_complexity": [
+                        -1
+                    ],
+                    "pecosystem": [
+                        "maven"
+                    ],
+                    "cm_loc": [
+                        2094
+                    ],
+                    "id": 411259048,
+                    "cm_num_files": [
+                        12
+                    ]
+                }
+            },
+            {
+                "rp": {
+                    "repo_url": [
+                        "https://github.com/abs51295/maven-simple.git"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Repo"
+                    ],
+                    "id": 6964060264
+                },
+                "ed": {
+                    "label": "has_transitive_dependency",
+                    "id": "eattsst-3767zag-12h3p-6tnriw"
+                },
+                "epv": {
+                    "last_updated": [
+                        1491912943.79
+                    ],
+                    "shipped_as_downstream": [
+                        false
+                    ],
+                    "pname": [
+                        "org.apache.geronimo.components:geronimo-jaspi"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Version"
+                    ],
+                    "description": [
+                        "geronimo jaspi implementation using jaxbsxc for simple xml persistence"
+                    ],
+                    "cve_ids": [
+                        "CVE-2006-0254:4.3",
+                        "CVE-2008-0732:2.1",
+                        "CVE-2011-5034:7.8"
+                    ],
+                    "version": [
+                        "1.0"
+                    ],
+                    "dependents_count": [
+                        -1
+                    ],
+                    "licenses": [
+                        "ASL 2.0"
+                    ],
+                    "cm_avg_cyclomatic_complexity": [
+                        -1
+                    ],
+                    "pecosystem": [
+                        "maven"
+                    ],
+                    "cm_loc": [
+                        5788
+                    ],
+                    "id": 412614680,
+                    "cm_num_files": [
+                        33
+                    ]
+                }
+            },
+            {
+                "rp": {
+                    "repo_url": [
+                        "https://github.com/abs51295/maven-simple.git"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Repo"
+                    ],
+                    "id": 6964060264
+                },
+                "ed": {
+                    "label": "has_transitive_dependency",
+                    "id": "eattlot-3767zag-12h3p-6ty7mo"
+                },
+                "epv": {
+                    "last_updated": [
+                        1492057704.81
+                    ],
+                    "shipped_as_downstream": [
+                        false
+                    ],
+                    "pname": [
+                        "org.apache.geronimo.javamail:geronimo-javamail_1.4_mail"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Version"
+                    ],
+                    "description": [
+                        "geronimmo javamail bundle"
+                    ],
+                    "cve_ids": [
+                        "CVE-2008-0732:2.1",
+                        "CVE-2011-5034:7.8"
+                    ],
+                    "version": [
+                        "1.8.2"
+                    ],
+                    "dependents_count": [
+                        -1
+                    ],
+                    "licenses": [
+                        "ASL 2.0"
+                    ],
+                    "cm_avg_cyclomatic_complexity": [
+                        -1
+                    ],
+                    "pecosystem": [
+                        "maven"
+                    ],
+                    "cm_loc": [
+                        -1
+                    ],
+                    "id": 413102112,
+                    "cm_num_files": [
+                        -1
+                    ]
+                }
+            },
+            {
+                "rp": {
+                    "repo_url": [
+                        "https://github.com/abs51295/maven-simple.git"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Repo"
+                    ],
+                    "id": 6964060264
+                },
+                "ed": {
+                    "label": "has_transitive_dependency",
+                    "id": "eattm31-3767zag-12h3p-djz63k"
+                },
+                "epv": {
+                    "last_updated": [
+                        1492848730.71
+                    ],
+                    "shipped_as_downstream": [
+                        false
+                    ],
+                    "pname": [
+                        "org.apache.geronimo.framework:geronimo-system"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Version"
+                    ],
+                    "description": [
+                        "apache geronimo the javaee server project of the apache software foundation"
+                    ],
+                    "cve_ids": [
+                        "CVE-2008-0732:2.1",
+                        "CVE-2011-5034:7.8"
+                    ],
+                    "version": [
+                        "2.2.1"
+                    ],
+                    "dependents_count": [
+                        -1
+                    ],
+                    "licenses": [
+                        "ASL 2.0",
+                        "Forbidden Phrase"
+                    ],
+                    "cm_avg_cyclomatic_complexity": [
+                        -1
+                    ],
+                    "pecosystem": [
+                        "maven"
+                    ],
+                    "cm_loc": [
+                        17203
+                    ],
+                    "id": 819613856,
+                    "cm_num_files": [
+                        99
+                    ]
+                }
+            },
+            {
+                "rp": {
+                    "repo_url": [
+                        "https://github.com/abs51295/maven-simple.git"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Repo"
+                    ],
+                    "id": 6964060264
+                },
+                "ed": {
+                    "label": "has_transitive_dependency",
+                    "id": "eattr7x-3767zag-12h3p-dkb3uo"
+                },
+                "epv": {
+                    "last_updated": [
+                        1493078587.84
+                    ],
+                    "shipped_as_downstream": [
+                        false
+                    ],
+                    "pname": [
+                        "org.apache.geronimo.specs:geronimo-saaj_1.3_spec"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Version"
+                    ],
+                    "description": [
+                        "provides opensource implementations of sun specifications"
+                    ],
+                    "version": [
+                        "1.0.1"
+                    ],
+                    "dependents_count": [
+                        -1
+                    ],
+                    "licenses": [
+                        "ASL 2.0"
+                    ],
+                    "cm_avg_cyclomatic_complexity": [
+                        -1
+                    ],
+                    "pecosystem": [
+                        "maven"
+                    ],
+                    "cm_loc": [
+                        3780
+                    ],
+                    "id": 820170816,
+                    "cm_num_files": [
+                        28
+                    ]
+                }
+            },
+            {
+                "rp": {
+                    "repo_url": [
+                        "https://github.com/abs51295/maven-simple.git"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Repo"
+                    ],
+                    "id": 6964060264
+                },
+                "ed": {
+                    "label": "has_transitive_dependency",
+                    "id": "eattqfh-3767zag-12h3p-kboscg"
+                },
+                "epv": {
+                    "last_updated": [
+                        1494876980.16
+                    ],
+                    "shipped_as_downstream": [
+                        false
+                    ],
+                    "pname": [
+                        "org.apache.geronimo.specs:geronimo-concurrent_1.0_spec"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Version"
+                    ],
+                    "description": [
+                        "provides opensource implementations of sun specifications"
+                    ],
+                    "version": [
+                        "1.0-EA"
+                    ],
+                    "dependents_count": [
+                        -1
+                    ],
+                    "licenses": [
+                        "ASL 2.0"
+                    ],
+                    "cm_avg_cyclomatic_complexity": [
+                        1
+                    ],
+                    "pecosystem": [
+                        "maven"
+                    ],
+                    "cm_loc": [
+                        1389
+                    ],
+                    "id": 1228955776,
+                    "cm_num_files": [
+                        10
+                    ]
+                }
+            },
+            {
+                "rp": {
+                    "repo_url": [
+                        "https://github.com/abs51295/maven-simple.git"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Repo"
+                    ],
+                    "id": 6964060264
+                },
+                "ed": {
+                    "label": "has_transitive_dependency",
+                    "id": "eattix9-3767zag-12h3p-kbuemo"
+                },
+                "epv": {
+                    "last_updated": [
+                        1492837419.15
+                    ],
+                    "shipped_as_downstream": [
+                        false
+                    ],
+                    "pname": [
+                        "org.apache.geronimo.framework:geronimo-jmx-remoting"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Version"
+                    ],
+                    "description": [
+                        "provides remote access to a geronimo server using jsr 160 jmx remoting"
+                    ],
+                    "cve_ids": [
+                        "CVE-2008-0732:2.1",
+                        "CVE-2011-5034:7.8"
+                    ],
+                    "version": [
+                        "2.2.1"
+                    ],
+                    "dependents_count": [
+                        -1
+                    ],
+                    "licenses": [
+                        "ASL 2.0"
+                    ],
+                    "cm_avg_cyclomatic_complexity": [
+                        -1
+                    ],
+                    "pecosystem": [
+                        "maven"
+                    ],
+                    "cm_loc": [
+                        677
+                    ],
+                    "id": 1229217936,
+                    "cm_num_files": [
+                        5
+                    ]
+                }
+            },
+            {
+                "rp": {
+                    "repo_url": [
+                        "https://github.com/abs51295/maven-simple.git"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Repo"
+                    ],
+                    "id": 6964060264
+                },
+                "ed": {
+                    "label": "has_transitive_dependency",
+                    "id": "eattogd-3767zag-12h3p-kbz8hk"
+                },
+                "epv": {
+                    "last_updated": [
+                        1492848382.94
+                    ],
+                    "shipped_as_downstream": [
+                        false
+                    ],
+                    "pname": [
+                        "org.slf4j:slf4j-log4j12"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Version"
+                    ],
+                    "description": [
+                        "the slf4j log4j12 binding"
+                    ],
+                    "version": [
+                        "1.5.5"
+                    ],
+                    "dependents_count": [
+                        -1
+                    ],
+                    "licenses": [
+                        "MITNFA"
+                    ],
+                    "cm_avg_cyclomatic_complexity": [
+                        -1
+                    ],
+                    "pecosystem": [
+                        "maven"
+                    ],
+                    "cm_loc": [
+                        939
+                    ],
+                    "id": 1229443256,
+                    "cm_num_files": [
+                        6
+                    ]
+                }
+            },
+            {
+                "rp": {
+                    "repo_url": [
+                        "https://github.com/abs51295/maven-simple.git"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Repo"
+                    ],
+                    "id": 6964060264
+                },
+                "ed": {
+                    "label": "has_transitive_dependency",
+                    "id": "eattjpp-3767zag-12h3p-kc2he8"
+                },
+                "epv": {
+                    "last_updated": [
+                        1492852149.67
+                    ],
+                    "shipped_as_downstream": [
+                        false
+                    ],
+                    "pname": [
+                        "org.apache.geronimo.framework:geronimo-cli"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Version"
+                    ],
+                    "description": [
+                        "apache geronimo the javaee server project of the apache software foundation"
+                    ],
+                    "cve_ids": [
+                        "CVE-2008-0732:2.1",
+                        "CVE-2011-5034:7.8"
+                    ],
+                    "version": [
+                        "2.2.1"
+                    ],
+                    "dependents_count": [
+                        -1
+                    ],
+                    "licenses": [
+                        "ASL 2.0"
+                    ],
+                    "cm_avg_cyclomatic_complexity": [
+                        -1
+                    ],
+                    "pecosystem": [
+                        "maven"
+                    ],
+                    "cm_loc": [
+                        2893
+                    ],
+                    "id": 1229594768,
+                    "cm_num_files": [
+                        40
+                    ]
+                }
+            },
+            {
+                "rp": {
+                    "repo_url": [
+                        "https://github.com/abs51295/maven-simple.git"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Repo"
+                    ],
+                    "id": 6964060264
+                },
+                "ed": {
+                    "label": "has_transitive_dependency",
+                    "id": "eattwct-3767zag-12h3p-kc45hs"
+                },
+                "epv": {
+                    "last_updated": [
+                        1492855639.96
+                    ],
+                    "shipped_as_downstream": [
+                        false
+                    ],
+                    "pname": [
+                        "org.apache.geronimo.framework:geronimo-common"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Version"
+                    ],
+                    "description": [
+                        "apache geronimo the javaee server project of the apache software foundation"
+                    ],
+                    "cve_ids": [
+                        "CVE-2008-0732:2.1",
+                        "CVE-2011-5034:7.8"
+                    ],
+                    "version": [
+                        "2.2.1"
+                    ],
+                    "dependents_count": [
+                        -1
+                    ],
+                    "licenses": [
+                        "ASL 2.0"
+                    ],
+                    "cm_avg_cyclomatic_complexity": [
+                        -1
+                    ],
+                    "pecosystem": [
+                        "maven"
+                    ],
+                    "cm_loc": [
+                        2424
+                    ],
+                    "id": 1229672656,
+                    "cm_num_files": [
+                        46
+                    ]
+                }
+            },
+            {
+                "rp": {
+                    "repo_url": [
+                        "https://github.com/abs51295/maven-simple.git"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Repo"
+                    ],
+                    "id": 6964060264
+                },
+                "ed": {
+                    "label": "has_transitive_dependency",
+                    "id": "eattij1-3767zag-12h3p-xvwjyo"
+                },
+                "epv": {
+                    "last_updated": [
+                        1494894307.46
+                    ],
+                    "shipped_as_downstream": [
+                        false
+                    ],
+                    "pname": [
+                        "org.apache.geronimo.framework:geronimo-crypto"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Version"
+                    ],
+                    "description": [
+                        "apache geronimo the javaee server project of the apache software foundation"
+                    ],
+                    "cve_ids": [
+                        "CVE-2008-0732:2.1",
+                        "CVE-2011-5034:7.8"
+                    ],
+                    "version": [
+                        "2.2.1"
+                    ],
+                    "dependents_count": [
+                        -1
+                    ],
+                    "licenses": [
+                        "ASL 2.0",
+                        "MITNFA"
+                    ],
+                    "cm_avg_cyclomatic_complexity": [
+                        2.64
+                    ],
+                    "pecosystem": [
+                        "maven"
+                    ],
+                    "cm_loc": [
+                        25501
+                    ],
+                    "id": 2048970768,
+                    "cm_num_files": [
+                        188
+                    ]
+                }
+            },
+            {
+                "rp": {
+                    "repo_url": [
+                        "https://github.com/abs51295/maven-simple.git"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Repo"
+                    ],
+                    "id": 6964060264
+                },
+                "ed": {
+                    "label": "has_transitive_dependency",
+                    "id": "eattxjh-3767zag-12h3p-14ncve8"
+                },
+                "epv": {
+                    "last_updated": [
+                        1492836944.14
+                    ],
+                    "shipped_as_downstream": [
+                        false
+                    ],
+                    "pname": [
+                        "org.apache.myfaces.core:myfaces-api"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Version"
+                    ],
+                    "description": [
+                        "the public api classes of the apache myfaces core jsf12 project"
+                    ],
+                    "cve_ids": [
+                        "CVE-2010-2057:5.0",
+                        "CVE-2010-2086:4.0",
+                        "CVE-2016-5019:7.5"
+                    ],
+                    "version": [
+                        "1.2.8"
+                    ],
+                    "dependents_count": [
+                        -1
+                    ],
+                    "licenses": [
+                        "ASL 2.0"
+                    ],
+                    "cm_avg_cyclomatic_complexity": [
+                        -1
+                    ],
+                    "pecosystem": [
+                        "maven"
+                    ],
+                    "cm_loc": [
+                        46696
+                    ],
+                    "id": 2457878768,
+                    "cm_num_files": [
+                        214
+                    ]
+                }
+            },
+            {
+                "rp": {
+                    "repo_url": [
+                        "https://github.com/abs51295/maven-simple.git"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Repo"
+                    ],
+                    "id": 6964060264
+                },
+                "ed": {
+                    "label": "has_transitive_dependency",
+                    "id": "eattqtp-3767zag-12h3p-1bgndlk"
+                },
+                "epv": {
+                    "last_updated": [
+                        1494888204.1
+                    ],
+                    "shipped_as_downstream": [
+                        false
+                    ],
+                    "pname": [
+                        "org.apache.geronimo.modules:geronimo-j2ee"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Version"
+                    ],
+                    "description": [
+                        "j2ee plugin"
+                    ],
+                    "cve_ids": [
+                        "CVE-2008-0732:2.1",
+                        "CVE-2011-5034:7.8"
+                    ],
+                    "version": [
+                        "2.2.1"
+                    ],
+                    "dependents_count": [
+                        -1
+                    ],
+                    "licenses": [
+                        "ASL 2.0"
+                    ],
+                    "cm_avg_cyclomatic_complexity": [
+                        2.17
+                    ],
+                    "pecosystem": [
+                        "maven"
+                    ],
+                    "cm_loc": [
+                        1855
+                    ],
+                    "id": 2869874840,
+                    "cm_num_files": [
+                        14
+                    ]
+                }
+            },
+            {
+                "rp": {
+                    "repo_url": [
+                        "https://github.com/abs51295/maven-simple.git"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Repo"
+                    ],
+                    "id": 6964060264
+                },
+                "ed": {
+                    "label": "has_transitive_dependency",
+                    "id": "eattsel-3767zag-12h3p-1i7fab4"
+                },
+                "epv": {
+                    "last_updated": [
+                        1494887881.85
+                    ],
+                    "shipped_as_downstream": [
+                        false
+                    ],
+                    "pname": [
+                        "org.apache.geronimo.framework:geronimo-naming"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Version"
+                    ],
+                    "description": [
+                        "apache geronimo the javaee server project of the apache software foundation"
+                    ],
+                    "cve_ids": [
+                        "CVE-2008-0732:2.1",
+                        "CVE-2011-5034:7.8"
+                    ],
+                    "version": [
+                        "2.2.1"
+                    ],
+                    "dependents_count": [
+                        -1
+                    ],
+                    "licenses": [
+                        "ASL 2.0"
+                    ],
+                    "cm_avg_cyclomatic_complexity": [
+                        2.62
+                    ],
+                    "pecosystem": [
+                        "maven"
+                    ],
+                    "cm_loc": [
+                        1963
+                    ],
+                    "id": 3277644016,
+                    "cm_num_files": [
+                        27
+                    ]
+                }
+            },
+            {
+                "rp": {
+                    "repo_url": [
+                        "https://github.com/abs51295/maven-simple.git"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Repo"
+                    ],
+                    "id": 6964060264
+                },
+                "ed": {
+                    "label": "has_transitive_dependency",
+                    "id": "eattgjx-3767zag-12h3p-3dxkve0"
+                },
+                "epv": {
+                    "licenses": [
+                        "MIT License",
+                        "X11 License"
+                    ],
+                    "last_updated": [
+                        1524171074.09
+                    ],
+                    "pecosystem": [
+                        "maven"
+                    ],
+                    "pname": [
+                        "org.slf4j:slf4j-api"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Version"
+                    ],
+                    "id": 7372808424,
+                    "version": [
+                        "1.5.5"
+                    ]
+                }
+            }
+        ],
+        "meta": {}
+    }
+}

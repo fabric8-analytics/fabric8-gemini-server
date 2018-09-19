@@ -155,9 +155,9 @@ def report():
         return flask.jsonify(response), 404
 
 
-@app.route('/api/v1/user-repo/scan/experimental', methods=['POST'])
+@app.route('/api/v1/user-repo/scan', methods=['POST'])
 @login_required
-def user_repo_scan_experimental():  # pragma: no cover
+def user_repo_scan():
     """Experimental endpoint."""
     # json data and files cannot be a part of same request. Hence, we need to use form data here.
     git_url = request.form.get('git-url')
@@ -230,9 +230,9 @@ def user_repo_scan_experimental():  # pragma: no cover
     return flask.jsonify(resp_dict), 200
 
 
-@app.route('/api/v1/user-repo/scan', methods=['POST'])
+@app.route('/api/v1/user-repo/scan/experimental', methods=['POST'])
 @login_required
-def user_repo_scan():
+def user_repo_scan_experimental():  # pragma: no cover
     """
     Endpoint for scanning an OSIO user's repository.
 

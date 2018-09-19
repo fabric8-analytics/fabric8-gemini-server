@@ -3,7 +3,7 @@
 from abc import ABC, abstractmethod
 
 
-class Parser(ABC):
+class Parser(ABC):  # pragma: no cover
     """Base class for parsers to inherit."""
 
     @staticmethod

@@ -3,6 +3,11 @@
 import json
 from unittest.mock import patch
 from utils import DatabaseIngestion
+from pathlib import Path
+from parsers.maven_parser import MavenParser
+from src.repo_dependency_creator import RepoDependencyCreator
+from src.notification.user_notification import UserNotification
+from utils import GREMLIN_SERVER_URL_REST
 
 payload = {
     "email-ids": "abcd@gmail.com",
@@ -19,7 +24,6 @@ payload_user_repo_scan_drop = {
     "email-ids": ["abcd@gmail.com"]
 }
 
-
 payload_user_repo_notify = {
     "epv_list": [
         {
@@ -29,6 +33,59 @@ payload_user_repo_notify = {
         }
     ]
 }
+
+payload_user_repo_scan = {
+    "email-ids": "abcd@gmail.com",
+    "git-sha": "somesha",
+    "git-url": "test",
+    "dependencyFile[]": [(str(Path(__file__).parent / 'files/direct-dependencies.txt'),
+                          'direct-dependencies.txt'),
+                         (str(Path(__file__).parent / 'files/transitive-dependencies.txt'),
+                          'transitive-dependencies.txt')]
+}
+
+
+def mocked_requests_post(url, data=None, json=None, **kwargs):
+    """Mock function for requests.post."""
+    class MockResponse:
+        def __init__(self, data, json, status_code, **kwargs):
+            self.data = data
+            self.json_data = json
+            self.status_code = status_code
+            self.kwargs = kwargs
+
+        def json(self):
+            return self.json_data
+
+    if url == GREMLIN_SERVER_URL_REST:
+        return MockResponse(data=data, json=json, status_code=200, kwargs=kwargs)
+    elif url == '/api/notify':
+        return MockResponse(data=data, json=json, status_code=202, kwargs=kwargs)
+
+    return MockResponse(data=data, json=json, status_code=200, kwargs=kwargs)
+
+
+def mocked_generate_report(repo_cves, deps_list):
+    """Mock generate report."""
+    return [{
+        "result": [repo_cves, deps_list]
+    }]
+
+
+def mocked_generate_notification(report):
+    """Mock generate notification."""
+    result = {
+        "data": {
+            "attributes": {
+                "custom": report,
+                "id": report.get('repo_url', ""),
+                "type": "analytics.notify.cve"
+            },
+            "id": "test",
+            "type": "notifications"
+        }
+    }
+    return result
 
 
 def api_route_for(route):
@@ -202,34 +259,53 @@ def test_register_endpoint_6(get_info, client):
 def test_user_repo_scan_endpoint(client):
     """Test the /api/v1/user-repo/scan endpoint."""
     resp = client.post(api_route_for('user-repo/scan'),
-                       data=json.dumps(payload))
+                       data=payload)
 
     assert resp.status_code == 400
+    json_data = get_json_from_response(resp)
+    assert json_data == {
+        "status": "failure",
+        "summary": "files cannot be empty"
+    }
 
 
 def test_user_repo_scan_endpoint_1(client):
     """Test the /api/v1/user-repo/scan endpoint."""
     resp = client.post(api_route_for('user-repo/scan'),
-                       data=json.dumps(payload_1),
+                       data=payload_1,
                        content_type='application/json')
 
     assert resp.status_code == 400
+    json_data = get_json_from_response(resp)
+    assert json_data == {
+        "status": "failure",
+        "summary": "git-url cannot be empty"
+    }
 
 
-@patch("src.rest_api.alert_user")
-def test_user_repo_scan_endpoint_2(alert_user, client):
+@patch.object(MavenParser, "parse_output_file")
+@patch.object(RepoDependencyCreator, "create_repo_node_and_get_cve")
+@patch("src.rest_api.RepoDependencyCreator.generate_report",
+       side_effect=mocked_generate_report)
+@patch("src.rest_api.UserNotification.generate_notification",
+       side_effect=mocked_generate_notification)
+@patch.object(UserNotification, "send_notification")
+@patch("src.repo_dependency_creator.requests.post",
+       side_effect=mocked_requests_post)
+@patch("src.notification.user_notification.requests.post",
+       side_effect=mocked_requests_post)
+def test_user_repo_scan_endpoint_2(_r_post, _u_post, send_notification, generate_notification,
+                                   _generate_report, create_repo_node_and_get_cve,
+                                   parse_output_file, client):
     """Test the /api/v1/user-repo/scan endpoint."""
-    alert_user.return_value = False
+    parse_output_file.return_value = set()
+    create_repo_node_and_get_cve.return_value = {'result': {
+        "data": []
+    }}
+    generate_notification.return_value = {'notification-payload': 'notification'}
+    send_notification.return_value = {'status': 'success'}
     resp = client.post(api_route_for('user-repo/scan'),
-                       data=json.dumps(payload),
-                       content_type='application/json')
-
-    assert resp.status_code == 500
-
-    alert_user.return_value = True
-    resp = client.post(api_route_for('user-repo/scan'),
-                       data=json.dumps(payload),
-                       content_type='application/json')
+                       data=payload_user_repo_scan)
 
     assert resp.status_code == 200
 

@@ -6,7 +6,7 @@ from flask_cors import CORS
 from utils import DatabaseIngestion, scan_repo, validate_request_data, \
     retrieve_worker_result, alert_user, GREMLIN_SERVER_URL_REST
 from f8a_worker.setup_celery import init_selinon
-from fabric8a_auth.auth import login_required, service_token_required, init_service_account_token
+from fabric8a_auth.auth import service_token_required, init_service_account_token
 from exceptions import HTTPError
 from parsers.maven_parser import MavenParser
 from repo_dependency_creator import RepoDependencyCreator

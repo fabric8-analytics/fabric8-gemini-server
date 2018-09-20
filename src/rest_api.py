@@ -6,7 +6,7 @@ from flask_cors import CORS
 from utils import DatabaseIngestion, scan_repo, validate_request_data, \
     retrieve_worker_result, alert_user, GREMLIN_SERVER_URL_REST
 from f8a_worker.setup_celery import init_selinon
-from fabric8a_auth.auth import login_required, init_service_account_token
+from fabric8a_auth.auth import login_required, service_token_required, init_service_account_token
 from exceptions import HTTPError
 from parsers.maven_parser import MavenParser
 from repo_dependency_creator import RepoDependencyCreator
@@ -38,7 +38,7 @@ def liveness():
 
 
 @app.route('/api/v1/register', methods=['POST'])
-@login_required
+@service_token_required
 def register():
     """
     Endpoint for registering a new repository.
@@ -116,7 +116,7 @@ def register():
 
 
 @app.route('/api/v1/report')
-@login_required
+@service_token_required
 def report():
     """Endpoint for fetching generated scan report."""
     repo = request.args.get('git-url')
@@ -156,7 +156,7 @@ def report():
 
 
 @app.route('/api/v1/user-repo/scan', methods=['POST'])
-@login_required
+@service_token_required
 def user_repo_scan():
     """Experimental endpoint."""
     # json data and files cannot be a part of same request. Hence, we need to use form data here.
@@ -231,7 +231,7 @@ def user_repo_scan():
 
 
 @app.route('/api/v1/user-repo/scan/experimental', methods=['POST'])
-@login_required
+@service_token_required
 def user_repo_scan_experimental():  # pragma: no cover
     """
     Endpoint for scanning an OSIO user's repository.
@@ -277,7 +277,7 @@ def user_repo_scan_experimental():  # pragma: no cover
 
 
 @app.route('/api/v1/user-repo/notify', methods=['POST'])
-@login_required
+@service_token_required
 def notify_user():
     """
     Endpoint for notifying security vulnerability in a repository.
@@ -319,7 +319,7 @@ def notify_user():
 
 
 @app.route('/api/v1/user-repo/drop', methods=['POST'])
-@login_required
+@service_token_required
 def drop():  # pragma: no cover
     """
     Endpoint to stop monitoring OSIO users' repository.

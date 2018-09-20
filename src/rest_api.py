@@ -11,6 +11,7 @@ from exceptions import HTTPError
 from parsers.maven_parser import MavenParser
 from repo_dependency_creator import RepoDependencyCreator
 from notification.user_notification import UserNotification
+from fabric8a_auth.errors import AuthError
 
 app = Flask(__name__)
 CORS(app)
@@ -367,6 +368,12 @@ def handle_error(e):  # pragma: no cover
     return flask.jsonify({
         "error": e.error
     }), e.status_code
+
+
+@app.errorhandler(AuthError)
+def api_401_handler(err):
+    """Handle AuthError exceptions."""
+    return flask.jsonify(error=err.error), err.status_code
 
 
 if __name__ == "__main__":  # pragma: no cover

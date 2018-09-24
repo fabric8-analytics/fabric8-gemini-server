@@ -45,12 +45,12 @@ objects:
               secretKeyRef:
                 name: coreapi-postgres
                 key: database
-          - name: GEMINI_SA_CLIENT_ID
+          - name: SERVICE_ACCOUNT_CLIENT_ID
             valueFrom:
               secretKeyRef:
                name: gemini-server
                key: gemini-sa-client-id
-          - name: GEMINI_SA_CLIENT_SECRET
+          - name: SERVICE_ACCOUNT_CLIENT_SECRET
             valueFrom:
               secretKeyRef:
                name: gemini-server

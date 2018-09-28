@@ -9,6 +9,7 @@ from f8a_worker.setup_celery import init_selinon
 from fabric8a_auth.auth import login_required, init_service_account_token
 from exceptions import HTTPError
 from parsers.maven_parser import MavenParser
+from parsers.node_parser import NodeParser
 from repo_dependency_creator import RepoDependencyCreator
 from notification.user_notification import UserNotification
 from fabric8a_auth.errors import AuthError
@@ -173,21 +174,22 @@ def user_repo_scan():
     files = request.files.getlist("dependencyFile[]")
 
     validate_string = "{} cannot be empty"
+    direct_dependencies_string = None
+    transitive_dependencies_string = None
 
     if not git_url:
         validate_string = validate_string.format("git-url")
         resp_dict["status"] = 'failure'
         resp_dict["summary"] = validate_string
-        print(validate_string)
         return flask.jsonify(resp_dict), 400
 
     if not files:
         validate_string = validate_string.format("files")
         resp_dict["status"] = 'failure'
         resp_dict["summary"] = validate_string
-        print(validate_string)
         return flask.jsonify(resp_dict), 400
 
+    # We need to change this naive logic to something meaningful.
     for file in files:
         if file.filename == 'direct-dependencies.txt':
             direct_dependencies_string = file.read().decode('utf-8')
@@ -197,11 +199,15 @@ def user_repo_scan():
             resp_dict["status"] = 'failure'
             resp_dict["summary"] = "File name should be either direct-dependencies.txt or" \
                                    "transitive-dependencies.txt"
-            print(resp_dict["summary"])
             return flask.jsonify(resp_dict), 400
 
-    set_direct_dependencies = MavenParser.parse_output_file(direct_dependencies_string)
-    set_transitive_dependencies = MavenParser.parse_output_file(transitive_dependencies_string)
+    if direct_dependencies_string and transitive_dependencies_string:
+        set_direct_dependencies = MavenParser.parse_output_file(direct_dependencies_string)
+        set_transitive_dependencies = MavenParser.parse_output_file(transitive_dependencies_string)
+    elif direct_dependencies_string:
+        set_direct_dependencies, set_transitive_dependencies = NodeParser.\
+            parse_output_file(direct_dependencies_string)
+
     # we need to remove direct dependencies from the transitive ones.
     set_transitive_dependencies = set_transitive_dependencies - set_direct_dependencies
 

@@ -35,7 +35,7 @@ payload_user_repo_notify = {
 }
 
 payload_user_repo_scan = {
-    "email-ids": "abcd@gmail.com",
+    "ecosystem": "maven",
     "git-sha": "somesha",
     "git-url": "test",
     "dependencyFile[]": [(str(Path(__file__).parent / 'files/direct-dependencies.txt'),
@@ -283,7 +283,7 @@ def test_user_repo_scan_endpoint_1(client):
     }
 
 
-@patch.object(MavenParser, "parse_output_file")
+@patch.object(MavenParser, "parse_output_files")
 @patch.object(RepoDependencyCreator, "create_repo_node_and_get_cve")
 @patch("src.rest_api.RepoDependencyCreator.generate_report",
        side_effect=mocked_generate_report)
@@ -298,7 +298,7 @@ def test_user_repo_scan_endpoint_2(_r_post, _u_post, send_notification, generate
                                    _generate_report, create_repo_node_and_get_cve,
                                    parse_output_file, client):
     """Test the /api/v1/user-repo/scan endpoint."""
-    parse_output_file.return_value = set()
+    parse_output_file.return_value = set(), set()
     create_repo_node_and_get_cve.return_value = {'result': {
         "data": []
     }}

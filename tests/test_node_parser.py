@@ -2,15 +2,14 @@
 
 from pathlib import Path
 from parsers.node_parser import NodeParser
-import json
+from werkzeug.datastructures import FileStorage
 
 
 def test_node_parser():
     """Test node parser."""
-    with (Path(__file__).parent / "files/package.json").open(encoding='utf-8') as f:
-        content = json.load(f)
+    with (Path(__file__).parent / "files/npm-list.json").open('rb') as f:
         direct_dependencies, transitive_dependencies = \
-            NodeParser.parse_output_file(content)
+            NodeParser.parse_output_files([FileStorage(f)])
         assert direct_dependencies == {
             "npm:github-url-to-object:4.0.4",
             "npm:lodash:4.17.10",

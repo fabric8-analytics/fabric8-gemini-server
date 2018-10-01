@@ -2,14 +2,19 @@
 
 from parsers.parser_base import Parser
 from six import iteritems
+from werkzeug.exceptions import BadRequest
+import json
 
 
 class NodeParser(Parser):
     """Parser for parsing npm list --prod --json."""
 
     @staticmethod
-    def parse_output_file(content):
+    def parse_output_files(files):
         """Parse output file."""
+        if len(files) > 1:
+            raise BadRequest("Please provide a single file with name npm-list.json")
+        content = json.load(files[0])
         dependencies = content.get('dependencies')
         direct_dependencies = set()
         transitive_dependencies = set()

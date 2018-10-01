@@ -9,6 +9,8 @@ from requests.packages.urllib3.util.retry import Retry
 from f8a_worker.models import OSIORegisteredRepos, WorkerResult
 from f8a_worker.setup_celery import init_celery
 from selinon import run_flow
+from parsers.maven_parser import MavenParser
+from parsers.node_parser import NodeParser
 import datetime
 import requests
 import os
@@ -304,3 +306,11 @@ def fetch_public_key(app):
             app.public_key = None
 
     return app.public_key
+
+
+def get_parser_from_ecosystem(ecosystem):
+    """Get parser for the provided ecosystem."""
+    return {
+        "maven": MavenParser,
+        "npm": NodeParser
+    }.get(ecosystem)

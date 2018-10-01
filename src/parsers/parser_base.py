@@ -8,6 +8,6 @@ class Parser(ABC):  # pragma: no cover
 
     @staticmethod
     @abstractmethod
-    def parse_output_file(_content):
+    def parse_output_files(_content):
         """Parse output file."""
         raise NotImplementedError("Please implement this method")

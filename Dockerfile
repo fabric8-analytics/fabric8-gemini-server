@@ -1,6 +1,7 @@
 FROM registry.centos.org/centos/centos:7
 
 ENV F8A_WORKER_VERSION=6503230
+ENV F8A_AUTH_VERSION=f28dd87
 
 RUN yum install -y epel-release &&\
     yum install -y gcc git python34-pip python34-requests httpd httpd-devel python34-devel &&\
@@ -14,7 +15,7 @@ RUN pip3 install --upgrade pip>=10.0.0 &&\
 COPY ./src /src
 
 RUN pip3 install git+https://github.com/fabric8-analytics/fabric8-analytics-worker.git@${F8A_WORKER_VERSION}
-RUN pip3 install git+https://github.com/fabric8-analytics/fabric8-analytics-auth.git
+RUN pip3 install git+https://github.com/fabric8-analytics/fabric8-analytics-auth.git@${F8A_AUTH_VERSION}
 
 ADD scripts/entrypoint.sh /bin/entrypoint.sh
 

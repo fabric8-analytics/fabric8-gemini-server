@@ -14,7 +14,7 @@ class NodeParser(Parser):
         """Parse output file."""
         if len(files) > 1:
             raise BadRequest("Please provide a single file with name npm-list.json")
-        content = json.load(files[0])
+        content = json.loads(files[0].read().decode('utf-8'))
         dependencies = content.get('dependencies')
         direct_dependencies = set()
         transitive_dependencies = set()

@@ -160,9 +160,18 @@ def report():
 @app.route('/api/v1/user-repo/scan', methods=['POST'])
 @login_required
 def user_repo_scan():
-    """Experimental endpoint."""
+    """
+    Endpoint for scanning an OSIO user's repository.
+
+    Runs a scan to find out security vulnerability in a user's repository.
+    """
+
+    # This is a TEMPORARY fix for https://github.com/openshiftio/openshift.io/issues/4150.
+    # TODO: Remove this fix once platform fixes the issue.
+    input_json = request.get_json(silent=True)
+
     # json data and files cannot be a part of same request. Hence, we need to use form data here.
-    git_url = request.form.get('git-url')
+    git_url = request.form.get('git-url') or input_json.get('git-url')
 
     resp_dict = {
         "status": "success",
@@ -239,9 +248,9 @@ def user_repo_scan():
 @login_required
 def user_repo_scan_experimental():  # pragma: no cover
     """
-    Endpoint for scanning an OSIO user's repository.
+    This endpoint is deprecated and will be removed in future iterations.
 
-    Runs a scan to find out security vulnerability in a user's repository
+    Please redirect your requests to `api/v1/user-repo/scan` endpoint instead.
     """
     resp_dict = {
         "status": "success",

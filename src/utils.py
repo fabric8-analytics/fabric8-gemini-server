@@ -304,3 +304,30 @@ def fetch_public_key(app):
             app.public_key = None
 
     return app.public_key
+
+
+def fix_gremlin_output(response):
+    """Reshuffle data in the response from Gremlin for easier access later.
+
+    :param response: dict, response from Gremlin
+    :return dict: the same response dict with reshuffled data
+    """
+    if not response:
+        return response
+
+    data_list = response.get('result', {}).get('data', [])
+    new_data = {}
+    for data in data_list:
+        cve = data.pop('cve')
+        rp = data.get('rp', {})
+        epv = data.get('epv', {})
+        pv = epv.get('pname')[0], epv.get('version')[0]
+
+        d = new_data.get(pv, {})
+        d['rp'] = dict(d.get('rp', {}), **rp)
+        d['epv'] = dict(d.get('epv', {}), **epv)
+        d['cves'] = d.get('cves', []) + [cve]
+        new_data[pv] = d
+    response['result']['data'] = new_data.values()
+
+    return response

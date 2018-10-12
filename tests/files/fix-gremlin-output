@@ -1,0 +1,732 @@
+{
+    "requestId": "2ee3fc2d-7329-491b-967d-4846bf07e94e",
+    "status": {
+        "message": "",
+        "code": 200,
+        "attributes": {}
+    },
+    "result": {
+        "data": [
+            {
+                "rp": {
+                    "repo_url": [
+                        "https://github.com/GeetikaBatra/hellovertx.git"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Repo"
+                    ],
+                    "id": 13516804208
+                },
+                "ed": {
+                    "label": "has_dependency",
+                    "id": "i2b54b2-67jk0vk-7tat-6twzds"
+                },
+                "epv": {
+                    "last_updated": [
+                        1539076534.67
+                    ],
+                    "shipped_as_downstream": [
+                        false
+                    ],
+                    "pname": [
+                        "ch.qos.logback:logback-core"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Version"
+                    ],
+                    "description": [
+                        "logbackcore module"
+                    ],
+                    "cve_ids": [
+                        "CVE-2017-5929:7.5"
+                    ],
+                    "version": [
+                        "1.1.0"
+                    ],
+                    "dependents_count": [
+                        -1
+                    ],
+                    "licenses": [
+                        "Forbidden Phrase",
+                        "Free Art",
+                        "MPLv2.0"
+                    ],
+                    "cm_avg_cyclomatic_complexity": [
+                        -1.0
+                    ],
+                    "pecosystem": [
+                        "maven"
+                    ],
+                    "cm_loc": [
+                        28107
+                    ],
+                    "id": 413044768,
+                    "cm_num_files": [
+                        331
+                    ]
+                },
+                "cve": {
+                    "ecosystem": [
+                        "maven"
+                    ],
+                    "cvss_v2": [
+                        7.5
+                    ],
+                    "cve_id": [
+                        "CVE-2017-5929"
+                    ],
+                    "label": "CVE",
+                    "vertex_label": [
+                        "CVE"
+                    ],
+                    "description": [
+                        "QOS.ch Logback before 1.2.0 has a serialization vulnerability affecting the SocketServer and ServerSocketReceiver components.\n"
+                    ],
+                    "id": 10651242672,
+                    "modified_date": [
+                        "20181009"
+                    ],
+                    "nvd_status": [
+                        "unknown"
+                    ],
+                    "fixed_in": [
+                        "unknown"
+                    ]
+                }
+            },
+            {
+                "rp": {
+                    "repo_url": [
+                        "https://github.com/GeetikaBatra/hellovertx.git"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Repo"
+                    ],
+                    "id": 13516804208
+                },
+                "ed": {
+                    "label": "has_transitive_dependency",
+                    "id": "i2b5qfi-67jk0vk-12h3p-qfe8"
+                },
+                "epv": {
+                    "last_updated": [
+                        1539076769.66
+                    ],
+                    "shipped_as_downstream": [
+                        false
+                    ],
+                    "pname": [
+                        "com.fasterxml.jackson.core:jackson-databind"
+                    ],
+                    "label": "Version",
+                    "vertex_label": [
+                        "Version"
+                    ],
+                    "description": [
+                        "General databinding functionality for Jackson: works on core streaming API"
+                    ],
+                    "version": [
+                        "2.7.4"
+                    ],
+                    "dependents_count": [
+                        -1
+                    ],
+                    "licenses": [
+                        "ASL 2.0",
+                        "Free Art"
+                    ],
+                    "cm_avg_cyclomatic_complexity": [
+                        2.6
+                    ],
+                    "declared_licenses": [
+                        " Version 2.0",
+                        "The Apache Software License"
+                    ],
+                    "pecosystem": [
+                        "maven"
+                    ],
+                    "relative_used": [
+                        ""
+                    ],
+                    "cm_loc": [
+                        95687
+                    ],
+                    "id": 1233008,
+                    "cm_num_files": [
+                        390
+                    ]
+                },
+                "cve": {
+                    "ecosystem": [
+                        "maven"
+                    ],
+                    "cvss_v2": [
+                        7.5
+                    ],
+                    "cve_id": [
+                        "CVE-2017-15095"
+                    ],
+                    "label": "CVE",
+                    "vertex_label": [
+                        "CVE"
+                    ],
+                    "description": [
+                        "A deserialization flaw was discovered in the jackson-databind in versions before 2.8.10 and 2.9.1, which could allow an unauthenticated user to perform code execution by sending the maliciously crafted input to the readValue method of the ObjectMapper. This issue extends the previous flaw CVE-2017-7525 by blacklisting more classes that could be used maliciously.\n"
+                    ],
+                    "id": 8602329144,
+                    "modified_date": [
+                        "20181009"
+                    ],
+                    "nvd_status": [
+                        "unknown"
+                    ],
+                    "fixed_in": [
+                        "unknown"
+                    ]
+                }
+            },
+            {
+                "rp": {
+                    "repo_url": [
+                        "https://github.com/GeetikaBatra/hellovertx.git"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Repo"
+                    ],
+                    "id": 13516804208
+                },
+                "ed": {
+                    "label": "has_transitive_dependency",
+                    "id": "i2b5qfi-67jk0vk-12h3p-qfe8"
+                },
+                "epv": {
+                    "last_updated": [
+                        1539076769.66
+                    ],
+                    "shipped_as_downstream": [
+                        false
+                    ],
+                    "pname": [
+                        "com.fasterxml.jackson.core:jackson-databind"
+                    ],
+                    "label": "Version",
+                    "vertex_label": [
+                        "Version"
+                    ],
+                    "description": [
+                        "General databinding functionality for Jackson: works on core streaming API"
+                    ],
+                    "version": [
+                        "2.7.4"
+                    ],
+                    "dependents_count": [
+                        -1
+                    ],
+                    "licenses": [
+                        "ASL 2.0",
+                        "Free Art"
+                    ],
+                    "cm_avg_cyclomatic_complexity": [
+                        2.6
+                    ],
+                    "declared_licenses": [
+                        " Version 2.0",
+                        "The Apache Software License"
+                    ],
+                    "pecosystem": [
+                        "maven"
+                    ],
+                    "relative_used": [
+                        ""
+                    ],
+                    "cm_loc": [
+                        95687
+                    ],
+                    "id": 1233008,
+                    "cm_num_files": [
+                        390
+                    ]
+                },
+                "cve": {
+                    "ecosystem": [
+                        "maven"
+                    ],
+                    "cvss_v2": [
+                        7.5
+                    ],
+                    "cve_id": [
+                        "CVE-2017-7525"
+                    ],
+                    "label": "CVE",
+                    "vertex_label": [
+                        "CVE"
+                    ],
+                    "description": [
+                        "A deserialization flaw was discovered in the jackson-databind, versions before 2.6.7.1, 2.7.9.1 and 2.8.9, which could allow an unauthenticated user to perform code execution by sending the maliciously crafted input to the readValue method of the ObjectMapper.\n"
+                    ],
+                    "id": 13107941624,
+                    "modified_date": [
+                        "20181009"
+                    ],
+                    "nvd_status": [
+                        "unknown"
+                    ],
+                    "fixed_in": [
+                        "unknown"
+                    ]
+                }
+            },
+            {
+                "rp": {
+                    "repo_url": [
+                        "https://github.com/GeetikaBatra/hellovertx.git"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Repo"
+                    ],
+                    "id": 13516804208
+                },
+                "ed": {
+                    "label": "has_transitive_dependency",
+                    "id": "i2b5qfi-67jk0vk-12h3p-qfe8"
+                },
+                "epv": {
+                    "last_updated": [
+                        1539076769.66
+                    ],
+                    "shipped_as_downstream": [
+                        false
+                    ],
+                    "pname": [
+                        "com.fasterxml.jackson.core:jackson-databind"
+                    ],
+                    "label": "Version",
+                    "vertex_label": [
+                        "Version"
+                    ],
+                    "description": [
+                        "General databinding functionality for Jackson: works on core streaming API"
+                    ],
+                    "version": [
+                        "2.7.4"
+                    ],
+                    "dependents_count": [
+                        -1
+                    ],
+                    "licenses": [
+                        "ASL 2.0",
+                        "Free Art"
+                    ],
+                    "cm_avg_cyclomatic_complexity": [
+                        2.6
+                    ],
+                    "declared_licenses": [
+                        " Version 2.0",
+                        "The Apache Software License"
+                    ],
+                    "pecosystem": [
+                        "maven"
+                    ],
+                    "relative_used": [
+                        ""
+                    ],
+                    "cm_loc": [
+                        95687
+                    ],
+                    "id": 1233008,
+                    "cm_num_files": [
+                        390
+                    ]
+                },
+                "cve": {
+                    "ecosystem": [
+                        "maven"
+                    ],
+                    "cvss_v2": [
+                        5.1
+                    ],
+                    "cve_id": [
+                        "CVE-2018-5968"
+                    ],
+                    "label": "CVE",
+                    "vertex_label": [
+                        "CVE"
+                    ],
+                    "description": [
+                        "FasterXML jackson-databind through 2.8.11 and 2.9.x through 2.9.3 allows unauthenticated remote code execution because of an incomplete fix for the CVE-2017-7525 and CVE-2017-17485 deserialization flaws. This is exploitable via two different gadgets that bypass a blacklist.\n"
+                    ],
+                    "id": 13108060408,
+                    "modified_date": [
+                        "20181009"
+                    ],
+                    "nvd_status": [
+                        "unknown"
+                    ],
+                    "fixed_in": [
+                        "unknown"
+                    ]
+                }
+            },
+            {
+                "rp": {
+                    "repo_url": [
+                        "https://github.com/GeetikaBatra/hellovertx.git"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Repo"
+                    ],
+                    "id": 13516804208
+                },
+                "ed": {
+                    "label": "has_transitive_dependency",
+                    "id": "i2b57gu-67jk0vk-12h3p-10m3s"
+                },
+                "epv": {
+                    "last_updated": [
+                        1539076290.08
+                    ],
+                    "shipped_as_downstream": [
+                        false
+                    ],
+                    "pname": [
+                        "com.thoughtworks.xstream:xstream"
+                    ],
+                    "label": "Version",
+                    "vertex_label": [
+                        "Version"
+                    ],
+                    "description": [
+                        ""
+                    ],
+                    "version": [
+                        "1.3"
+                    ],
+                    "dependents_count": [
+                        -1
+                    ],
+                    "licenses": [
+                        "Free Art"
+                    ],
+                    "cm_avg_cyclomatic_complexity": [
+                        -1.0
+                    ],
+                    "pecosystem": [
+                        "maven"
+                    ],
+                    "relative_used": [
+                        ""
+                    ],
+                    "cm_loc": [
+                        23318
+                    ],
+                    "id": 1708264,
+                    "cm_num_files": [
+                        244
+                    ]
+                },
+                "cve": {
+                    "ecosystem": [
+                        "maven"
+                    ],
+                    "cvss_v2": [
+                        5.0
+                    ],
+                    "cve_id": [
+                        "CVE-2017-7957"
+                    ],
+                    "label": "CVE",
+                    "vertex_label": [
+                        "CVE"
+                    ],
+                    "description": [
+                        "XStream through 1.4.9, when a certain denyTypes workaround is not used, mishandles attempts to create an instance of the primitive type 'void' during unmarshalling, leading to a remote application crash, as demonstrated by an xstream.fromXML(\"<void/>\") call.\n"
+                    ],
+                    "id": 8601854008,
+                    "modified_date": [
+                        "20181009"
+                    ],
+                    "nvd_status": [
+                        "unknown"
+                    ],
+                    "fixed_in": [
+                        "unknown"
+                    ]
+                }
+            },
+            {
+                "rp": {
+                    "repo_url": [
+                        "https://github.com/GeetikaBatra/hellovertx.git"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Repo"
+                    ],
+                    "id": 13516804208
+                },
+                "ed": {
+                    "label": "has_transitive_dependency",
+                    "id": "i2b57gu-67jk0vk-12h3p-10m3s"
+                },
+                "epv": {
+                    "last_updated": [
+                        1539076290.08
+                    ],
+                    "shipped_as_downstream": [
+                        false
+                    ],
+                    "pname": [
+                        "com.thoughtworks.xstream:xstream"
+                    ],
+                    "label": "Version",
+                    "vertex_label": [
+                        "Version"
+                    ],
+                    "description": [
+                        ""
+                    ],
+                    "version": [
+                        "1.3"
+                    ],
+                    "dependents_count": [
+                        -1
+                    ],
+                    "licenses": [
+                        "Free Art"
+                    ],
+                    "cm_avg_cyclomatic_complexity": [
+                        -1.0
+                    ],
+                    "pecosystem": [
+                        "maven"
+                    ],
+                    "relative_used": [
+                        ""
+                    ],
+                    "cm_loc": [
+                        23318
+                    ],
+                    "id": 1708264,
+                    "cm_num_files": [
+                        244
+                    ]
+                },
+                "cve": {
+                    "ecosystem": [
+                        "maven"
+                    ],
+                    "cvss_v2": [
+                        6.8
+                    ],
+                    "cve_id": [
+                        "CVE-2013-7285"
+                    ],
+                    "label": "CVE",
+                    "vertex_label": [
+                        "CVE"
+                    ],
+                    "description": [
+                        ""
+                    ],
+                    "id": 11469111496,
+                    "modified_date": [
+                        "20181009"
+                    ],
+                    "nvd_status": [
+                        "unknown"
+                    ],
+                    "fixed_in": [
+                        "unknown"
+                    ]
+                }
+            },
+            {
+                "rp": {
+                    "repo_url": [
+                        "https://github.com/GeetikaBatra/hellovertx.git"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Repo"
+                    ],
+                    "id": 13516804208
+                },
+                "ed": {
+                    "label": "has_transitive_dependency",
+                    "id": "i2b57gu-67jk0vk-12h3p-10m3s"
+                },
+                "epv": {
+                    "last_updated": [
+                        1539076290.08
+                    ],
+                    "shipped_as_downstream": [
+                        false
+                    ],
+                    "pname": [
+                        "com.thoughtworks.xstream:xstream"
+                    ],
+                    "label": "Version",
+                    "vertex_label": [
+                        "Version"
+                    ],
+                    "description": [
+                        ""
+                    ],
+                    "version": [
+                        "1.3"
+                    ],
+                    "dependents_count": [
+                        -1
+                    ],
+                    "licenses": [
+                        "Free Art"
+                    ],
+                    "cm_avg_cyclomatic_complexity": [
+                        -1.0
+                    ],
+                    "pecosystem": [
+                        "maven"
+                    ],
+                    "relative_used": [
+                        ""
+                    ],
+                    "cm_loc": [
+                        23318
+                    ],
+                    "id": 1708264,
+                    "cm_num_files": [
+                        244
+                    ]
+                },
+                "cve": {
+                    "ecosystem": [
+                        "maven"
+                    ],
+                    "cvss_v2": [
+                        5.0
+                    ],
+                    "cve_id": [
+                        "CVE-2016-3674"
+                    ],
+                    "label": "CVE",
+                    "vertex_label": [
+                        "CVE"
+                    ],
+                    "description": [
+                        "Multiple XML external entity (XXE) vulnerabilities in the (1) Dom4JDriver, (2) DomDriver, (3) JDomDriver, (4) JDom2Driver, (5) SjsxpDriver, (6) StandardStaxDriver, and (7) WstxDriver drivers in XStream before 1.4.9 allow remote attackers to read arbitrary files via a crafted XML document.\n"
+                    ],
+                    "id": 11878723752,
+                    "modified_date": [
+                        "20181009"
+                    ],
+                    "nvd_status": [
+                        "unknown"
+                    ],
+                    "fixed_in": [
+                        "unknown"
+                    ]
+                }
+            },
+            {
+                "rp": {
+                    "repo_url": [
+                        "https://github.com/GeetikaBatra/hellovertx.git"
+                    ],
+                    "label": "vertex",
+                    "vertex_label": [
+                        "Repo"
+                    ],
+                    "id": 13516804208
+                },
+                "ed": {
+                    "label": "has_transitive_dependency",
+                    "id": "i2b5de6-67jk0vk-12h3p-2digo"
+                },
+                "epv": {
+                    "last_updated": [
+                        1539073488.34
+                    ],
+                    "shipped_as_downstream": [
+                        true
+                    ],
+                    "source_repo": [
+                        "maven"
+                    ],
+                    "pname": [
+                        "jline:jline"
+                    ],
+                    "label": "Version",
+                    "vertex_label": [
+                        "Version"
+                    ],
+                    "description": [
+                        "JLine is a java library for reading and editing user input in console applications. It features tabcompletion command history password masking customizable keybindings and passthrough handlers to use to chain to other console applications."
+                    ],
+                    "cve_ids": [
+                        "CVE-2013-2035:3.3"
+                    ],
+                    "version": [
+                        "0.9.94"
+                    ],
+                    "dependents_count": [
+                        -1
+                    ],
+                    "cm_avg_cyclomatic_complexity": [
+                        2.57
+                    ],
+                    "declared_licenses": [
+                        "BSD"
+                    ],
+                    "pecosystem": [
+                        "maven"
+                    ],
+                    "relative_used": [
+                        ""
+                    ],
+                    "cm_loc": [
+                        5377
+                    ],
+                    "id": 3989688,
+                    "cm_num_files": [
+                        22
+                    ]
+                },
+                "cve": {
+                    "ecosystem": [
+                        "maven"
+                    ],
+                    "cvss_v2": [
+                        3.3
+                    ],
+                    "cve_id": [
+                        "CVE-2013-2035"
+                    ],
+                    "label": "CVE",
+                    "vertex_label": [
+                        "CVE"
+                    ],
+                    "description": [
+                        "\"The HawtJNI Library class wrote native libraries to a predictable file name  in /tmp when the native libraries were bundled in a JAR file, and no custom  library path was specified. A local attacker could overwrite these native  libraries with malicious versions during the window between when HawtJNI  writes them, and when they are executed.\"\n"
+                    ],
+                    "id": 11059347584,
+                    "modified_date": [
+                        "20181009"
+                    ],
+                    "nvd_status": [
+                        "unknown"
+                    ],
+                    "fixed_in": [
+                        "unknown"
+                    ]
+                }
+            }
+        ],
+        "meta": {}
+    }
+}

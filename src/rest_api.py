@@ -161,6 +161,7 @@ def report():
 @login_required
 def user_repo_scan():
     """Experimental endpoint."""
+    # TODO: please refactor this method is it would be possible to test it properly
     # json data and files cannot be a part of same request. Hence, we need to use form data here.
     git_url = request.form.get('git-url')
 

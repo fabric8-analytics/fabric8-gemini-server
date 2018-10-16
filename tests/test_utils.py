@@ -193,6 +193,11 @@ def mocked_requests_get_2(*_args, **_kwargs):
     return MockResponse({"public_key": "test"}, 404, "test")
 
 
+def mocked_requests_get_3(*_args, **_kwargs):
+    """Mock 3 for requests.get."""
+    return MockResponse({"public_key": "test"}, 500, "test")
+
+
 @patch("src.utils.requests.get", side_effect=requests.exceptions.Timeout())
 def test_fetch_public_key(a):
     """Test fetch_public_key."""
@@ -211,6 +216,15 @@ def test_fetch_public_key_1(a):
 @patch("src.utils.requests.get",
        side_effect=mocked_requests_get_1)
 def test_fetch_public_key_2(a):
+    """Test fetch_public_key."""
+    resp = fetch_public_key(app)
+    assert resp == \
+        '-----BEGIN PUBLIC KEY-----\ntest\n-----END PUBLIC KEY-----'
+
+
+@patch("src.utils.requests.get",
+       side_effect=mocked_requests_get_3)
+def test_fetch_public_key_3(a):
     """Test fetch_public_key."""
     resp = fetch_public_key(app)
     assert resp == \

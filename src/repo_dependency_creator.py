@@ -8,6 +8,7 @@ from utils import GREMLIN_SERVER_URL_REST
 class RepoDependencyCreator:
     """Finds out direct and indirect dependencies from a given github repository."""
 
+    # TODO: refactor this static method so it will be possible to test it properly
     @staticmethod
     def create_repo_node_and_get_cve(github_repo, deps_list):
         """Create a repository node in the graphdb and create its edges to all deps.

@@ -19,4 +19,4 @@ def test_maven_parser_output_file_transitive_dependencies():
         content = f.read()
         resp = MavenParser.parse_output_file(content)
         assert resp is not None
-        print(resp)
+        assert "maven:resolved::" in resp

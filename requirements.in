@@ -5,13 +5,7 @@ flask-cors
 requests
 pytest-cov
 coverage
-requests-futures
 gevent
-semantic_version
-psycopg2
 sqlalchemy
 pytest-mock
 radon
-cryptography
-pyjwt
-pycrypto

@@ -58,7 +58,7 @@ prepare_venv
 
 pip3 install -r requirements.txt
 pip3 install git+https://github.com/fabric8-analytics/fabric8-analytics-worker.git@6503230
-pip3 install git+https://github.com/fabric8-analytics/fabric8-analytics-auth.git@f28dd87
+pip3 install git+https://github.com/fabric8-analytics/fabric8-analytics-auth.git@139be6a
 
 export DEPLOYMENT_PREFIX="${USER}"
 export WORKER_ADMINISTRATION_REGION=api

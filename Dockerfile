@@ -1,7 +1,7 @@
 FROM registry.centos.org/centos/centos:7
 
 ENV F8A_WORKER_VERSION=6503230
-ENV F8A_AUTH_VERSION=f28dd87
+ENV F8A_AUTH_VERSION=139be6a
 
 RUN yum install -y epel-release &&\
     yum install -y gcc git python34-pip python34-requests httpd httpd-devel python34-devel &&\

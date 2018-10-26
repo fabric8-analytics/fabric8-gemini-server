@@ -3,7 +3,7 @@
 FROM quay.io/openshiftio/rhel-base-python3:latest
 
 ENV F8A_WORKER_VERSION=6503230
-ENV F8A_AUTH_VERSION=139be6a
+ENV F8A_AUTH_VERSION=fff8f49
 
 COPY ./requirements.txt /
 

@@ -4,13 +4,17 @@ from rest_api import app
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm.exc import NoResultFound
 
-from src.utils import DatabaseIngestion
-from src.utils import alert_user, fetch_public_key, get_session, get_session_retry
-from src.utils import retrieve_worker_result, scan_repo, server_run_flow, validate_request_data
+from src.utils import (
+    DatabaseIngestion, alert_user, fetch_public_key, get_session, get_session_retry,
+    retrieve_worker_result, scan_repo, server_run_flow, validate_request_data,
+    fix_gremlin_output
+)
 
 from unittest.mock import patch
 import requests
 import pytest
+import os
+import json
 
 
 class MockResponse:
@@ -240,3 +244,54 @@ def test_alert_user(server_run_flow):
     }, service_token='test', epv_list=['test'])
 
     assert resp is True
+
+
+def test_fix_gremlin_output():
+    """Test fix_gremlin_output()."""
+    rest_json_path = os.path.join(
+        os.path.dirname(__file__),
+        'files/fix-gremlin-output'
+    )
+    with open(rest_json_path) as f:
+        resp_json = json.load(f)
+
+        resp = fix_gremlin_output(resp_json)
+
+        resp_data = resp.get('result', {}).get('data', [])
+        assert len(resp_data) == 4
+
+        expected = {
+            'ch.qos.logback:logback-core': {
+                'version': '1.1.0',
+                'cves': ['CVE-2017-5929']
+            },
+            'com.fasterxml.jackson.core:jackson-databind': {
+                'version': '2.7.4',
+                'cves': ['CVE-2017-15095', 'CVE-2017-7525', 'CVE-2018-5968']
+            },
+            'com.thoughtworks.xstream:xstream': {
+                'version': '1.3',
+                'cves': ['CVE-2017-7957', 'CVE-2013-7285', 'CVE-2016-3674']
+            },
+            'jline:jline': {
+                'version': '0.9.94',
+                'cves': ['CVE-2013-2035']
+            }
+        }
+        for data in resp_data:
+            assert 'epv' in data
+            assert 'cves' in data
+
+            assert 'pname' in data['epv']
+            assert 'version' in data['epv']
+
+            name = data['epv']['pname'][0]
+            version = data['epv']['version'][0]
+
+            cves = [x.get('cve_id')[0] for x in data['cves']]
+
+            assert name in expected
+            assert version == expected[name]['version']
+            assert cves == expected[name]['cves']
+
+            expected.pop(name)

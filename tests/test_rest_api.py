@@ -45,7 +45,7 @@ payload_user_repo_scan = {
 }
 
 
-def mocked_requests_post(url, data=None, json=None, **kwargs):
+def mocked_requests_post(url, **kwargs):
     """Mock function for requests.post."""
     class MockResponse:
         def __init__(self, data, json, status_code, **kwargs):
@@ -58,11 +58,11 @@ def mocked_requests_post(url, data=None, json=None, **kwargs):
             return self.json_data
 
     if url == GREMLIN_SERVER_URL_REST:
-        return MockResponse(data=data, json=json, status_code=200, kwargs=kwargs)
+        return MockResponse(data='{}', json={}, status_code=200, kwargs=kwargs)
     elif url == '/api/notify':
-        return MockResponse(data=data, json=json, status_code=202, kwargs=kwargs)
+        return MockResponse(data='{}', json={}, status_code=202, kwargs=kwargs)
 
-    return MockResponse(data=data, json=json, status_code=200, kwargs=kwargs)
+    return MockResponse(data='{}', json={}, status_code=200, kwargs=kwargs)
 
 
 def mocked_generate_report(repo_cves, deps_list):

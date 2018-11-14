@@ -2,7 +2,7 @@
 
 import requests
 
-from utils import GREMLIN_SERVER_URL_REST
+from utils import GREMLIN_SERVER_URL_REST, fix_gremlin_output
 
 
 class RepoDependencyCreator:
@@ -43,8 +43,11 @@ class RepoDependencyCreator:
                             .format(ecosystem=ecosystem, name=name, version=version))
 
         # Traverse the Repo to Direct/Transitive dependencies that have CVE's and report them
-        gremlin_str += ("g.V(repo).as('rp').outE('has_dependency','has_transitive_dependency')"
-                        ".as('ed').inV().as('epv').select('rp','ed','epv').by(valueMap(true));")
+        gremlin_str += (
+            "g.V(repo).as('rp').outE('has_dependency','has_transitive_dependency')"
+            ".as('ed').inV().as('epv').out('has_cve').as('cve')"
+            ".select('rp','ed','epv','cve').by(valueMap(true));"
+        )
         payload = {"gremlin": gremlin_str}
         try:
             rawresp = requests.post(url=GREMLIN_SERVER_URL_REST, json=payload)
@@ -57,7 +60,7 @@ class RepoDependencyCreator:
             raise Exception(
                 "Error creating repository node for {repo_url}".format(repo_url=github_repo))
 
-        return resp
+        return fix_gremlin_output(resp)
 
     @staticmethod
     def generate_report(repo_cves, deps_list):
@@ -76,20 +79,20 @@ class RepoDependencyCreator:
             version = epv.get('version')[0]
             ecosystem = epv.get('pecosystem')[0]
             str_epv = ecosystem + ":" + name + ":" + version
-            cve_count = len(epv.get('cve_ids', []))
+            cves = repo_cve.get('cves', [])
             vulnerable_deps = []
             first = True
-            if cve_count > 0 and (str_epv in i for x, i in deps_list.items()):
+            if cves and (str_epv in i for x, i in deps_list.items()):
                 cve_list = []
-                for cve in epv.get('cve_ids'):
-                    cve_id = cve.split(':')[0]
-                    cvss = cve.split(':')[-1]
-                    cve_list.append({'CVE': cve_id, 'CVSS': cvss})
+                for cve in cves:
+                    cve_list.append(
+                        {'CVE': cve.get('cve_id')[0], 'CVSS': cve.get('cvss_v2', [10.0])[0]}
+                    )
                 vulnerable_deps.append({
                     'ecosystem': epv.get('pecosystem')[0],
                     'name': epv.get('pname')[0],
                     'version': epv.get('version')[0],
-                    'cve_count': cve_count, 'cves': cve_list,
+                    'cve_count': len(cves), 'cves': cve_list,
                     'is_transitive': repo_cve.get('ed').get('label') == 'has_transitive_dependency'
                 })
 

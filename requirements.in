@@ -8,4 +8,5 @@ coverage
 gevent
 sqlalchemy
 pytest-mock
+codecov
 radon

@@ -100,6 +100,8 @@ echo "*****************************************"
 python3 "$(which pytest)" --cov=src/ --cov-report term-missing --cov-fail-under=$COVERAGE_THRESHOLD -vv tests/
 printf "%stests passed%s\n\n" "${GREEN}" "${NORMAL}"
 
+codecov --token=357eac20-296a-434e-abca-0fdd7b3ccbdb
+
 # deactivate virtual env before deleting it
 deactivate
 rm -rf venv/

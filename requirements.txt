@@ -11,6 +11,7 @@ chardet==3.0.4            # via requests
 click==7.0                # via flask
 colorama==0.3.9           # via radon
 coverage==4.5.1
+codecov==2.0.15
 flake8-polyfill==1.0.2    # via radon
 flake8==3.5.0             # via flake8-polyfill
 flask-cors==3.0.6

@@ -222,7 +222,7 @@ def user_repo_scan():
             notification = UserNotification.generate_notification(report=repo_report)
             try:
                 resp = UserNotification.send_notification(notification=notification,
-                                               token=SERVICE_TOKEN)
+                                                          token=SERVICE_TOKEN)
                 if resp.get('status') == 'failure' and resp.get('status_code') == 401:
                     try:
                         global SERVICE_TOKEN

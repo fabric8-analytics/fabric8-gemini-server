@@ -220,9 +220,11 @@ def user_repo_scan():
                                                              deps_list=dependencies)
         for repo_report in repo_reports:
             notification = UserNotification.generate_notification(report=repo_report)
+            print ("Notfication to be sent:\n %r" % notification)
             try:
                 resp = UserNotification.send_notification(notification=notification,
                                                           token=SERVICE_TOKEN)
+                print ("Response from Notfication service call: \n %r" % resp)
                 if resp.get('status') == 'failure' and resp.get('status_code') == 401:
                     try:
                         global SERVICE_TOKEN

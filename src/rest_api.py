@@ -220,8 +220,18 @@ def user_repo_scan():
                                                              deps_list=dependencies)
         for repo_report in repo_reports:
             notification = UserNotification.generate_notification(report=repo_report)
-            UserNotification.send_notification(notification=notification,
+            try:
+                resp = UserNotification.send_notification(notification=notification,
                                                token=SERVICE_TOKEN)
+                if resp.get('status') == 'failure' and resp.get('status_code') == 401:
+                    try:
+                        global SERVICE_TOKEN
+                        SERVICE_TOKEN = init_service_account_token(app)
+                    except requests.exceptions.RequestException as e:
+                        print('Unable to set authentication token for notification '
+                              'service calls. {}'.format(e))
+            except requests.exceptions.HTTPError:
+                print('Failed calling notification service.')
     except Exception as ex:
         return flask.jsonify({
             "error": ex.__str__()

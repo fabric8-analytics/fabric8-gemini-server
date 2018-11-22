@@ -26,7 +26,10 @@ class UserNotification:
         if resp.status_code == 202:
             return {'status': 'success'}
         else:
-            resp.raise_for_status()
+            if resp.status_code == 401:
+                return {'status': 'failure', 'status_code': resp.status_code}
+            else:
+                resp.raise_for_status()
 
     @staticmethod
     def generate_notification(report):

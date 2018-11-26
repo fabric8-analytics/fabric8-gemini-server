@@ -26,10 +26,11 @@ class RepoDependencyCreator:
         for pkg in deps_list.get('direct'):
             if len(pkg.split(':')) == 4:
                 ecosystem, group_id, artifact_id, version = pkg.split(':')
+                name = group_id + ':' + artifact_id if group_id and artifact_id \
+                    else ''
             else:
-                ecosystem, group_id, version = pkg.split(':')
-            name = group_id + ':' + artifact_id if group_id and artifact_id \
-                else group_id
+                ecosystem, name, version = pkg.split(':')
+
             gremlin_str += ("ver=g.V().has('pecosystem', '{ecosystem}').has('pname', '{name}')."
                             "has('version', '{version}');ver.hasNext() && "
                             "g.V(repo).next().addEdge('has_dependency', ver.next());".format(
@@ -39,10 +40,11 @@ class RepoDependencyCreator:
         for pkg in deps_list.get('transitive'):
             if len(pkg.split(':')) == 4:
                 ecosystem, group_id, artifact_id, version = pkg.split(':')
+                name = group_id + ':' + artifact_id if group_id and artifact_id \
+                    else ''
             else:
-                ecosystem, group_id, version = pkg.split(':')
-            name = group_id + ':' + artifact_id if group_id and artifact_id \
-                else group_id
+                ecosystem, name, version = pkg.split(':')
+
             gremlin_str += ("ver=g.V().has('pecosystem', '{ecosystem}').has('pname', '{name}')."
                             "has('version', '{version}');ver.hasNext() && "
                             "g.V(repo).next().addEdge('has_transitive_dependency', ver.next());"

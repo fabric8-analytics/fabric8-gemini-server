@@ -4,11 +4,11 @@ import requests
 from flask import Flask, request
 from flask_cors import CORS
 from utils import DatabaseIngestion, scan_repo, validate_request_data, \
-    retrieve_worker_result, alert_user, GREMLIN_SERVER_URL_REST
+    retrieve_worker_result, alert_user, GREMLIN_SERVER_URL_REST, get_parser_from_ecosystem
 from f8a_worker.setup_celery import init_selinon
 from fabric8a_auth.auth import login_required, init_service_account_token
 from exceptions import HTTPError
-from parsers.maven_parser import MavenParser
+from werkzeug.exceptions import BadRequest
 from repo_dependency_creator import RepoDependencyCreator
 from notification.user_notification import UserNotification
 from fabric8a_auth.errors import AuthError
@@ -164,6 +164,7 @@ def user_repo_scan():
     # TODO: please refactor this method is it would be possible to test it properly
     # json data and files cannot be a part of same request. Hence, we need to use form data here.
     git_url = request.form.get('git-url')
+    ecosystem = request.form.get('ecosystem')
 
     resp_dict = {
         "status": "success",
@@ -178,30 +179,28 @@ def user_repo_scan():
         validate_string = validate_string.format("git-url")
         resp_dict["status"] = 'failure'
         resp_dict["summary"] = validate_string
-        print(validate_string)
         return flask.jsonify(resp_dict), 400
 
     if not files:
         validate_string = validate_string.format("files")
         resp_dict["status"] = 'failure'
         resp_dict["summary"] = validate_string
-        print(validate_string)
         return flask.jsonify(resp_dict), 400
 
-    for file in files:
-        if file.filename == 'direct-dependencies.txt':
-            direct_dependencies_string = file.read().decode('utf-8')
-        elif file.filename == 'transitive-dependencies.txt':
-            transitive_dependencies_string = file.read().decode('utf-8')
-        else:
-            resp_dict["status"] = 'failure'
-            resp_dict["summary"] = "File name should be either direct-dependencies.txt or" \
-                                   "transitive-dependencies.txt"
-            print(resp_dict["summary"])
-            return flask.jsonify(resp_dict), 400
+    if not ecosystem:
+        validate_string = validate_string.format("ecosystem")
+        resp_dict["status"] = 'failure'
+        resp_dict["summary"] = validate_string
+        return flask.jsonify(resp_dict), 400
 
-    set_direct_dependencies = MavenParser.parse_output_file(direct_dependencies_string)
-    set_transitive_dependencies = MavenParser.parse_output_file(transitive_dependencies_string)
+    try:
+        set_direct_dependencies, set_transitive_dependencies = \
+            get_parser_from_ecosystem(ecosystem).parse_output_files(files)
+    except BadRequest as b:
+        resp_dict['status'] = 'failure'
+        resp_dict['summary'] = b.get_body()
+        return flask.jsonify(resp_dict), 400
+
     # we need to remove direct dependencies from the transitive ones.
     set_transitive_dependencies = set_transitive_dependencies - set_direct_dependencies
 

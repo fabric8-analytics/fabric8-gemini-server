@@ -323,10 +323,12 @@ def fix_gremlin_output(response):
         cve = data.pop('cve')
         rp = data.get('rp', {})
         epv = data.get('epv', {})
+        ed = data.get('ed', {})
         pv = epv.get('pname')[0], epv.get('version')[0]
 
         d = new_data.get(pv, {})
         d['rp'] = dict(d.get('rp', {}), **rp)
+        d['ed'] = dict(d.get('ed', {}), **ed)
         d['epv'] = dict(d.get('epv', {}), **epv)
         d['cves'] = d.get('cves', []) + [cve]
         new_data[pv] = d

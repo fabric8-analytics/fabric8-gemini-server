@@ -13,7 +13,7 @@ class NodeParser(Parser):
     def parse_output_files(files):
         """Parse output file."""
         if len(files) > 1:
-            raise BadRequest("Please provide a single file with name npm-list.json")
+            raise BadRequest("Please provide a single file with name npmlist.json")
         content = json.loads(files[0].read().decode('utf-8'))
         dependencies = content.get('dependencies')
         direct_dependencies = set()

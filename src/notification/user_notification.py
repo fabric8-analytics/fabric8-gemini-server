@@ -31,11 +31,15 @@ class UserNotification:
     @staticmethod
     def generate_notification(report):
         """Generate notification structure from the cve report."""
+        repo_url = report.get('repo_url', "")
+        if not repo_url.endswith(".git"):
+            repo_url = repo_url + ".git"
+
         result = {
             "data": {
                 "attributes": {
                     "custom": report,
-                    "id": report.get('repo_url', ""),
+                    "id": repo_url,
                     "type": "analytics.notify.cve"
                 },
                 "id": str(uuid4()),

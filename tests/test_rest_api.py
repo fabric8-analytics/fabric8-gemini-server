@@ -8,6 +8,7 @@ from parsers.maven_parser import MavenParser
 from src.repo_dependency_creator import RepoDependencyCreator
 from src.notification.user_notification import UserNotification
 from utils import GREMLIN_SERVER_URL_REST
+import os
 
 payload = {
     "email-ids": "abcd@gmail.com",
@@ -43,6 +44,19 @@ payload_user_repo_scan = {
                          (str(Path(__file__).parent / 'files/transitive-dependencies.txt'),
                           'transitive-dependencies.txt')]
 }
+
+
+def get_payload_json():
+    """Help function to read sample payload."""
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+
+    with open(str(dir_path) + '/files/scan-test-data.json') as f:
+        data = json.load(f)
+
+    return data
+
+
+payload_scan_data = get_payload_json()
 
 
 def mocked_requests_post(url, **kwargs):
@@ -259,22 +273,22 @@ def test_register_endpoint_6(get_info, client):
 def test_user_repo_scan_endpoint(client):
     """Test the /api/v1/user-repo/scan endpoint."""
     resp = client.post(api_route_for('user-repo/scan'),
+                       headers={'git-url': 'test'},
                        data=payload)
 
     assert resp.status_code == 400
     json_data = get_json_from_response(resp)
     assert json_data == {
         "status": "failure",
-        "summary": "files cannot be empty"
+        "summary": "input json cannot be empty"
     }
 
 
 def test_user_repo_scan_endpoint_1(client):
     """Test the /api/v1/user-repo/scan endpoint."""
     resp = client.post(api_route_for('user-repo/scan'),
-                       data=payload_1,
+                       data=json.dumps(payload_scan_data),
                        content_type='application/json')
-
     assert resp.status_code == 400
     json_data = get_json_from_response(resp)
     assert json_data == {
@@ -305,7 +319,9 @@ def test_user_repo_scan_endpoint_2(_r_post, _u_post, send_notification, generate
     generate_notification.return_value = {'notification-payload': 'notification'}
     send_notification.return_value = {'status': 'success'}
     resp = client.post(api_route_for('user-repo/scan'),
-                       data=payload_user_repo_scan)
+                       headers={'git-url': 'test'},
+                       data=json.dumps(payload_scan_data),
+                       content_type='application/json')
 
     assert resp.status_code == 200
 

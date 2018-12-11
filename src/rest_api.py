@@ -4,11 +4,11 @@ import requests
 from flask import Flask, request
 from flask_cors import CORS
 from utils import DatabaseIngestion, scan_repo, validate_request_data, \
-    retrieve_worker_result, alert_user, GREMLIN_SERVER_URL_REST, get_parser_from_ecosystem
+    retrieve_worker_result, alert_user, GREMLIN_SERVER_URL_REST
 from f8a_worker.setup_celery import init_selinon
 from fabric8a_auth.auth import login_required, init_service_account_token
+from data_extractor import DataExtractor
 from exceptions import HTTPError
-from werkzeug.exceptions import BadRequest
 from repo_dependency_creator import RepoDependencyCreator
 from notification.user_notification import UserNotification
 from fabric8a_auth.errors import AuthError
@@ -163,17 +163,12 @@ def user_repo_scan():
     """Experimental endpoint."""
     # TODO: please refactor this method is it would be possible to test it properly
     # json data and files cannot be a part of same request. Hence, we need to use form data here.
-    git_url = request.form.get('git-url')
-    ecosystem = request.form.get('ecosystem')
-
+    validate_string = "{} cannot be empty"
     resp_dict = {
         "status": "success",
         "summary": ""
     }
-
-    files = request.files.getlist("dependencyFile[]")
-
-    validate_string = "{} cannot be empty"
+    git_url = request.headers.get("git-url")
 
     if not git_url:
         validate_string = validate_string.format("git-url")
@@ -181,32 +176,29 @@ def user_repo_scan():
         resp_dict["summary"] = validate_string
         return flask.jsonify(resp_dict), 400
 
-    if not files:
-        validate_string = validate_string.format("files")
+    req_json = request.json
+    set_direct = set()
+    set_transitive = set()
+    if req_json is None:
+        validate_string = validate_string.format("input json")
         resp_dict["status"] = 'failure'
         resp_dict["summary"] = validate_string
         return flask.jsonify(resp_dict), 400
 
-    if not ecosystem:
-        validate_string = validate_string.format("ecosystem")
+    result_ = req_json.get("result", None)
+    if result_ is None:
+        validate_string = validate_string.format("Result dictionary")
         resp_dict["status"] = 'failure'
         resp_dict["summary"] = validate_string
         return flask.jsonify(resp_dict), 400
 
-    try:
-        set_direct_dependencies, set_transitive_dependencies = \
-            get_parser_from_ecosystem(ecosystem).parse_output_files(files)
-    except BadRequest as b:
-        resp_dict['status'] = 'failure'
-        resp_dict['summary'] = b.get_body()
-        return flask.jsonify(resp_dict), 400
-
-    # we need to remove direct dependencies from the transitive ones.
-    set_transitive_dependencies = set_transitive_dependencies - set_direct_dependencies
+    for res_ in result_:
+        details_ = res_.get("details", None)
+        set_direct, set_transitive = DataExtractor.get_details_from_results(details_)
 
     dependencies = {
-        'direct': list(set_direct_dependencies),
-        'transitive': list(set_transitive_dependencies)
+        'direct': list(set_direct),
+        'transitive': list(set_transitive)
     }
 
     try:

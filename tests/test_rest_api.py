@@ -120,12 +120,38 @@ def test_readiness_endpoint(client):
     assert json_data == {}, "Empty JSON response expected"
 
 
+def test_readiness_endpoint_wrong_http_method(client):
+    """Test the /api/v1/readiness endpoint by calling it with wrong HTTP method."""
+    url = api_route_for("readiness")
+    response = client.post(url)
+    assert response.status_code == 405
+    response = client.put(url)
+    assert response.status_code == 405
+    response = client.patch(url)
+    assert response.status_code == 405
+    response = client.delete(url)
+    assert response.status_code == 405
+
+
 def test_liveness_endpoint(client):
     """Test the /api/v1/liveness endpoint."""
     response = client.get(api_route_for("liveness"))
     assert response.status_code == 200
     json_data = get_json_from_response(response)
     assert json_data == {}
+
+
+def test_liveness_endpoint_wrong_http_method(client):
+    """Test the /api/v1/liveness endpoint by calling it with wrong HTTP method."""
+    url = api_route_for("liveness")
+    response = client.post(url)
+    assert response.status_code == 405
+    response = client.put(url)
+    assert response.status_code == 405
+    response = client.patch(url)
+    assert response.status_code == 405
+    response = client.delete(url)
+    assert response.status_code == 405
 
 
 @patch("src.rest_api.retrieve_worker_result")
@@ -183,6 +209,19 @@ def test_report_endpoint(mocker, client):
         "lock_file_absent": True,
         "message": "test"
     }
+
+
+def test_report_endpoint_wrong_http_method(client):
+    """Test the /api/v1/report endpoint by calling it with wrong HTTP method."""
+    url = api_route_for('report?git-url=test&git-sha=test')
+    response = client.post(url)
+    assert response.status_code == 405
+    response = client.put(url)
+    assert response.status_code == 405
+    response = client.patch(url)
+    assert response.status_code == 405
+    response = client.delete(url)
+    assert response.status_code == 405
 
 
 def test_register_endpoint_1(client):

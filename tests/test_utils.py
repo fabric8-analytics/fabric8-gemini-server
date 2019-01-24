@@ -81,7 +81,7 @@ def test_retrieve_worker_result_2(_a, _b, _c):
     """Test the function retrieve_worker_result."""
     with app.app_context():
         response = retrieve_worker_result("test", "test")
-        assert response is 1
+        assert response == 1
 
 
 def test_get_session_retry():
@@ -124,7 +124,7 @@ def test_get_store_record_1(_a, _b):
         "git-url": "test"
     }
     resp = DatabaseIngestion.store_record(payload)
-    assert resp is "get_info"
+    assert resp == "get_info"
 
 
 @patch("src.utils.add_entry_to_osio_registered_repos", side_effect=SQLAlchemyError)

@@ -33,7 +33,7 @@ pyflakes==1.6.0           # via flake8
 pytest-cov==2.6.0
 pytest-mock==1.10.0
 pytest==3.8.1
-radon==2.2.0
+radon==3.0.1
 requests==2.19.1
 six==1.11.0               # via flask-cors, mando, more-itertools, pytest
 sqlalchemy==1.2.12

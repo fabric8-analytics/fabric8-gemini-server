@@ -170,6 +170,54 @@ paths:
           description: Data not found
         '500':
           description: Internal server error
+  /stacks-report/list/{frequency}:
+    get:
+      tags:
+        - Stack Analyses Aggregated Reports
+      summary: Lists the available reports.
+      description: >
+        Lists the available stack analyses reports that have been generated offline. The frequency of these generated reports are weekly and monthly.
+        
+        For listing monthly reports call `stacks-report/list/monthly` and for getting the list of weekly reports call `stacks-report/list/weekly`
+      operationId: f8a_scanner.api_v1.list_reports
+      produces:
+        - application/json
+      parameters:
+        - name: frequency
+          in: path
+          description: frequency of the report
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Listing successful
+          schema:
+            $ref: '#/definitions/ReportsList'
+        '404':
+          description: No listing available
+  /stacks-report/report/{report-name}:
+    get:
+      tags:
+        - Stack Analyses Aggregated Reports
+      summary: The stack analyses aggregation report.
+      description: >
+        Returns the aggregated data of the stack analyses request performed during a time period along with the descriptive statistics around each individual stack analyses performed.
+      operationId: f8a_scanner.api_v1.report
+      produces:
+        - application/json
+      parameters:
+        - name: report-name
+          in: path
+          description: A report name retrieved by the `/stacks-report/list/`
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Report available for viewing
+          schema:
+            $ref: '#/definitions/StacksReport'
+        '404':
+          description: No repo
 definitions:
   RegisterResponse:
     title: Response Data for Register Endpoint
@@ -261,3 +309,119 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/EPV'
+  ReportsList:
+    title: Stack Anlyses Reports List
+    description: List of all stack analyses aggregation reports
+    properties:
+      report_list:
+        type: array
+        items:
+          type: string
+  StacksReport:
+    title: Stack analyses report
+    description: Staack analyses detailed report for a particular frequency, that is, either weekly or monthly
+    properties:
+      stack_aggregator_v2:
+        $ref: '#/definitions/StackData'
+  StackData:
+    title: Basic stack analyses report structure
+    properties:
+      report:
+        $ref: '#/definitions/ReportMetadata'
+      stacks_summary:
+        $ref: '#/definitions/ReportStacksSummary'
+      stacks_details:
+        type: array
+        items:
+          $ref: '#/definitions/ReportStacksDetails'
+  ReportMetadata:
+    title: Metadata about the generated report
+    properties:
+      from:
+        type: string
+      to:
+        type: string
+      generated_on:
+        type: string
+  ReportStacksSummary:
+    title: Aggregated summary of the stack analyses performed
+    properties:
+      total_stack_requests_count:
+        type: integer
+      npm:
+        $ref: '#/definitions/ReportSummaryEcosystemwise'
+      maven:
+        $ref: '#/definitions/ReportSummaryEcosystemwise'
+      unique_unknown_licenses_with_frequency:
+        type: object
+      unique_cves:
+        type: object
+      total_average_response_time:
+        type: string
+  ReportSummaryEcosystemwise:
+    title: Ecosystem specific stacks summary
+    properties:
+      stack_requests_count:
+        type: integer
+      total_stack_requests_count:
+        type: integer
+      unique_dependencies_with_frequency:
+        type: object
+        description: Application dependencies encountered during the stack analyses runs and their frequency of appearence provided in `key:value` pair
+      unique_unknown_dependencies_with_frequency:
+        type: object
+        description: Application dependencies encountered during the stack analyses runs which are unknown to the system and their frequency of appearence provided in `key:value` pair
+      unique_stacks_with_frequency:
+        type: object
+        description: Unique application stacks encountered during the stack analyses runs along with the occurrence count as a `key:value` pair
+      unique_stacks_with_deps_count:
+        type: object
+        description: Unique application stacks encountered during the stack analyses runs along with their respective dependencies count as a `key:value` pair
+      average_response_time:
+        type: string
+        description: average response time of all the stack analyses performed.
+  ReportStacksDetails:
+    title: Stack analyses detail report
+    properties:
+      ecosystem:
+        type: string
+      stack:
+        type: array
+        items:
+          type: string
+        description: Example, `["express 4.0.0", "npm 6.2.0", "serve-static 1.7.1"]`
+      unknown_dependencies:
+        type: array
+        items:
+          type: string
+          description: Example, `["npm 6.2.0"]`
+      license:
+        $ref: '#/definitions/LicenseInfo'
+      security:
+        $ref: '#/definitions/Security'
+      response_time:
+        type: string
+  LicenseInfo:
+    title: License details for a stack
+    properties:
+      conflict:
+        type: boolean
+      unknown:
+        type: array
+        description: The unknown licenses encountered during stack analyses
+        items:
+          type: string
+  Security:
+    title: Security information for a stack analyses
+    properties:
+      cve_list:
+        type: array
+        items:
+          $ref: '#/definitions/CVEInfo'
+  CVEInfo:
+    title: CVE details along with the CVSS score encountered during stack analyses
+    properties:
+      CVE:
+        type: string
+      CVSS:
+        type: string

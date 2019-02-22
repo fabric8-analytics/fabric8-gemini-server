@@ -93,6 +93,8 @@ objects:
             value: "4"
           - name: CLASS_TYPE
             value: "sync"
+          - name: REPORT_BUCKET_NAME
+            value: developer-analytics-audit-report
           - name: DEPLOYMENT_PREFIX
             valueFrom:
               configMapKeyRef:

@@ -15,6 +15,8 @@ import datetime
 import requests
 import os
 import logging
+import boto3
+import json
 
 logger = logging.getLogger(__name__)
 
@@ -56,6 +58,51 @@ class Postgres:
 
 
 _rdb = Postgres()
+
+
+class S3Helper:
+    """Helper class for storing reports to S3."""
+
+    def __init__(self):
+        """Init method for the helper class."""
+        self.region_name = os.environ.get('AWS_S3_REGION') or 'us-east-1'
+        self.aws_s3_access_key = os.environ.get('AWS_S3_ACCESS_KEY_ID')
+        self.aws_s3_secret_access_key = os.environ.get('AWS_S3_SECRET_ACCESS_KEY')
+        self.deployment_prefix = os.environ.get('DEPLOYMENT_PREFIX') or 'dev'
+        if self.deployment_prefix not in ('STAGE', 'prod'):
+            self.deployment_prefix = 'dev'
+
+        if self.aws_s3_secret_access_key is None or self.aws_s3_access_key is None or\
+                self.region_name is None or self.deployment_prefix is None:
+            raise ValueError("AWS credentials or S3 configuration was "
+                             "not provided correctly. Please set the AWS_S3_REGION, "
+                             "AWS_S3_ACCESS_KEY_ID, AWS_S3_SECRET_ACCESS_KEY, REPORT_BUCKET_NAME "
+                             "and DEPLOYMENT_PREFIX correctly.")
+        # S3 endpoint URL is required only for local deployments
+        self.s3_endpoint_url = os.environ.get('S3_ENDPOINT_URL') or 'http://localhost'
+
+        self.s3 = boto3.resource('s3', region_name=self.region_name,
+                                 aws_access_key_id=self.aws_s3_access_key,
+                                 aws_secret_access_key=self.aws_s3_secret_access_key)
+        self.s3_bucket_obj = self.s3.Bucket(os.environ.get('REPORT_BUCKET_NAME'))
+
+    def list_objects(self, frequency='weekly'):
+        """Fetch the list of objects found on the S3 bucket."""
+        prefix = '{dp}/{freq}'.format(dp=self.deployment_prefix, freq=frequency)
+        res = {'objects': []}
+        for obj in self.s3_bucket_obj.objects.filter(Prefix=prefix):
+            if os.path.basename(obj.key) != '':
+                res['objects'].append(obj.key)
+        return res
+
+    def get_object_content(self, object_name):
+        """Get the report json object found on the S3 bucket."""
+        obj = self.s3.Object(os.environ.get('REPORT_BUCKET_NAME'), object_name)
+        result = json.loads(obj.get()['Body'].read().decode('utf-8'))
+        return result
+
+
+_s3_helper = S3Helper()
 
 
 def query_worker_result(session, external_request_id, worker):  # pragma: no cover

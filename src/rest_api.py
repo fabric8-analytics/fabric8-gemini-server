@@ -4,7 +4,7 @@ import requests
 from flask import Flask, request
 from flask_cors import CORS
 from utils import DatabaseIngestion, scan_repo, validate_request_data, \
-    retrieve_worker_result, alert_user, GREMLIN_SERVER_URL_REST
+    retrieve_worker_result, alert_user, GREMLIN_SERVER_URL_REST, _s3_helper
 from f8a_worker.setup_celery import init_selinon
 from fabric8a_auth.auth import login_required, init_service_account_token
 from data_extractor import DataExtractor
@@ -356,6 +356,27 @@ def drop():  # pragma: no cover
 
     resp_dict['summary'] = 'Repository scan unsubscribed'
     return flask.jsonify(resp_dict), 200
+
+
+@app.route('/api/v1/stacks-report/list/<frequency>', methods=['GET'])
+def list_stacks_reports(frequency='weekly'):
+    """
+    Endpoint to fetch the list of generated stacks reports.
+
+    The list is fetched based on the frequency which is either weekly or monthly.
+    """
+    return flask.jsonify(_s3_helper.list_objects(frequency))
+
+
+@app.route('/api/v1/stacks-report/report/<path:report>', methods=['GET'])
+def get_stacks_report(report):
+    """
+    Endpoint to retrieve a generated stacks report.
+
+    A report matching with the filename retrieved using the /stacks-report/list/{frequency}
+    will be returned.
+    """
+    return flask.jsonify(_s3_helper.get_object_content(report))
 
 
 @app.errorhandler(HTTPError)

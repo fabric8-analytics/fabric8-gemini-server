@@ -10,3 +10,4 @@ sqlalchemy
 pytest-mock
 codecov
 radon
+boto3

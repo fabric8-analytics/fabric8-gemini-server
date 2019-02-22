@@ -6,12 +6,15 @@
 #
 atomicwrites==1.2.1       # via pytest
 attrs==18.2.0             # via pytest
+boto3==1.9.99
+botocore==1.12.99         # via boto3, s3transfer
 certifi==2018.8.24        # via requests
 chardet==3.0.4            # via requests
 click==7.0                # via flask
-colorama==0.3.9           # via radon
-coverage==4.5.1
 codecov==2.0.15
+colorama==0.4.1           # via radon
+coverage==4.5.1
+docutils==0.14            # via botocore
 flake8-polyfill==1.0.2    # via radon
 flake8==3.5.0             # via flake8-polyfill
 flask-cors==3.0.6
@@ -22,6 +25,7 @@ gunicorn==19.9.0
 idna==2.7                 # via requests
 itsdangerous==0.24        # via flask
 jinja2==2.10              # via flask
+jmespath==0.9.3           # via boto3, botocore
 mando==0.6.4              # via radon
 markupsafe==1.0           # via jinja2
 mccabe==0.6.1             # via flake8
@@ -33,9 +37,11 @@ pyflakes==1.6.0           # via flake8
 pytest-cov==2.6.0
 pytest-mock==1.10.0
 pytest==3.8.1
+python-dateutil==2.8.0    # via botocore
 radon==3.0.1
 requests==2.19.1
-six==1.11.0               # via flask-cors, mando, more-itertools, pytest
+s3transfer==0.2.0         # via boto3
+six==1.11.0               # via flask-cors, mando, more-itertools, pytest, python-dateutil
 sqlalchemy==1.2.12
-urllib3==1.23             # via requests
+urllib3==1.23             # via botocore, requests
 werkzeug==0.14.1          # via flask

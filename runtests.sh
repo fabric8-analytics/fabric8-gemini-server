@@ -72,6 +72,10 @@ export DISABLE_AUTHENTICATION=1
 export BAYESIAN_JWT_AUDIENCE='a,b'
 export BAYESIAN_FETCH_PUBLIC_KEY='test'
 export FABRIC8_AUTH_URL='https://auth.openshift.io'
+export REPORT_BUCKET_NAME="not-set"
+export AWS_S3_ACCESS_KEY_ID="not-set"
+export AWS_S3_SECRET_ACCESS_KEY="not-set"
+export AWS_S3_REGION="not-set"
 
 psql_conn_str="postgres://${POSTGRESQL_USER}:${POSTGRESQL_PASSWORD}@${PGBOUNCER_SERVICE_HOST}:${5432}/${POSTGRESQL_DATABASE}"
 for i in {1..60}

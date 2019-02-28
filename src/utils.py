@@ -390,3 +390,4 @@ def get_parser_from_ecosystem(ecosystem):
         "maven": MavenParser,
         "npm": NodeParser
     }.get(ecosystem)
+

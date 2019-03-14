@@ -381,7 +381,7 @@ def get_stacks_report(report):
 
 
 @app.route('/api/v1/stacks-report/compare', methods=['GET'])
-def get_stacks_report():
+def compare_stacks_report():
     """
     Endpoint to compare generated stacks reports for past days.
 

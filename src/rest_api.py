@@ -4,7 +4,8 @@ import requests
 from flask import Flask, request
 from flask_cors import CORS
 from utils import DatabaseIngestion, scan_repo, validate_request_data, \
-    retrieve_worker_result, alert_user, GREMLIN_SERVER_URL_REST, _s3_helper
+    retrieve_worker_result, alert_user, GREMLIN_SERVER_URL_REST, _s3_helper, \
+    generate_comparison
 from f8a_worker.setup_celery import init_selinon
 from fabric8a_auth.auth import login_required, init_service_account_token
 from data_extractor import DataExtractor
@@ -377,6 +378,21 @@ def get_stacks_report(report):
     will be returned.
     """
     return flask.jsonify(_s3_helper.get_object_content(report))
+
+
+@app.route('/api/v1/stacks-report/compare', methods=['GET'])
+def get_stacks_report():
+    """
+    Endpoint to compare generated stacks reports for past days.
+
+    Maximum number of days 7.
+    """
+    comparison_days = int(request.args.get('days'))
+    if comparison_days < 1 and comparison_days > 7:
+        # Return bad request
+        return flask.jsonify(error='Invalid number of days provided to compare reports'), 400
+
+    return flask.jsonify(generate_comparison(comparison_days))
 
 
 @app.errorhandler(HTTPError)

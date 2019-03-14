@@ -390,3 +390,19 @@ def get_parser_from_ecosystem(ecosystem):
         "maven": MavenParser,
         "npm": NodeParser
     }.get(ecosystem)
+
+
+def generate_comparison(comparison_days):
+    """Generate comparioson report."""
+    today = datetime.datetime.today().strftime('%Y-%m-%d')
+    i = 0
+    response_times = []
+    dp = os.environ.get('DEPLOYMENT_PREFIX') or 'dev'
+    while i <= comparison_days:
+        formatted_date = (today - datetime.timedelta(days=i)).strftime('%Y-%m-%d')
+        report_name = '{dp}/daily/{cdate}.json'.format(dp=dp, cdate=formatted_date)
+        data = json.loads(_s3_helper.get_object_content(report_name))
+        response_times.append({formatted_date: data.get('stacks_summary', {}).
+                              get('total_average_response_time')})
+        i += 1
+    return {"average_response_time": response_times}

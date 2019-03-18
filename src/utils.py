@@ -17,6 +17,7 @@ import os
 import logging
 import boto3
 import json
+from botocore.exceptions import ClientError
 
 logger = logging.getLogger(__name__)
 
@@ -98,7 +99,11 @@ class S3Helper:
     def get_object_content(self, object_name):
         """Get the report json object found on the S3 bucket."""
         obj = self.s3.Object(os.environ.get('REPORT_BUCKET_NAME'), object_name)
-        result = json.loads(obj.get()['Body'].read().decode('utf-8'))
+        try:
+            result = json.loads(obj.get()['Body'].read().decode('utf-8'))
+        except ClientError as e:
+            logger.error('Exception found: %r' % e)
+            raise e
         return result
 
 
@@ -394,15 +399,34 @@ def get_parser_from_ecosystem(ecosystem):
 
 def generate_comparison(comparison_days):
     """Generate comparioson report."""
-    today = datetime.datetime.today().strftime('%Y-%m-%d')
+    today = datetime.datetime.today()
     i = 0
     response_times = []
     dp = os.environ.get('DEPLOYMENT_PREFIX') or 'dev'
-    while i <= comparison_days:
-        formatted_date = (today - datetime.timedelta(days=i)).strftime('%Y-%m-%d')
+    while i < comparison_days:
+        formatted_date = (today - datetime.timedelta(days=i + 1)).strftime('%Y-%m-%d')
+        logger.error('Formatted Date: {}'.format(formatted_date))
+
         report_name = '{dp}/daily/{cdate}.json'.format(dp=dp, cdate=formatted_date)
-        data = json.loads(_s3_helper.get_object_content(report_name))
+        logger.error('Report Name: {}'.format(report_name))
+
+        missing_reports = 0
+        try:
+            data = _s3_helper.get_object_content(report_name)
+        except ClientError as e:
+            if comparison_days == 2:
+                logger.error('the report for {} is missing. Cannot proceed with the '
+                             'comparison. Error: {}'.format(formatted_date, e))
+                return -1
+            else:
+                missing_reports += 1
+                if comparison_days - missing_reports == 1:
+                    logger.error('Insufficient reports to generate comparison result')
+                    return -1
+                continue
         response_times.append({formatted_date: data.get('stacks_summary', {}).
                               get('total_average_response_time')})
         i += 1
+
+    logger.error('Average Response Time: %r' % response_times)
     return {"average_response_time": response_times}

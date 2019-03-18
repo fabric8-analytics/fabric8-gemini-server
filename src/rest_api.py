@@ -388,9 +388,10 @@ def compare_stacks_report():
     Maximum number of days 7.
     """
     comparison_days = int(request.args.get('days'))
-    if comparison_days < 1 and comparison_days > 7:
+    if comparison_days < 2 and comparison_days > 7:
         # Return bad request
-        return flask.jsonify(error='Invalid number of days provided to compare reports'), 400
+        return flask.jsonify(error='Invalid number of days provided to compare reports.'
+                                   'Range is 2-7'), 400
 
     return flask.jsonify(generate_comparison(comparison_days))
 

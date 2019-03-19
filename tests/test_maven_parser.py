@@ -3,6 +3,7 @@
 from src.parsers.maven_parser import MavenParser
 from pathlib import Path
 from werkzeug.datastructures import FileStorage
+from werkzeug.exceptions import BadRequest
 import pytest
 
 

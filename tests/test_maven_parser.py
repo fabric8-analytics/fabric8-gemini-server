@@ -31,3 +31,11 @@ def test_maven_parser_output_files_bad_filename():
         with pytest.raises(BadRequest) as e:
             MavenParser.parse_output_files([FileStorage(f, filename=filename)])
             assert e is not None
+
+
+def test_maven_parser_changed_coordinates():
+    """Test maven parser with input file with changed coordinates."""
+    with (Path(__file__).parent / "files/dependencies-different-coordinates.txt").open('rb') as f:
+        filename = 'direct-dependencies.txt'
+        resp = MavenParser.parse_output_files([FileStorage(f, filename=filename)])
+        assert resp is not None

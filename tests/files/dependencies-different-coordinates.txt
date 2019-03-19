@@ -1,0 +1,6 @@
+
+The following files have been resolved:
+   org.apache.geronimo.modules:geronimo-tomcat6:jar:2.2.1:compile
+   org.apache.geronimo.modules:geronimo-tomcat7:jar:2.2.1
+   org.apache.geronimo.modules:geronimo-tomcat8:jar
+   org.apache.geronimo.modules:geronimo-tomcat9

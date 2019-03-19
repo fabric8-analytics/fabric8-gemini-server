@@ -301,7 +301,7 @@ def test_fix_gremlin_output():
 
 
 @patch("src.utils.S3Helper.get_object_content", return_value=mocked_object_response)
-def test_generate_comparison(mock1):
+def test_generate_comparison():
     """Test generate_comparison()."""
     result = generate_comparison(2)
     assert(result.get('average_response_time') is not None)

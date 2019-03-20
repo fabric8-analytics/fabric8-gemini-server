@@ -3,6 +3,18 @@
 from pathlib import Path
 from parsers.node_parser import NodeParser
 from werkzeug.datastructures import FileStorage
+from werkzeug.exceptions import BadRequest
+import pytest
+
+
+def test_node_parser_no_files():
+    """Test node parser with improper input."""
+    with pytest.raises(BadRequest) as e:
+        # TODO: add
+        # NodeParser.parse_output_files([])
+        # assert e is not None
+        NodeParser.parse_output_files(["foo", "bar", "baz"])
+        assert e is not None
 
 
 def test_node_parser():

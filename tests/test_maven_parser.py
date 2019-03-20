@@ -59,5 +59,20 @@ def test_maven_parser_changed_coordinates():
     """Test maven parser with input file with changed coordinates."""
     with (Path(__file__).parent / "files/dependencies-different-coordinates.txt").open('rb') as f:
         filename = 'direct-dependencies.txt'
-        resp = MavenParser.parse_output_files([FileStorage(f, filename=filename)])
-        assert resp is not None
+        # the method MavenParser returns two values:
+        # 1) direct dependencies
+        # 2) transitive dependencies
+        r, t = MavenParser.parse_output_files([FileStorage(f, filename=filename)])
+
+        # check the existence of both sets
+        assert r is not None
+        assert t is not None
+        assert isinstance(r, set)
+        assert isinstance(t, set)
+
+        # check the returned values
+        assert "maven:org.apache.geronimo.modules:geronimo-tomcat7:2.2.1" in r
+        assert "maven:org.apache.geronimo.modules:geronimo-tomcat8:jar" in r
+        assert "maven:org.apache.geronimo.modules:geronimo-tomcat9:" in r
+        assert "maven:org.apache.geronimo.modules:geronimo-tomcat6:2.2.1" in r
+        assert t == set()

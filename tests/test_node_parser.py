@@ -22,6 +22,10 @@ def test_node_parser():
     with (Path(__file__).parent / "files/npm-list.json").open('rb') as f:
         direct_dependencies, transitive_dependencies = \
             NodeParser.parse_output_files([FileStorage(f)])
+
+        assert direct_dependencies is not None
+        assert transitive_dependencies is not None
+
         assert direct_dependencies == {
             "npm:github-url-to-object:4.0.4",
             "npm:lodash:4.17.10",
@@ -32,4 +36,21 @@ def test_node_parser():
         assert transitive_dependencies == {
             "npm:is-url:1.2.4",
             "npm:semver:5.5.1"
+        }
+
+
+def test_node_parser_transitive_dependencies():
+    """Test node parser for transitive dependencies."""
+    with (Path(__file__).parent / "files/npm-list-transitive-dependencies.json").open('rb') as f:
+        direct_dependencies, transitive_dependencies = \
+            NodeParser.parse_output_files([FileStorage(f)])
+
+        assert direct_dependencies is not None
+        assert transitive_dependencies is not None
+
+        assert direct_dependencies == {
+            "npm:body-parser:1.18.2"
+        }
+        assert transitive_dependencies == {
+            "npm:ms:2.0.0"
         }

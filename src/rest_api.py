@@ -13,6 +13,7 @@ from exceptions import HTTPError
 from repo_dependency_creator import RepoDependencyCreator
 from notification.user_notification import UserNotification
 from fabric8a_auth.errors import AuthError
+import re
 
 
 app = Flask(__name__)
@@ -376,6 +377,67 @@ def get_stacks_report(report):
 
     A report matching with the filename retrieved using the /stacks-report/list/{frequency}
     will be returned.
+    """
+    return flask.jsonify(_s3_helper.get_object_content(report))
+
+
+@app.route('/api/v1/cve-report/list/<frequency>', methods=['GET'])
+def list_cve_reports(frequency='weekly'):
+    """
+    Endpoint to fetch the list of generated cve reports.
+    The list is fetched based on the frequency which is either weekly or monthly.
+    'fromdate' and 'todate' can be given as query params to filter the list
+    """
+    lower = request.args.get('fromdate')
+    upper = request.args.get('todate')
+    cve_list = _s3_helper.list_cve_objects(frequency)
+    cve_list_filtered = {'objects': []}
+
+    if request.args.get('fromdate') is not None:
+        for i in cve_list['objects']:
+            if ((float(re.sub("[^0-9]", "", lower)) <= float(re.sub("[^0-9]", "", i))) &
+                    (float(re.sub("[^0-9]", "", i)) <= float(re.sub("[^0-9]", "", upper)))):
+                cve_list_filtered['objects'].append(i)
+        return flask.jsonify(cve_list_filtered)
+    else:
+        return flask.jsonify(cve_list)
+
+
+@app.route('/api/v1/cve-report/report/<path:report>', methods=['GET'])
+def get_cve_report(report):
+    """
+    Endpoint to retrieve a generated cve report.
+    A report matching with the filename retrieved using the /cve-report/list/{frequency} will be returned.
+    """
+    return flask.jsonify(_s3_helper.get_object_content(report))
+
+
+@app.route('/api/v1/epv-report/list', methods=['GET'])
+def list_epv_reports():
+    """
+    Endpoint to fetch the list of generated epv reports.
+    'fromdate' and 'todate' can be given as query params to filter the list
+    """
+    lower = request.args.get('fromdate')
+    upper = request.args.get('todate')
+    epv_list = _s3_helper.list_epv_objects()
+    epv_list_filtered = {'objects': []}
+
+    if request.args.get('fromdate') is not None:
+        for i in epv_list['objects']:
+            if ((float(re.sub("[^0-9]", "", lower)) <= float(re.sub("[^0-9]", "", i))) &
+                    (float(re.sub("[^0-9]", "", i)) <= float(re.sub("[^0-9]", "", upper)))):
+                epv_list_filtered['objects'].append(i)
+        return flask.jsonify(epv_list_filtered)
+    else:
+        return flask.jsonify(epv_list)
+
+
+@app.route('/api/v1/epv-report/report/<path:report>', methods=['GET'])
+def get_epv_report(report):
+    """
+    Endpoint to retrieve a generated epv report.
+    A report matching with the filename retrieved using the /epv-report/list will be returned.
     """
     return flask.jsonify(_s3_helper.get_object_content(report))
 

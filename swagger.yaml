@@ -240,6 +240,128 @@ paths:
             $ref: '#/definitions/ComparisonReport'
         '404':
           description: No comparison data could be found
+  /cve-report/list/{frequency}:
+    get:
+      tags:
+        - CVE Aggregated Reports
+      summary: Lists the available CVE reports.
+      description: >
+        Lists the available CVE reports that have been generated. The frequency of these generated reports are daily, weekly and monthly.
+        For listing daily reports call `cve-report/list/daily`; similarly for weekly and monthly.
+        Also filters out and lists CVE reports by date.
+        For filtering daily reports between 2 dates call 'cve-report/list/daily?fromdate=2019-01-01&todate=2019-04-01'; similarly for weekly and monthly.
+      operationId: f8a_scanner.api_v1.cve_list_reports
+      produces:
+        - application/json
+      parameters:
+        - name: frequency
+          in: path
+          description: frequency of the report
+          required: true
+          type: string
+        - name: fromdate
+          in: query
+          description: reports filtered on or after this date
+          required: false
+          type: string
+        - name: todate
+          in: query
+          description: reports filtered on or before this date
+          required: false
+          type: string
+      responses:
+        '200':
+          description: Listing successful
+          schema:
+            $ref: '#/definitions/CVEReportsList'
+        '404':
+          description: No listing available
+  /epv-report/list:
+    get:
+      tags:
+        - EPV Aggregated Reports
+      summary: Lists the available EPV reports.
+      description: >
+        Lists the available EPV reports that have been generated. The frequency of these generated reports are daily.
+        For listing reports call `epv-report/list`.
+        Also filters out and lists EPV reports by date.
+        For filtering reports between 2 dates call 'epv-report/list?fromdate=2018-12-31&todate=2019-04-01'.
+      operationId: f8a_scanner.api_v1.epv_list_reports
+      produces:
+        - application/json
+      parameters:
+        - name: frequency
+          in: path
+          description: frequency of the report
+          required: true
+          type: string
+        - name: fromdate
+          in: query
+          description: reports filtered on or after this date
+          required: false
+          type: string
+        - name: todate
+          in: query
+          description: reports filtered on or before this date
+          required: false
+          type: string
+      responses:
+        '200':
+          description: Listing successful
+          schema:
+            $ref: '#/definitions/EPVReportsList'
+        '404':
+          description: No listing available
+  /cve-report/report/{report-name}:
+    get:
+      tags:
+        - CVE Aggregated Reports
+      summary: The CVE analyses aggregation report
+      description: >
+        Retrieves the aggregated CVE report.
+        Usage: '/cve-report/report/Dir1/Dir2/2019-01-14.json' where '/Dir1/Dir2' is the path in S3 bucket
+        and '2019-01-14.json' is the filename.
+      operationId: f8a_scanner.api_v1.cve_report_name
+      produces:
+        - application/json
+      parameters:
+        - name: report-name
+          in: path
+          description: Name of CVE report to be retrieved
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Report available for viewing
+          schema:
+            $ref: '#/definitions/CVEReport'
+        '404':
+          description: No repo
+  /epv-report/report/{report-name}:
+    get:
+      tags:
+        - EPV Aggregated Reports
+      summary: The EPV analyses aggregation report
+      description: >
+        Retrieves the aggregated EPV report.
+        Usage: '/epv-report/report/Dir1/Dir2/2019-01-21.json' where '/Dir1/Dir2' is the path in S3 bucket
+        and '2019-01-21.json' is the filename.
+      operationId: f8a_scanner.api_v1.epv_report_name
+      produces:
+        - application/json
+      parameters:
+        - name: report-name
+          in: path
+          description: Name of EPV report to be retrieved
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Report available for viewing
+          schema:
+            $ref: '#/definitions/EPVReport'
+        '404':
+          description: No repo
 definitions:
   ComparisonReport:
     title: Comparison Report
@@ -347,6 +469,36 @@ definitions:
         type: array
         items:
           type: string
+  CVEReportsList:
+    title: CVE Analyses Reports List
+    description: List of all CVE analyses aggregation reports
+    properties:
+      cve_report_list:
+        type: array
+        items:
+          type: string
+  EPVReportsList:
+    title: EPV Analyses Reports List
+    description: List of all EPV analyses aggregation reports
+    properties:
+      epv_report_list:
+        type: array
+        items:
+          type: string
+  CVEReport:
+    title: CVE analyses report
+    description: CVE analyses detailed report for a particular frequency, that is, either daily, weekly or monthly
+    properties:
+      cve_report:
+        type: object
+        description: CVE report details
+  EPVReport:
+    title: EPV analyses report
+    description: EPV analyses detailed report for a particular frequency, daily as of now
+    properties:
+      epv_report:
+        type: object
+        description: EPV report details
   StacksReport:
     title: Stack analyses report
     description: Staack analyses detailed report for a particular frequency, that is, either weekly or monthly

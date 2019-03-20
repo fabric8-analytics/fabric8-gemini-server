@@ -218,7 +218,37 @@ paths:
             $ref: '#/definitions/StacksReport'
         '404':
           description: No repo
+  /stacks-report/compare:
+    get:
+      tags:
+        - Stack Analyses Aggregated Reports
+      summary: Compare stack analyses aggregation report.
+      description: Compare stack analyses aggregation report for a configurable period of days
+      operationId: f8a_scanner.api_v1.compare
+      produces:
+        - application/json
+      parameters:
+        - name: days
+          in: query
+          description: No of days of stack aggregation reports to be compared. Maximum no of days is 7.
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Comparison report for stacks reports
+          schema:
+            $ref: '#/definitions/ComparisonReport'
+        '404':
+          description: No comparison data could be found
 definitions:
+  ComparisonReport:
+    title: Comparison Report
+    description: Comparison Report structure
+    properties:
+      average_response_time:
+        type: array
+        items:
+          type: object
   RegisterResponse:
     title: Response Data for Register Endpoint
     description: Response Data for Register Endpoint

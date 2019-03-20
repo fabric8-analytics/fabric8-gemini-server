@@ -7,7 +7,7 @@ from sqlalchemy.orm.exc import NoResultFound
 from src.utils import (
     DatabaseIngestion, alert_user, fetch_public_key, get_session, get_session_retry,
     retrieve_worker_result, scan_repo, server_run_flow, validate_request_data,
-    fix_gremlin_output
+    fix_gremlin_output, generate_comparison
 )
 
 from unittest.mock import patch
@@ -15,6 +15,9 @@ import requests
 import pytest
 import os
 import json
+
+
+mocked_object_response = {'stacks_summary': {'total_average_response_time': '200ms'}}
 
 
 class MockResponse:
@@ -295,3 +298,10 @@ def test_fix_gremlin_output():
             assert cves == expected[name]['cves']
 
             expected.pop(name)
+
+
+@patch("src.utils.S3Helper.get_object_content", return_value=mocked_object_response)
+def test_generate_comparison(_mock1):
+    """Test generate_comparison()."""
+    result = generate_comparison(2)
+    assert(result.get('average_response_time') is not None)

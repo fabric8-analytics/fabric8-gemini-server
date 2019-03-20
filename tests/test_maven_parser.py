@@ -30,9 +30,20 @@ def test_maven_parser_output_files_transitive_dependencies():
     """Test maven parser."""
     with (Path(__file__).parent / "files/transitive-dependencies.txt").open('rb') as f:
         filename = 'transitive-dependencies.txt'
-        resp = MavenParser.parse_output_files([FileStorage(f, filename=filename)])
-        assert resp is not None
-        # TODO: more comprehensible tests
+        # the method MavenParser returns two values:
+        # 1) direct dependencies
+        # 2) transitive dependencies
+        r, t = MavenParser.parse_output_files([FileStorage(f, filename=filename)])
+
+        # check the existence of both sets
+        assert r is not None
+        assert t is not None
+        assert isinstance(r, set)
+        assert isinstance(t, set)
+
+        # check the returned values
+        assert r == set()
+        assert "maven:org.apache.geronimo.specs:geronimo-javamail_1.4_spec:1.5" in t
 
 
 def test_maven_parser_output_files_bad_filename():

@@ -7,7 +7,7 @@ from sqlalchemy.orm.exc import NoResultFound
 from src.utils import (
     DatabaseIngestion, alert_user, fetch_public_key, get_session, get_session_retry,
     retrieve_worker_result, scan_repo, server_run_flow, validate_request_data,
-    fix_gremlin_output, generate_comparison, get_first_query_result
+    fix_gremlin_output, generate_comparison, get_first_query_result, get_parser_from_ecosystem
 )
 
 from unittest.mock import patch

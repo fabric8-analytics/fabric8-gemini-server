@@ -305,3 +305,33 @@ def test_generate_comparison(_mock1):
     """Test generate_comparison()."""
     result = generate_comparison(2)
     assert(result.get('average_response_time') is not None)
+
+
+class QueryResultMock():
+    """Class that mocks QueryResult class."""
+
+    def __init__(self):
+        """Initialize the mocked QueryResult class."""
+        self.first_called = False
+
+    def first(self):
+        """Implement the tested method with tracepoint variable."""
+        self.first_called = True
+        return "X"
+
+    def get_first_called(self):
+        """Return the actual state of tracepoint variable."""
+        return self.first_called
+
+
+def test_get_first_query_result():
+    """Test the function get_first_query_result()."""
+    query_result_mock = QueryResultMock()
+    # make sure the first() was not called
+    assert not query_result_mock.get_first_called()
+
+    # this is a value returned by mocked class
+    assert get_first_query_result(query_result_mock) == "X"
+
+    # now first() was called, so check it
+    assert query_result_mock.get_first_called()

@@ -335,3 +335,11 @@ def test_get_first_query_result():
 
     # now first() was called, so check it
     assert query_result_mock.get_first_called()
+
+
+def test_get_parser_from_ecosystem():
+    """Test the function get_parser_from_ecosystem()."""
+    assert get_parser_from_ecosystem(None) is None
+    assert get_parser_from_ecosystem("unknown") is None
+    assert get_parser_from_ecosystem("maven") == MavenParser
+    assert get_parser_from_ecosystem("npm") == NodeParser

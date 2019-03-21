@@ -72,3 +72,17 @@ def mock_post_with_error_status_code(*_args, **kwargs):
     # return the empty payload send to the mocked service
     resp = {}
     return MockResponse(resp, 404)
+
+
+@mock.patch('requests.post', side_effect=mock_post_with_payload_check)
+def test_create_repo_node_and_get_cve(_mock_post):
+    """Test the method RepoDependencyCreator.create_repo_node_and_get_cve."""
+    github_repo = "test_repository"
+
+    # direct dependencies list is empty
+    # transitive dependencies list is empty as well
+    deps_list = {"direct": [],
+                 "transitive": []}
+
+    x = RepoDependencyCreator.create_repo_node_and_get_cve(github_repo, deps_list)
+    assert x is not None

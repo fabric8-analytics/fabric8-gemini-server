@@ -86,3 +86,44 @@ def test_create_repo_node_and_get_cve(_mock_post):
 
     x = RepoDependencyCreator.create_repo_node_and_get_cve(github_repo, deps_list)
     assert x is not None
+
+
+@mock.patch('requests.post', side_effect=mock_post_with_payload_check)
+def test_create_repo_node_and_get_cve_direct_dependency(_mock_post):
+    """Test the method RepoDependencyCreator.create_repo_node_and_get_cve."""
+    github_repo = "test_repository"
+
+    # only direct dependency list is filled in
+    # transitive dependencies list is empty
+    deps_list = {"direct": ["xxx:yyy:zzz:www"],
+                 "transitive": []}
+
+    x = RepoDependencyCreator.create_repo_node_and_get_cve(github_repo, deps_list)
+    assert x is not None
+
+
+@mock.patch('requests.post', side_effect=mock_post_with_payload_check)
+def test_create_repo_node_and_get_cve_direct_dependency_epv_only(_mock_post):
+    """Test the method RepoDependencyCreator.create_repo_node_and_get_cve."""
+    github_repo = "test_repository"
+
+    # use EPV only in direct dependencies
+    deps_list = {"direct": ["xxx:yyy:zzz"],
+                 "transitive": []}
+
+    x = RepoDependencyCreator.create_repo_node_and_get_cve(github_repo, deps_list)
+    assert x is not None
+
+
+@mock.patch('requests.post', side_effect=mock_post_with_payload_check)
+def test_create_repo_node_and_get_cve_direct_dependencies(_mock_post):
+    """Test the method RepoDependencyCreator.create_repo_node_and_get_cve."""
+    github_repo = "test_repository"
+
+    # only direct dependency list is filled in
+    # transitive dependencies list is empty
+    deps_list = {"direct": ["xxx:yyy:zzz:www", "x2:y2:z2:w2"],
+                 "transitive": []}
+
+    x = RepoDependencyCreator.create_repo_node_and_get_cve(github_repo, deps_list)
+    assert x is not None

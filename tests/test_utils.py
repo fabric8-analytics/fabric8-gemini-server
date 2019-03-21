@@ -344,5 +344,5 @@ def test_get_parser_from_ecosystem():
     """Test the function get_parser_from_ecosystem()."""
     assert get_parser_from_ecosystem(None) is None
     assert get_parser_from_ecosystem("unknown") is None
-    assert get_parser_from_ecosystem("maven") == MavenParser
-    assert get_parser_from_ecosystem("npm") == NodeParser
+    assert get_parser_from_ecosystem("maven").__name__ == MavenParser.__name__
+    assert get_parser_from_ecosystem("npm").__name__ == NodeParser.__name__

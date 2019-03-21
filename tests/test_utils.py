@@ -10,6 +10,9 @@ from src.utils import (
     fix_gremlin_output, generate_comparison, get_first_query_result, get_parser_from_ecosystem
 )
 
+from src.parsers.maven_parser import MavenParser
+from src.parsers.node_parser import NodeParser
+
 from unittest.mock import patch
 import requests
 import pytest

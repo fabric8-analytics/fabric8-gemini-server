@@ -3,7 +3,7 @@
 from src.repo_dependency_creator import RepoDependencyCreator
 from pathlib import Path
 import json
-# import pytest
+import pytest
 from unittest import mock
 
 
@@ -165,3 +165,59 @@ def test_create_repo_node_and_get_cve_transitive_dependencies(_mock_post):
 
     x = RepoDependencyCreator.create_repo_node_and_get_cve(github_repo, deps_list)
     assert x is not None
+
+
+@mock.patch('requests.post', side_effect=mock_post_with_payload_check)
+def test_create_repo_node_and_get_cve_direct_and_transitive_dependencies(_mock_post):
+    """Test the method RepoDependencyCreator.create_repo_node_and_get_cve."""
+    github_repo = "test_repository"
+
+    deps_list = {"direct": ["a:b:c:d", "e:f:g"],
+                 "transitive": ["xxx:yyy:zzz:www", "x2:y2:z2:w2"]}
+
+    x = RepoDependencyCreator.create_repo_node_and_get_cve(github_repo, deps_list)
+    assert x is not None
+
+
+@mock.patch('requests.post', side_effect=mock_post_with_error_status_code)
+def test_create_repo_node_and_get_cve_error_status_code(_mock_post):
+    """Test the method RepoDependencyCreator.create_repo_node_and_get_cve."""
+    github_repo = "test_repository"
+    deps_list = {"direct": [],
+                 "transitive": []}
+    with pytest.raises(Exception) as e:
+        RepoDependencyCreator.create_repo_node_and_get_cve(github_repo, deps_list)
+        assert e is not None
+
+
+@mock.patch('requests.post', side_effect=mock_post_with_error_status_code)
+def test_create_repo_node_and_get_cve_error_status_code_direct_dependency(_mock_post):
+    """Test the method RepoDependencyCreator.create_repo_node_and_get_cve."""
+    github_repo = "test_repository"
+    deps_list = {"direct": ["xxx:yyy:zzz:www"],
+                 "transitive": []}
+    with pytest.raises(Exception) as e:
+        RepoDependencyCreator.create_repo_node_and_get_cve(github_repo, deps_list)
+        assert e is not None
+
+
+@mock.patch('requests.post', side_effect=mock_post_with_error_status_code)
+def test_create_repo_node_and_get_cve_error_status_code_transitive_dependency(_mock_post):
+    """Test the method RepoDependencyCreator.create_repo_node_and_get_cve."""
+    github_repo = "test_repository"
+    deps_list = {"direct": [],
+                 "transitive": ["xxx:yyy:zzz:www"]}
+    with pytest.raises(Exception) as e:
+        RepoDependencyCreator.create_repo_node_and_get_cve(github_repo, deps_list)
+        assert e is not None
+
+
+@mock.patch('requests.post', side_effect=mock_post_with_error_status_code)
+def test_create_repo_node_and_get_cve_error_status_code_direct_transitive_dependency(_mock_post):
+    """Test the method RepoDependencyCreator.create_repo_node_and_get_cve."""
+    github_repo = "test_repository"
+    deps_list = {"direct": ["a:b:c:d"],
+                 "transitive": ["xxx:yyy:zzz:www"]}
+    with pytest.raises(Exception) as e:
+        RepoDependencyCreator.create_repo_node_and_get_cve(github_repo, deps_list)
+        assert e is not None

@@ -7,8 +7,11 @@ from sqlalchemy.orm.exc import NoResultFound
 from src.utils import (
     DatabaseIngestion, alert_user, fetch_public_key, get_session, get_session_retry,
     retrieve_worker_result, scan_repo, server_run_flow, validate_request_data,
-    fix_gremlin_output, generate_comparison, get_first_query_result
+    fix_gremlin_output, generate_comparison, get_first_query_result, get_parser_from_ecosystem
 )
+
+from src.parsers.maven_parser import MavenParser
+from src.parsers.node_parser import NodeParser
 
 from unittest.mock import patch
 import requests
@@ -335,3 +338,11 @@ def test_get_first_query_result():
 
     # now first() was called, so check it
     assert query_result_mock.get_first_called()
+
+
+def test_get_parser_from_ecosystem():
+    """Test the function get_parser_from_ecosystem()."""
+    assert get_parser_from_ecosystem(None) is None
+    assert get_parser_from_ecosystem("unknown") is None
+    assert get_parser_from_ecosystem("maven").__name__ == MavenParser.__name__
+    assert get_parser_from_ecosystem("npm").__name__ == NodeParser.__name__

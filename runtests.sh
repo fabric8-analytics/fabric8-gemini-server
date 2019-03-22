@@ -1,6 +1,6 @@
 #!/usr/bin/bash -ex
 
-COVERAGE_THRESHOLD=70
+COVERAGE_THRESHOLD=80
 
 export TERM=xterm
 TERM=${TERM:-xterm}

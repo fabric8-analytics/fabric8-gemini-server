@@ -106,6 +106,24 @@ class S3Helper:
             raise e
         return result
 
+    def list_cve_objects(self, frequency='weekly'):
+        """Fetch the list of cve objects found on the S3 bucket."""
+        prefix = '{dp}/ingestion-data/cve/{freq}'.format(dp=self.deployment_prefix, freq=frequency)
+        res = {'objects': []}
+        for obj in self.s3_bucket_obj.objects.filter(Prefix=prefix):
+            if os.path.basename(obj.key) != '':
+                res['objects'].append(obj.key)
+        return res
+
+    def list_epv_objects(self):
+        """Fetch the list of epv objects found on the S3 bucket."""
+        prefix = '{dp}/ingestion-data/epv'.format(dp=self.deployment_prefix)
+        res = {'objects': []}
+        for obj in self.s3_bucket_obj.objects.filter(Prefix=prefix):
+            if os.path.basename(obj.key) != '':
+                res['objects'].append(obj.key)
+        return res
+
 
 _s3_helper = S3Helper()
 

@@ -21,3 +21,5 @@ __pycache__/
 venv/
 html/
 latex/
+
+.DS_Store

@@ -4,7 +4,7 @@ ENV F8A_WORKER_VERSION=6503230
 ENV F8A_AUTH_VERSION=fff8f49
 
 RUN yum install -y epel-release &&\
-    yum install -y gcc git python34-pip python34-requests httpd httpd-devel python34-devel &&\
+    yum install -y gcc git python36-pip python36-requests httpd httpd-devel python36-devel &&\
     yum clean all
 
 COPY ./requirements.txt /

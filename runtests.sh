@@ -13,12 +13,18 @@ YELLOW=$(tput bold && tput setaf 3)
 
 printf "%sShutting down docker-compose ..." "${NORMAL}"
 
+check_python_version() {
+    python3 tools/check_python_version.py 3 6
+}
+
 gc() {
   retval=$?
   docker-compose -f docker-compose.yml down -v || :
   exit $retval
 }
 trap gc EXIT SIGINT
+
+check_python_version
 
 # Enter local-setup/ directory
 # Run local instances for: dynamodb, gremlin-websocket, gremlin-http
@@ -40,7 +46,7 @@ function prepare_venv() {
     VIRTUALENV=$(which virtualenv)
     if [ $? -eq 1 ]
     then
-        # python34 which is in CentOS does not have virtualenv binary
+        # python36 which is in CentOS does not have virtualenv binary
         VIRTUALENV=$(which virtualenv-3)
     fi
 

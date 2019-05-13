@@ -1,4 +1,5 @@
 """Definition of the routes for gemini server."""
+import os
 import flask
 import requests
 from flask import Flask, request

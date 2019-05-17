@@ -45,3 +45,4 @@ six==1.11.0               # via flask-cors, mando, more-itertools, pytest, pytho
 sqlalchemy==1.2.12
 urllib3==1.23             # via botocore, requests
 werkzeug==0.14.1          # via flask
+sentry-sdk==0.7.2

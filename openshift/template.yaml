@@ -103,7 +103,10 @@ objects:
           - name: WORKER_ADMINISTRATION_REGION
             value: "api"
           - name: SENTRY_DSN
-            value: "${SENTRY_DSN}"
+            valueFrom:
+              secretKeyRef:
+                name: worker
+                key: sentry_dsn
           - name: BAYESIAN_FETCH_PUBLIC_KEY
             valueFrom:
               configMapKeyRef:
@@ -231,12 +234,6 @@ parameters:
   required: true
   name: GEMINI_API_SERVICE_PORT
   value: "5000"
-
-- description: Sentry DSN
-  displayName: Sentry DSN
-  required: false
-  name: SENTRY_DSN
-  value: ""
 
 - description: "Flask logging level (see: https://docs.python.org/3/library/logging.html#levels)"
   displayName: Flask logging level

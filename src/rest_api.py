@@ -1,4 +1,5 @@
 """Definition of the routes for gemini server."""
+import os
 import flask
 import requests
 from flask import Flask, request
@@ -13,10 +14,13 @@ from exceptions import HTTPError
 from repo_dependency_creator import RepoDependencyCreator
 from notification.user_notification import UserNotification
 from fabric8a_auth.errors import AuthError
+import sentry_sdk
 
 
 app = Flask(__name__)
 CORS(app)
+
+sentry_sdk.init(os.environ.get("SENTRY_DSN"))
 
 init_selinon()
 

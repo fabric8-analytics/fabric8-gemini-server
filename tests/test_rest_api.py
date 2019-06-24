@@ -141,10 +141,10 @@ def test_liveness_endpoint(client):
     assert json_data == {}
 
 
-def test_liveness_endpoint_wrong_http_method(client):
-    """Test the /api/v1/liveness endpoint by calling it with wrong HTTP method."""
-    url = api_route_for("liveness")
-    response = client.post(url)
+def test_sync_data(client):
+    """Test the /api/v1/sync-graph-data endpoint."""
+    url = api_route_for("sync-graph-data")
+    response = client.get(url)
     assert response.status_code == 405
     response = client.put(url)
     assert response.status_code == 405
@@ -152,6 +152,52 @@ def test_liveness_endpoint_wrong_http_method(client):
     assert response.status_code == 405
     response = client.delete(url)
     assert response.status_code == 405
+
+
+@patch("requests.Session.post", return_value="")
+def test_sync_data1(_mock1, client):
+    """Test the /api/v1/sync-graph-data endpoint."""
+    url = api_route_for("sync-graph-data")
+    inp = {
+        "non_cve_sync": "false",
+        "latest_version_sync": "true",
+        "cve_ecosystem": ["npm"]
+    }
+    response = client.post(url,
+                           data=json.dumps(inp),
+                           content_type='application/json')
+    assert response.status_code == 200
+
+    inp = {
+        "non_cve_sync": "true",
+        "latest_version_sync": "true"
+    }
+    response = client.post(url,
+                           data=json.dumps(inp),
+                           content_type='application/json')
+    assert response.status_code == 400
+
+    inp = {
+        "non_cve_sync": "true",
+        "latest_version_sync": "true",
+        "cve_ecosystem": ["npm"]
+    }
+    response = client.post(url,
+                           data=json.dumps(inp),
+                           content_type='application/json')
+    assert response.status_code == 200
+
+
+def test_register_endpoint_1(client):
+    """Test the /api/v1/register endpoint."""
+    reg_resp = client.post(api_route_for('register'),
+                           data=json.dumps(payload))
+    assert reg_resp.status_code == 400
+    reg_resp_json = get_json_from_response(reg_resp)
+    assert reg_resp_json == {
+        "success": False,
+        "summary": "Set content type to application/json"
+    }
 
 
 @patch("src.rest_api.retrieve_worker_result")

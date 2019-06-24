@@ -16,11 +16,13 @@ from notification.user_notification import UserNotification
 from fabric8a_auth.errors import AuthError
 import sentry_sdk
 from requests_futures.sessions import FuturesSession
+import logging
 
 
 app = Flask(__name__)
 CORS(app)
-
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 sentry_sdk.init(os.environ.get("SENTRY_DSN"))
 
 init_selinon()
@@ -61,35 +63,42 @@ def sync_data():
     or latest version or both.
 
     valid input: {
-        "non_cve_sync": True / False
-        "latest_version_sync: True / false
+        "non_cve_sync": True / False,
+        "latest_version_sync": True / false,
         "cve_ecosystem": ['maven', 'pypi, 'npm']
     }
 
     """
     resp = {
         "success": True,
-        "message": "Sync operation started."
+        "message": "Sync operation started ->"
     }
 
     input_json = request.get_json()
+    logger.info("sync-graph-data called with the input {i}".format(i=input_json))
     non_cve_sync = input_json.get('non_cve_sync', False)
-    if non_cve_sync:
+    if non_cve_sync == "true":
         cve_ecosystem = input_json.get('cve_ecosystem', [])
         if len(cve_ecosystem) == 0:
             resp['success'] = False
             resp['message'] = "Incorrect data.. Send cve_ecosystem for non_cve_sync operation"
+            logger.error("Incorrect data.. Send cve_ecosystem for non_cve_sync operation")
             return flask.jsonify(resp), 400
         url = "http://{host}:{port}/{endpoint}".format(host=_SERVICE_HOST,
                                                        port=_SERVICE_PORT,
                                                        endpoint=_CVE_SYNC_ENDPOINT)
+        logger.info("Calling non cve sync with {i}".format(i=cve_ecosystem))
         _session.post(url, json=cve_ecosystem)
+        resp['message'] = resp['message'] + " for non cve version"
     latest_version_sync = input_json.get('latest_version_sync', False)
-    if latest_version_sync:
+    if latest_version_sync == "true":
         url = "http://{host}:{port}/{endpoint}".format(host=_SERVICE_HOST,
                                                        port=_SERVICE_PORT,
                                                        endpoint=_LATEST_VERSION_SYNC_ENDPOINT)
+        logger.info("Calling latest version sync with 'all'")
         _session.post(url, json=['all'])
+        resp['message'] = resp['message'] + " for latest version"
+    logger.info("Sync operation called.. Message->", resp['message'])
     return flask.jsonify(resp), 200
 
 

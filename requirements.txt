@@ -39,6 +39,7 @@ pytest-mock==1.10.0
 pytest==3.8.1
 python-dateutil==2.8.0    # via botocore
 radon==3.0.1
+requests-futures==1.0.0
 requests==2.19.1
 s3transfer==0.2.0         # via boto3
 six==1.11.0               # via flask-cors, mando, more-itertools, pytest, python-dateutil

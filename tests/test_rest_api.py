@@ -188,18 +188,6 @@ def test_sync_data1(_mock1, client):
     assert response.status_code == 200
 
 
-def test_register_endpoint_1(client):
-    """Test the /api/v1/register endpoint."""
-    reg_resp = client.post(api_route_for('register'),
-                           data=json.dumps(payload))
-    assert reg_resp.status_code == 400
-    reg_resp_json = get_json_from_response(reg_resp)
-    assert reg_resp_json == {
-        "success": False,
-        "summary": "Set content type to application/json"
-    }
-
-
 @patch("src.rest_api.retrieve_worker_result")
 def test_report_endpoint(mocker, client):
     """Test the /api/v1/report endpoint."""

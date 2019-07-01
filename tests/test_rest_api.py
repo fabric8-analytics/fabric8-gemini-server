@@ -158,32 +158,32 @@ def test_sync_data(client):
 def test_sync_data1(_mock1, client):
     """Test the /api/v1/sync-graph-data endpoint."""
     url = api_route_for("sync-graph-data")
-    inp = {
-        "non_cve_sync": "false",
+    inp = '''{
+        "non_cve_sync": true,
         "latest_version_sync": "true",
         "cve_ecosystem": ["npm"]
-    }
+    }'''
     response = client.post(url,
-                           data=json.dumps(inp),
+                           data=inp,
                            content_type='application/json')
     assert response.status_code == 200
 
-    inp = {
+    inp = '''{
         "non_cve_sync": "true",
         "latest_version_sync": "true"
-    }
+    }'''
     response = client.post(url,
-                           data=json.dumps(inp),
+                           data=inp,
                            content_type='application/json')
     assert response.status_code == 400
 
-    inp = {
+    inp = '''{
         "non_cve_sync": "true",
         "latest_version_sync": "true",
         "cve_ecosystem": ["npm"]
-    }
+    }'''
     response = client.post(url,
-                           data=json.dumps(inp),
+                           data=inp,
                            content_type='application/json')
     assert response.status_code == 200
 

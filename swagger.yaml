@@ -38,8 +38,8 @@ paths:
         - application/json
       parameters:
         - in: body
-          name: repo
-          description: repository details and email id
+          name: sync
+          description: parameters to perform sync operation
           required: true
           schema:
             $ref: '#/definitions/sync'

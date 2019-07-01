@@ -77,7 +77,7 @@ def sync_data():
     input_json = request.get_json()
     logger.info("sync-graph-data called with the input {i}".format(i=input_json))
     non_cve_sync = input_json.get('non_cve_sync', False)
-    if non_cve_sync == "true":
+    if non_cve_sync:
         cve_ecosystem = input_json.get('cve_ecosystem', [])
         if len(cve_ecosystem) == 0:
             resp['success'] = False
@@ -91,7 +91,7 @@ def sync_data():
         _session.post(url, json=cve_ecosystem)
         resp['message'] = resp['message'] + " for non cve version"
     latest_version_sync = input_json.get('latest_version_sync', False)
-    if latest_version_sync == "true":
+    if latest_version_sync:
         url = "http://{host}:{port}/{endpoint}".format(host=_SERVICE_HOST,
                                                        port=_SERVICE_PORT,
                                                        endpoint=_LATEST_VERSION_SYNC_ENDPOINT)

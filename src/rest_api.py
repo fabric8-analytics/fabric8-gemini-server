@@ -63,8 +63,8 @@ def sync_data():
     or latest version or both.
 
     valid input: {
-        "non_cve_sync": True / False,
-        "latest_version_sync": True / false,
+        "non_cve_sync": true/false,
+        "latest_version_sync": true/false,
         "cve_ecosystem": ['maven', 'pypi, 'npm']
     }
 

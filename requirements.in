@@ -12,3 +12,4 @@ codecov
 radon
 boto3
 sentry-sdk
+requests-futures

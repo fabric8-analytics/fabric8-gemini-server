@@ -1,6 +1,6 @@
 """Definition of the routes for gemini server."""
-import os
 import flask
+import os
 import requests
 from flask import Flask, request
 from flask_cors import CORS
@@ -15,14 +15,23 @@ from repo_dependency_creator import RepoDependencyCreator
 from notification.user_notification import UserNotification
 from fabric8a_auth.errors import AuthError
 import sentry_sdk
+from requests_futures.sessions import FuturesSession
+import logging
 
 
 app = Flask(__name__)
 CORS(app)
-
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 sentry_sdk.init(os.environ.get("SENTRY_DSN"))
 
 init_selinon()
+_session = FuturesSession(max_workers=3)
+
+_SERVICE_HOST = os.environ.get("BAYESIAN_DATA_IMPORTER_SERVICE_HOST", "bayesian-data-importer")
+_SERVICE_PORT = os.environ.get("BAYESIAN_DATA_IMPORTER_SERVICE_PORT", "9192")
+_CVE_SYNC_ENDPOINT = "api/v1/sync_latest_non_cve_version"
+_LATEST_VERSION_SYNC_ENDPOINT = "api/v1/sync_latest_version"
 
 SERVICE_TOKEN = 'token'
 try:
@@ -42,6 +51,55 @@ def readiness():
 def liveness():
     """Liveness probe."""
     return flask.jsonify({}), 200
+
+
+@app.route('/api/v1/sync-graph-data', methods=['POST'])
+@login_required
+def sync_data():
+    """
+    Endpoint for carrying a sync of graph db data.
+
+    Takes in value to either call sync of non cve version
+    or latest version or both.
+
+    valid input: {
+        "non_cve_sync": true/false,
+        "latest_version_sync": true/false,
+        "cve_ecosystem": ['maven', 'pypi, 'npm']
+    }
+
+    """
+    resp = {
+        "success": True,
+        "message": "Sync operation started ->"
+    }
+
+    input_json = request.get_json()
+    logger.info("sync-graph-data called with the input {i}".format(i=input_json))
+    non_cve_sync = input_json.get('non_cve_sync', False)
+    if non_cve_sync:
+        cve_ecosystem = input_json.get('cve_ecosystem', [])
+        if len(cve_ecosystem) == 0:
+            resp['success'] = False
+            resp['message'] = "Incorrect data.. Send cve_ecosystem for non_cve_sync operation"
+            logger.error("Incorrect data.. Send cve_ecosystem for non_cve_sync operation")
+            return flask.jsonify(resp), 400
+        url = "http://{host}:{port}/{endpoint}".format(host=_SERVICE_HOST,
+                                                       port=_SERVICE_PORT,
+                                                       endpoint=_CVE_SYNC_ENDPOINT)
+        logger.info("Calling non cve sync with {i}".format(i=cve_ecosystem))
+        _session.post(url, json=cve_ecosystem)
+        resp['message'] = resp['message'] + " for non cve version"
+    latest_version_sync = input_json.get('latest_version_sync', False)
+    if latest_version_sync:
+        url = "http://{host}:{port}/{endpoint}".format(host=_SERVICE_HOST,
+                                                       port=_SERVICE_PORT,
+                                                       endpoint=_LATEST_VERSION_SYNC_ENDPOINT)
+        logger.info("Calling latest version sync with 'all'")
+        _session.post(url, json=['all'])
+        resp['message'] = resp['message'] + " for latest version"
+    logger.info("Sync operation called.. Message->", resp['message'])
+    return flask.jsonify(resp), 200
 
 
 @app.route('/api/v1/register', methods=['POST'])

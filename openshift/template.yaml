@@ -85,6 +85,11 @@ objects:
               secretKeyRef:
                 name: aws
                 key: s3-secret-access-key
+          - name: THREESCALE_ACCOUNT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: 3scale
+                key: three_scale_account_secret
           - name: GEMINI_API_SERVICE_PORT
             value: "5000"
           - name: GEMINI_API_SERVICE_TIMEOUT

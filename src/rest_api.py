@@ -67,7 +67,7 @@ def sync_data():
         "non_cve_sync": true/false,
         "latest_version_sync": true/false,
         "cve_ecosystem": ['maven', 'pypi, 'npm'],
-        "cve_source_sync: {'cve_sources': 'CRA','ecosystems': ['npm']}
+        "cve_source_sync: {'cve_sources': 'CRA'}
     }
 
     """
@@ -107,6 +107,7 @@ def sync_data():
                                                        port=_SERVICE_PORT,
                                                        endpoint=_CVE_SOURCE_SYNC_ENDPOINT)
         logger.info("Calling latest cve source sync")
+        cve_source_sync['ecosystems'] = input_json.get('cve_ecosystem', [])
         _session.post(url, json=cve_source_sync)
         resp['message'] = resp['message'] + " for cve source update"
 

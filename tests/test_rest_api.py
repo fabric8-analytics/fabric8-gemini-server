@@ -187,6 +187,15 @@ def test_sync_data1(_mock1, client):
                            content_type='application/json')
     assert response.status_code == 200
 
+    inp = '''{
+           "cve_source_sync": {"cve_sources": "CRA"},
+           "cve_ecosystem": ["npm"]
+        }'''
+    response = client.post(url,
+                           data=inp,
+                           content_type='application/json')
+    assert response.status_code == 200
+
 
 @patch("src.rest_api.retrieve_worker_result")
 def test_report_endpoint(mocker, client):

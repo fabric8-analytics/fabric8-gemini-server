@@ -67,7 +67,7 @@ def sync_data():
         "non_cve_sync": true/false,
         "latest_version_sync": true/false,
         "cve_ecosystem": ['maven', 'pypi, 'npm'],
-        "cve_source_sync: {'cve_sources': 'CRA'}
+        "cve_source_sync": {'cve_sources': 'CRA'}
     }
 
     """
@@ -101,8 +101,8 @@ def sync_data():
         _session.post(url, json=['all'])
         resp['message'] = resp['message'] + " for latest version"
 
-    cve_source_sync = input_json.get('cve_source_sync', False)
-    if cve_source_sync:
+    cve_source_sync = input_json.get('cve_source_sync', {})
+    if cve_source_sync != {}:
         url = "http://{host}:{port}/{endpoint}".format(host=_SERVICE_HOST,
                                                        port=_SERVICE_PORT,
                                                        endpoint=_CVE_SOURCE_SYNC_ENDPOINT)

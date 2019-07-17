@@ -282,6 +282,11 @@ definitions:
           type: string
       latest_version_sync:
         type: boolean
+      cve_source_sync:
+        type: object
+        properties:
+          cve_sources:
+            type: string
   syncresp:
     title: Sync operation response
     description: Sync non cve version and latest version response

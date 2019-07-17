@@ -32,6 +32,7 @@ _SERVICE_HOST = os.environ.get("BAYESIAN_DATA_IMPORTER_SERVICE_HOST", "bayesian-
 _SERVICE_PORT = os.environ.get("BAYESIAN_DATA_IMPORTER_SERVICE_PORT", "9192")
 _CVE_SYNC_ENDPOINT = "api/v1/sync_latest_non_cve_version"
 _LATEST_VERSION_SYNC_ENDPOINT = "api/v1/sync_latest_version"
+_CVE_SOURCE_SYNC_ENDPOINT = "api/v1/sync_cve_source"
 
 SERVICE_TOKEN = 'token'
 try:
@@ -65,7 +66,8 @@ def sync_data():
     valid input: {
         "non_cve_sync": true/false,
         "latest_version_sync": true/false,
-        "cve_ecosystem": ['maven', 'pypi, 'npm']
+        "cve_ecosystem": ['maven', 'pypi, 'npm'],
+        "cve_source_sync": {'cve_sources': 'CRA'}
     }
 
     """
@@ -98,6 +100,17 @@ def sync_data():
         logger.info("Calling latest version sync with 'all'")
         _session.post(url, json=['all'])
         resp['message'] = resp['message'] + " for latest version"
+
+    cve_source_sync = input_json.get('cve_source_sync', {})
+    if cve_source_sync != {}:
+        url = "http://{host}:{port}/{endpoint}".format(host=_SERVICE_HOST,
+                                                       port=_SERVICE_PORT,
+                                                       endpoint=_CVE_SOURCE_SYNC_ENDPOINT)
+        logger.info("Calling latest cve source sync")
+        cve_source_sync['ecosystems'] = input_json.get('cve_ecosystem', [])
+        _session.post(url, json=cve_source_sync)
+        resp['message'] = resp['message'] + " for cve source update"
+
     logger.info("Sync operation called.. Message->", resp['message'])
     return flask.jsonify(resp), 200
 

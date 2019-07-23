@@ -78,13 +78,13 @@ objects:
           - name: AWS_S3_ACCESS_KEY_ID
             valueFrom:
               secretKeyRef:
-               name: aws
-               key: s3-access-key-id
+               name: developer-analytics-audit-report-s3
+               key: aws_access_key_id
           - name: AWS_S3_SECRET_ACCESS_KEY
             valueFrom:
               secretKeyRef:
-                name: aws
-                key: s3-secret-access-key
+                name: developer-analytics-audit-report-s3
+                key: aws_secret_access_key
           - name: THREESCALE_ACCOUNT_SECRET
             valueFrom:
               secretKeyRef:
@@ -99,7 +99,10 @@ objects:
           - name: CLASS_TYPE
             value: "sync"
           - name: REPORT_BUCKET_NAME
-            value: developer-analytics-audit-report
+            valueFrom:
+              secretKeyRef:
+                name: developer-analytics-audit-report-s3
+                key: bucket
           - name: DEPLOYMENT_PREFIX
             valueFrom:
               configMapKeyRef:

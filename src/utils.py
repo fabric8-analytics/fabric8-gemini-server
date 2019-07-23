@@ -89,7 +89,7 @@ class S3Helper:
 
     def list_objects(self, frequency='weekly'):
         """Fetch the list of objects found on the S3 bucket."""
-        prefix = '{dp}/{freq}'.format(dp=self.deployment_prefix, freq=frequency)
+        prefix = '{freq}'.format(freq=frequency)
         res = {'objects': []}
         for obj in self.s3_bucket_obj.objects.filter(Prefix=prefix):
             if os.path.basename(obj.key) != '':

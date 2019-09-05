@@ -307,7 +307,7 @@ def test_fix_gremlin_output():
 def test_generate_comparison(_mock1):
     """Test generate_comparison()."""
     result = generate_comparison(2)
-    assert(result.get('average_response_time') is not None)
+    assert result.get('average_response_time') is not None
 
 
 class QueryResultMock():

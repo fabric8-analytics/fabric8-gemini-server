@@ -20,13 +20,13 @@ fast-docker-build:
 	docker build -t $(REGISTRY)/$(REPOSITORY):$(DEFAULT_TAG) -f $(DOCKERFILE) .
 
 test:
-	./runtests.sh
+	./qa/runtests.sh
 
 check-code-style:
-	./run-linter.sh
+	./qa/run-linter.sh
 
 check-docs-style:
-	./check-docstyle.sh
+	./qa/check-docstyle.sh
 
 get-image-name:
 	@echo $(REGISTRY)/$(REPOSITORY):$(DEFAULT_TAG)

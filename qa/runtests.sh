@@ -1,5 +1,9 @@
 #!/usr/bin/bash -ex
 
+SCRIPT_DIR="$( cd "$( dirname "$0" )" && pwd )"
+
+pushd "${SCRIPT_DIR}/.." > /dev/null
+
 COVERAGE_THRESHOLD=80
 
 export TERM=xterm
@@ -115,3 +119,5 @@ codecov --token=357eac20-296a-434e-abca-0fdd7b3ccbdb
 # deactivate virtual env before deleting it
 deactivate
 rm -rf venv/
+
+popd > /dev/null

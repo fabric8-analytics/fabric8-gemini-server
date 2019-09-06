@@ -8,5 +8,5 @@ set -ex
 build_image
 push_image
 
-./runtests.sh
+./qa/runtests.sh
 

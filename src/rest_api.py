@@ -457,9 +457,7 @@ def get_stacks_report(report):
 
 @app.route('/api/v1/ingestion-report/list', methods=['GET'])
 def list_ingestion_reports():
-    """
-    Endpoint to fetch the list of generated ingestion reports.
-    """
+    """Endpoint to fetch the list of generated ingestion reports."""
     return flask.jsonify(_s3_helper.list_objects("ingestion-data/epv"))
 
 
@@ -476,9 +474,7 @@ def get_ingestion_report(report):
 
 @app.route('/api/v1/sentry-report/list', methods=['GET'])
 def list_sentry_reports():
-    """
-    Endpoint to fetch the list of generated sentry reports.
-    """
+    """Endpoint to fetch the list of generated sentry reports."""
     return flask.jsonify(_s3_helper.list_objects("sentry-error-data"))
 
 

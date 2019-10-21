@@ -87,9 +87,9 @@ class S3Helper:
                                  aws_secret_access_key=self.aws_s3_secret_access_key)
         self.s3_bucket_obj = self.s3.Bucket(os.environ.get('REPORT_BUCKET_NAME'))
 
-    def list_objects(self, frequency='weekly'):
+    def list_objects(self, loc_prefix='weekly'):
         """Fetch the list of objects found on the S3 bucket."""
-        prefix = '{freq}'.format(freq=frequency)
+        prefix = '{loc_prefix}'.format(loc_prefix=loc_prefix)
         res = {'objects': []}
         for obj in self.s3_bucket_obj.objects.filter(Prefix=prefix):
             if os.path.basename(obj.key) != '':

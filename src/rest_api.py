@@ -455,6 +455,40 @@ def get_stacks_report(report):
     return flask.jsonify(_s3_helper.get_object_content(report))
 
 
+@app.route('/api/v1/ingestion-report/list', methods=['GET'])
+def list_ingestion_reports():
+    """Endpoint to fetch the list of generated ingestion reports."""
+    return flask.jsonify(_s3_helper.list_objects("ingestion-data/epv"))
+
+
+@app.route('/api/v1/ingestion-report/report/<path:report>', methods=['GET'])
+def get_ingestion_report(report):
+    """
+    Endpoint to retrieve a generated ingestion report.
+
+    A report matching with the filename retrieved using the ingestion-report/list
+    will be returned.
+    """
+    return flask.jsonify(_s3_helper.get_object_content(report))
+
+
+@app.route('/api/v1/sentry-report/list', methods=['GET'])
+def list_sentry_reports():
+    """Endpoint to fetch the list of generated sentry reports."""
+    return flask.jsonify(_s3_helper.list_objects("sentry-error-data"))
+
+
+@app.route('/api/v1/sentry-report/report/<path:report>', methods=['GET'])
+def get_sentry_report(report):
+    """
+    Endpoint to retrieve a generated sentry report.
+
+    A report matching with the filename retrieved using the sentry-report/list
+    will be returned.
+    """
+    return flask.jsonify(_s3_helper.get_object_content(report))
+
+
 @app.route('/api/v1/stacks-report/compare', methods=['GET'])
 def compare_stacks_report():
     """

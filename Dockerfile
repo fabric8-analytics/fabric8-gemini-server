@@ -9,7 +9,7 @@ RUN yum install -y epel-release &&\
 
 COPY ./requirements.txt /
 
-RUN pip3 install --upgrade pip>=10.0.0 &&\
+RUN python3 -m pip install --upgrade pip>=10.0.0 &&\
     pip3 install -r requirements.txt && rm requirements.txt
 
 COPY ./src /src

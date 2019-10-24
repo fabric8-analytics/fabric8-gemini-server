@@ -103,13 +103,6 @@ class S3Helper:
             result = json.loads(obj.get()['Body'].read().decode('utf-8'))
         except ClientError as e:
             logger.error('Exception found: %r' % e)
-            if e.response.get('Error').get('Code') == 'NoSuchKey':
-                return {
-                    'key': "{key}".format(key=e.response['Error']['Key']),
-                    'message': "{} Please check the url and try again.".format(
-                        e.response['Error']['Message'])
-                }
-
             raise e
         return result
 

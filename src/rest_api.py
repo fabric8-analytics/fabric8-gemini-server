@@ -2,6 +2,7 @@
 import flask
 import os
 import requests
+from botocore.exceptions import ClientError
 from flask import Flask, request
 from flask_cors import CORS
 from utils import DatabaseIngestion, scan_repo, validate_request_data, \
@@ -452,7 +453,13 @@ def get_stacks_report(report):
     A report matching with the filename retrieved using the /stacks-report/list/{frequency}
     will be returned.
     """
-    return flask.jsonify(_s3_helper.get_object_content(report))
+    try:
+        return flask.jsonify(_s3_helper.get_object_content(report)), 200
+    except ClientError as e:
+        return flask.jsonify({
+            'key': "{key}".format(key=e.response.get('Error').get('Key')),
+            'message': "{}".format(e.response.get('Error').get('Message'))
+        }), 400
 
 
 @app.route('/api/v1/ingestion-report/list', methods=['GET'])

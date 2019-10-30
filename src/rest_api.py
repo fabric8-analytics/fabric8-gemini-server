@@ -459,7 +459,7 @@ def get_stacks_report(report):
         return flask.jsonify({
             'key': "{key}".format(key=e.response.get('Error').get('Key')),
             'message': "{}".format(e.response.get('Error').get('Message'))
-        }), 400
+        }), 404
 
 
 @app.route('/api/v1/ingestion-report/list', methods=['GET'])

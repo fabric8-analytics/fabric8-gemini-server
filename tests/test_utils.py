@@ -7,7 +7,8 @@ from sqlalchemy.orm.exc import NoResultFound
 from src.utils import (
     DatabaseIngestion, alert_user, fetch_public_key, get_session, get_session_retry,
     retrieve_worker_result, scan_repo, server_run_flow, validate_request_data,
-    fix_gremlin_output, generate_comparison, get_first_query_result, get_parser_from_ecosystem
+    fix_gremlin_output, generate_comparison, get_first_query_result, get_parser_from_ecosystem,
+    PostgresPassThrough, GraphPassThrough
 )
 
 from src.parsers.maven_parser import MavenParser
@@ -19,6 +20,8 @@ import pytest
 import os
 import json
 
+ppt = PostgresPassThrough()
+gpt = GraphPassThrough()
 
 mocked_object_response = {'stacks_summary': {'total_average_response_time': '200ms'}}
 
@@ -346,3 +349,43 @@ def test_get_parser_from_ecosystem():
     assert get_parser_from_ecosystem("unknown") is None
     assert get_parser_from_ecosystem("maven").__name__ == MavenParser.__name__
     assert get_parser_from_ecosystem("npm").__name__ == NodeParser.__name__
+
+
+def test_fetch_records():
+    """Test the PostgresPassThrough fetch records module."""
+    query = "select id from worker_results limit 1;"
+    resp = ppt.fetch_records(data={})
+    assert resp['warning'] == 'Invalid payload. Check your payload once again'
+    resp = ppt.fetch_records(data={'query': {'query': ''}})
+    assert resp['error'] is not None
+    resp = ppt.fetch_records(data={'query': 'delete all from some_table;'})
+    assert resp['error'] is not None
+    data = {'query': query}
+    resp = ppt.fetch_records(data)
+    assert resp is not None
+
+
+graph_resp = {
+    "requestId": "5cc29849-8e9b-4b66-90d0-f2569dc962b9",
+    "status": {
+        "message": "",
+        "code": 200,
+        "attributes": {}
+    },
+    "result": {
+        "data": [],
+        "meta": {}
+    }
+}
+
+
+@patch("src.utils.requests.post", return_value=graph_resp)
+def test_fetch_nodes(_mock1):
+    """Test the GraphPassThrough fetch nodes module."""
+    resp = gpt.fetch_nodes(data={})
+    assert resp['warning'] == 'Invalid payload. Check your payload once again'
+    resp = gpt.fetch_nodes(data={"query": "g.V().has('foo','bar').drop()')"})
+    assert resp['error'] is not None
+    query = "g.V().has('name','foo').valueMap();"
+    resp = gpt.fetch_nodes(data={'query': query})
+    assert resp is not None

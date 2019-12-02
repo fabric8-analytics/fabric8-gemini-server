@@ -7,7 +7,7 @@ from flask import Flask, request
 from flask_cors import CORS
 from utils import DatabaseIngestion, scan_repo, validate_request_data, \
     retrieve_worker_result, alert_user, GREMLIN_SERVER_URL_REST, _s3_helper, \
-    generate_comparison
+    generate_comparison, GraphPassThrough, PostgresPassThrough
 from f8a_worker.setup_celery import init_selinon
 from fabric8a_auth.auth import login_required, init_service_account_token
 from data_extractor import DataExtractor
@@ -28,6 +28,9 @@ sentry_sdk.init(os.environ.get("SENTRY_DSN"))
 
 init_selinon()
 _session = FuturesSession(max_workers=3)
+
+gpt = GraphPassThrough()
+ppt = PostgresPassThrough()
 
 _SERVICE_HOST = os.environ.get("BAYESIAN_DATA_IMPORTER_SERVICE_HOST", "bayesian-data-importer")
 _SERVICE_PORT = os.environ.get("BAYESIAN_DATA_IMPORTER_SERVICE_PORT", "9192")
@@ -433,6 +436,24 @@ def drop():  # pragma: no cover
 
     resp_dict['summary'] = 'Repository scan unsubscribed'
     return flask.jsonify(resp_dict), 200
+
+
+@app.route('/api/v1/graph', methods=['POST'])
+def graph():
+    """Endpoint to get graph node properties."""
+    input_json = request.get_json()
+    response = gpt.fetch_nodes(input_json)
+
+    return flask.jsonify(response)
+
+
+@app.route('/api/v1/pgsql', methods=['POST'])
+def pgsql():
+    """Endpoint to get graph node properties."""
+    input_json = request.get_json()
+    response = ppt.fetch_records(input_json)
+
+    return flask.jsonify(response)
 
 
 @app.route('/api/v1/stacks-report/list/<frequency>', methods=['GET'])

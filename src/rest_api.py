@@ -439,6 +439,7 @@ def drop():  # pragma: no cover
 
 
 @app.route('/api/v1/graph', methods=['POST'])
+@login_required
 def graph():
     """Endpoint to get graph node properties."""
     input_json = request.get_json()
@@ -448,6 +449,7 @@ def graph():
 
 
 @app.route('/api/v1/pgsql', methods=['POST'])
+@login_required
 def pgsql():
     """Endpoint to get graph node properties."""
     input_json = request.get_json()

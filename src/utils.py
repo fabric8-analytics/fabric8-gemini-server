@@ -63,12 +63,13 @@ class GraphPassThrough:
         """Fetch node from graph database."""
         if data and data.get('query'):
             try:
+                # sanitize the query to drop CRUD operations
                 query = sanitize_text_for_query(data['query'])
                 if query:
                     payload = {'gremlin': query}
                     resp = requests.post(url=GREMLIN_SERVER_URL_REST, json=payload)
                     return {'data': resp.json()}
-            except (ValueError, Exception) as e:
+            except (ValueError, requests.exceptions.Timeout, Exception) as e:
                 return {'error': str(e)}
         else:
             return {'warning': 'Invalid payload. Check your payload once again'}
@@ -91,6 +92,7 @@ class PostgresPassThrough:
         """Fetch records from RDS database."""
         if data and data.get('query'):
             try:
+                # sanitize the query to drop CRUD operations
                 query = sanitize_text_for_query(data['query'])
                 if query:
                     self.cursor.execute(query)

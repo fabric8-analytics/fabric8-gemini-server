@@ -442,3 +442,35 @@ def test_notify_user_endpoint_2(alert_user, client):
                        content_type='application/json')
 
     assert resp.status_code == 200
+
+
+@patch('src.rest_api.PostgresPassThrough.fetch_records',
+       return_value=[('id', '12345')])
+def test_pgsql_endpoint(_mock1, client):
+    """Test the /api/v1/pgsql endpoint."""
+    resp = client.post(api_route_for('pgsql'))
+    assert resp is not None
+
+
+graph_response = {
+    "data": {
+        "requestId": "96604945-a7ca-4f90-83c9-90b00b339fd2",
+        "result": {
+            "data": [],
+            "meta": {}
+        },
+        "status": {
+            "attributes": {},
+            "code": 200,
+            "message": ""
+        }
+    }
+}
+
+
+@patch('src.rest_api.GraphPassThrough.fetch_nodes',
+       return_value=graph_response)
+def test_graph_endpoint(_mock1, client):
+    """Test the /api/v1/graph endpoint."""
+    resp = client.post(api_route_for('graph'))
+    assert resp is not None

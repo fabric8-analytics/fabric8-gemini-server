@@ -17,6 +17,8 @@ import os
 import logging
 import boto3
 import json
+import re
+import psycopg2
 from botocore.exceptions import ClientError
 
 logger = logging.getLogger(__name__)
@@ -28,6 +30,77 @@ GREMLIN_SERVER_URL_REST = "http://{host}:{port}".format(
 LICENSE_SCORING_URL_REST = "http://{host}:{port}".format(
     host=os.environ.get("LICENSE_SERVICE_HOST"),
     port=os.environ.get("LICENSE_SERVICE_PORT"))
+
+
+def sanitize_text_for_query(text):
+    """
+    Sanitize text so it can used in queries.
+
+    :param text: string, text to sanitize
+    :return: sanitized text
+    """
+    if text is None:
+        return ''
+
+    if not isinstance(text, str):
+        raise ValueError(
+            'Invalid query text: expected string, got {t}'.format(t=type(text))
+        )
+
+    strict_check_words = ['drop', 'delete', 'update', 'remove', 'insert']
+    if re.compile('|'.join(strict_check_words), re.IGNORECASE).search(text):
+        raise ValueError('Only select queries are supported')
+
+    # remove newlines, quotes and backslash character
+    text = " ".join([l.strip() for l in text.split("\n")])
+    return text.strip()
+
+
+class GraphPassThrough:
+    """Graph database pass through handler."""
+
+    def fetch_nodes(self, data):
+        """Fetch node from graph database."""
+        if data and data.get('query'):
+            try:
+                # sanitize the query to drop CRUD operations
+                query = sanitize_text_for_query(data['query'])
+                if query:
+                    payload = {'gremlin': query}
+                    resp = requests.post(url=GREMLIN_SERVER_URL_REST, json=payload)
+                    return {'data': resp.json()}
+            except (ValueError, requests.exceptions.Timeout, Exception) as e:
+                return {'error': str(e)}
+        else:
+            return {'warning': 'Invalid payload. Check your payload once again'}
+
+
+class PostgresPassThrough:
+    """Postgres connection pass through session and cursor handler."""
+
+    def __init__(self):
+        """Initialize the connection to Postgres database using psycopg2 as a pass through."""
+        conn_string = "host='{host}' dbname='{dbname}' user='{user}' password='{password}'".\
+            format(host=os.getenv('PGBOUNCER_SERVICE_HOST', 'bayesian-pgbouncer'),
+                   dbname=os.getenv('POSTGRESQL_DATABASE', 'coreapi'),
+                   user=os.getenv('POSTGRESQL_USER', 'coreapi'),
+                   password=os.getenv('POSTGRESQL_PASSWORD', 'coreapi'))
+        self.conn = psycopg2.connect(conn_string)
+        self.cursor = self.conn.cursor()
+
+    def fetch_records(self, data):
+        """Fetch records from RDS database."""
+        if data and data.get('query'):
+            try:
+                # sanitize the query to drop CRUD operations
+                query = sanitize_text_for_query(data['query'])
+                if query:
+                    self.cursor.execute(query)
+                    return {'data': self.cursor.fetchmany(10)}
+            except (ValueError, Exception) as e:
+                return {'error': str(e)}
+        else:
+            return {'warning': 'Invalid payload. Check your payload once again'}
 
 
 class Postgres:

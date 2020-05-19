@@ -27,7 +27,7 @@ itsdangerous==0.24        # via flask
 jinja2==2.10              # via flask
 jmespath==0.9.3           # via boto3, botocore
 mando==0.6.4              # via radon
-markupsafe==1.0           # via jinja2
+markupsafe==1.1.1           # via jinja2
 mccabe==0.6.1             # via flake8
 more-itertools==4.3.0     # via pytest
 pluggy==0.7.1             # via pytest

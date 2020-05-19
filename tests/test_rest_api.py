@@ -141,62 +141,6 @@ def test_liveness_endpoint(client):
     assert json_data == {}
 
 
-def test_sync_data(client):
-    """Test the /api/v1/sync-graph-data endpoint."""
-    url = api_route_for("sync-graph-data")
-    response = client.get(url)
-    assert response.status_code == 405
-    response = client.put(url)
-    assert response.status_code == 405
-    response = client.patch(url)
-    assert response.status_code == 405
-    response = client.delete(url)
-    assert response.status_code == 405
-
-
-@patch("requests.Session.post", return_value="")
-def test_sync_data1(_mock1, client):
-    """Test the /api/v1/sync-graph-data endpoint."""
-    url = api_route_for("sync-graph-data")
-    inp = '''{
-        "non_cve_sync": true,
-        "latest_version_sync": true,
-        "cve_ecosystem": ["npm"]
-    }'''
-    response = client.post(url,
-                           data=inp,
-                           content_type='application/json')
-    assert response.status_code == 200
-
-    inp = '''{
-        "non_cve_sync": true,
-        "latest_version_sync": true
-    }'''
-    response = client.post(url,
-                           data=inp,
-                           content_type='application/json')
-    assert response.status_code == 400
-
-    inp = '''{
-        "non_cve_sync": true,
-        "latest_version_sync": true,
-        "cve_ecosystem": ["npm"]
-    }'''
-    response = client.post(url,
-                           data=inp,
-                           content_type='application/json')
-    assert response.status_code == 200
-
-    inp = '''{
-           "cve_source_sync": {"cve_sources": "CRA"},
-           "cve_ecosystem": ["npm"]
-        }'''
-    response = client.post(url,
-                           data=inp,
-                           content_type='application/json')
-    assert response.status_code == 200
-
-
 @patch("src.rest_api.retrieve_worker_result")
 def test_report_endpoint(mocker, client):
     """Test the /api/v1/report endpoint."""

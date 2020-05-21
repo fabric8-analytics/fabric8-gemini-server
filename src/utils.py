@@ -52,7 +52,7 @@ def sanitize_text_for_query(text):
         raise ValueError('Only select queries are supported')
 
     # remove newlines, quotes and backslash character
-    text = " ".join([l.strip() for l in text.split("\n")])
+    text = " ".join([line.strip() for line in text.split("\n")])
     return text.strip()
 
 

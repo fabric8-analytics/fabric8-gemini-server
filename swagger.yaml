@@ -26,36 +26,6 @@ paths:
       responses:
         '200':
           description: Service is ready
-  /sync-graph-data:
-    post:
-      tags:
-        - Sync Graph DB
-      operationId: f8a_scanner.api_v1.sync-graph-data
-      summary: Sync the graph db data
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: body
-          name: sync
-          description: parameters to perform sync operation
-          required: true
-          schema:
-            $ref: '#/definitions/sync'
-      responses:
-        '200':
-          schema:
-            $ref: "#/definitions/syncresp"
-          description: Sync operation started
-        '400':
-          description: Bad request from the client
-        '401':
-          description: Request unauthorized
-        '404':
-          description: Data not found
-        '500':
-          description: Internal server error
   /register:
     post:
       tags:
@@ -271,30 +241,6 @@ paths:
         '404':
           description: No comparison data could be found
 definitions:
-  sync:
-    title: Sync operation request
-    properties:
-      non_cve_sync:
-        type: boolean
-      cve_ecosystem:
-        type: array
-        items:
-          type: string
-      latest_version_sync:
-        type: boolean
-      cve_source_sync:
-        type: object
-        properties:
-          cve_sources:
-            type: string
-  syncresp:
-    title: Sync operation response
-    description: Sync non cve version and latest version response
-    properties:
-      success:
-        type: boolean
-      summary:
-        type: string
   ComparisonReport:
     title: Comparison Report
     description: Comparison Report structure

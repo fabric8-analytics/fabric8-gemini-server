@@ -80,29 +80,25 @@ class PostgresPassThrough:
 
     def __init__(self):
         """Initialize the connection to Postgres database using psycopg2 as a pass through."""
-        self.conn_string = "host='{host}' dbname='{dbname}' user='{user}' password='{password}'".\
+        conn_string = "host='{host}' dbname='{dbname}' user='{user}' password='{password}'".\
             format(host=os.getenv('PGBOUNCER_SERVICE_HOST', 'bayesian-pgbouncer'),
                    dbname=os.getenv('POSTGRESQL_DATABASE', 'coreapi'),
                    user=os.getenv('POSTGRESQL_USER', 'coreapi'),
                    password=os.getenv('POSTGRESQL_PASSWORD', 'coreapi'))
+        self.conn = psycopg2.connect(conn_string)
+        self.cursor = self.conn.cursor()
 
     def fetch_records(self, data):
         """Fetch records from RDS database."""
         if data and data.get('query'):
             try:
-                conn = psycopg2.connect(self.conn_string)
-                cursor = conn.cursor()
                 # sanitize the query to drop CRUD operations
                 query = sanitize_text_for_query(data['query'])
                 if query:
-                    cursor.execute(query)
-                    return {'data': cursor.fetchmany(10)}
+                    self.cursor.execute(query)
+                    return {'data': self.cursor.fetchmany(10)}
             except (ValueError, Exception) as e:
                 return {'error': str(e)}
-            finally:
-                conn.commit()
-                cursor.close()
-                conn.close()
         else:
             return {'warning': 'Invalid payload. Check your payload once again'}
 

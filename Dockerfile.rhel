@@ -2,18 +2,12 @@
 
 FROM quay.io/openshiftio/rhel-base-python3:latest
 
-ENV F8A_WORKER_VERSION=6503230
-ENV F8A_AUTH_VERSION=fff8f49
-
 COPY ./requirements.txt /
 
 RUN python3 -m pip install --upgrade pip>=10.0.0 &&\
     pip3 install -r requirements.txt && rm requirements.txt
 
 COPY ./src /src
-
-RUN pip3 install git+https://github.com/fabric8-analytics/fabric8-analytics-worker.git@${F8A_WORKER_VERSION}
-RUN pip3 install git+https://github.com/fabric8-analytics/fabric8-analytics-auth.git@${F8A_AUTH_VERSION}
 
 ADD scripts/entrypoint.sh /bin/entrypoint.sh
 

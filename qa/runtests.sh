@@ -66,9 +66,8 @@ prepare_venv
 
 # now we are surely in the Python virtual environment
 
-pip3 install -r requirements.txt
-pip3 install git+https://github.com/fabric8-analytics/fabric8-analytics-worker.git@6503230
-pip3 install git+https://github.com/fabric8-analytics/fabric8-analytics-auth.git@fff8f49
+pip3 install -r tests/requirements.txt
+
 
 export DEPLOYMENT_PREFIX="${USER}"
 export WORKER_ADMINISTRATION_REGION=api

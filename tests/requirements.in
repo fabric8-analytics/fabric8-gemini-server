@@ -4,9 +4,5 @@ coverage
 pytest-mock
 codecov
 radon
-Flask_Cors
-psycopg2-binary
-sentry_sdk
 pydocstyle
-f8a_worker @ git+https://github.com/fabric8-analytics/fabric8-analytics-worker.git@066c2f6#egg=f8a_worker
-fabric8a_auth @ git+https://github.com/fabric8-analytics/fabric8-analytics-auth.git@5ff9438#egg=fabric8a_auth
+-r ../requirements.in

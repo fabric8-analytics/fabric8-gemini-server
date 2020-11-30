@@ -1,16 +1,8 @@
-pytest
-flask
+six
+Flask
 gunicorn
-flask-cors
-requests
-pytest-cov
-coverage
-gevent
-sqlalchemy
-pytest-mock
-codecov
-radon
-boto3
-sentry-sdk
-requests-futures
-psycopg2
+Flask_Cors
+sentry_sdk
+psycopg2-binary
+f8a_worker @ git+https://github.com/fabric8-analytics/fabric8-analytics-worker.git@066c2f6#egg=f8a_worker
+fabric8a_auth @ git+https://github.com/fabric8-analytics/fabric8-analytics-auth.git@5ff9438#egg=fabric8a_auth

@@ -86,7 +86,7 @@ class PostgresPassThrough:
                    user=os.getenv('POSTGRESQL_USER', 'coreapi'),
                    password=os.getenv('POSTGRESQL_PASSWORD', 'coreapi'))
 
-    def fetch_records(self, data):
+    def fetch_records(self, data, client_validated):
         """Fetch records from RDS database."""
         if data and data.get('query'):
             try:
@@ -96,6 +96,9 @@ class PostgresPassThrough:
                 query = sanitize_text_for_query(data['query'])
                 if query:
                     cursor.execute(query)
+
+                    if client_validated:
+                        return {'data': cursor.fetchall()}
                     return {'data': cursor.fetchmany(10)}
             except (ValueError, Exception) as e:
                 return {'error': str(e)}

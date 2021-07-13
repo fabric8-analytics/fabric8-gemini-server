@@ -132,6 +132,11 @@ objects:
               configMapKeyRef:
                 name: bayesian-config
                 key: auth-url
+          - name: APP_SECRET_KEY
+            valueFrom:
+              secretKeyRef:
+                name: jobs
+                key: flask-app-secret-key
           image: "${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${IMAGE_TAG}"
           name: fabric8-gemini-server
           ports:

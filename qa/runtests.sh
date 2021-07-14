@@ -65,8 +65,8 @@ function prepare_venv() {
 prepare_venv
 
 # now we are surely in the Python virtual environment
-
-pip3 install -r tests/requirements.txt
+python3 -m pip install --upgrade pip
+pip install -r tests/requirements.txt
 
 
 export DEPLOYMENT_PREFIX="${USER}"

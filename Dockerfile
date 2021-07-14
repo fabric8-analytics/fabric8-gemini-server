@@ -1,17 +1,19 @@
-FROM registry.centos.org/centos/centos:7
+FROM registry.access.redhat.com/ubi8/python-36:latest
 
-RUN yum install -y epel-release &&\
-    yum install -y gcc git python36-pip python36-requests httpd httpd-devel python36-devel &&\
-    yum clean all
+LABEL name="bayesian-api" \
+      description="bayesian API server" \
+      git-url="https://github.com/fabric8-analytics/fabric8-analytics-server" \
+      git-path="/" \
+      target-file="Dockerfile" \
+      app-license="Apache 2.0"
 
-RUN python3 -m pip install --upgrade pip
+ENV LANG=en_US.UTF-8 PYTHONDONTWRITEBYTECODE=1 DB_CACHE_DIR="/db-cache"
+
+RUN pip3 install --upgrade pip --no-cache-dir
 
 COPY ./requirements.txt /
-RUN pip install -r requirements.txt && rm requirements.txt
-
+RUN pip3 install -r /requirements.txt --no-cache-dir
 ADD scripts/entrypoint.sh /bin/entrypoint.sh
 COPY ./src /src
-
-RUN chmod 777 /bin/entrypoint.sh
 
 ENTRYPOINT ["/bin/entrypoint.sh"]

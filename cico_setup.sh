@@ -21,6 +21,7 @@ prep() {
     yum -y update
     yum -y install docker gcc git which epel-release postgresql
     yum -y install python36-pip python36-devel openssl-devel
+    pip3 install --upgrade pip --no-cache-dir
     pip3 install virtualenv
     pip3 install docker-compose
     systemctl start docker

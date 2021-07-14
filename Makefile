@@ -2,10 +2,10 @@ REGISTRY := quay.io
 DEFAULT_TAG := latest
 
 ifeq ($(TARGET),rhel)
-  DOCKERFILE := Dockerfile
+  DOCKERFILE := Dockerfile.rhel
   REPOSITORY := openshiftio/rhel-fabric8-analytics-fabric8-gemini-server
 else
-  DOCKERFILE := Dockerfile
+  DOCKERFILE := Dockerfile.old
   REPOSITORY := openshiftio/fabric8-analytics-fabric8-gemini-server
 endif
 

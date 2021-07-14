@@ -354,14 +354,14 @@ def test_get_parser_from_ecosystem():
 def test_fetch_records():
     """Test the PostgresPassThrough fetch records module."""
     query = "select id from worker_results limit 1;"
-    resp = ppt.fetch_records(data={})
+    resp = ppt.fetch_records(data={}, client_validated=False)
     assert resp['warning'] == 'Invalid payload. Check your payload once again'
-    resp = ppt.fetch_records(data={'query': {'query': ''}})
+    resp = ppt.fetch_records(data={'query': {'query': ''}}, client_validated=False)
     assert resp['error'] is not None
-    resp = ppt.fetch_records(data={'query': 'delete all from some_table;'})
+    resp = ppt.fetch_records(data={'query': 'delete all from some_table;'}, client_validated=False)
     assert resp['error'] is not None
     data = {'query': query}
-    resp = ppt.fetch_records(data)
+    resp = ppt.fetch_records(data, client_validated=False)
     assert resp is not None
 
 

@@ -19,6 +19,7 @@ import sentry_sdk
 from requests_futures.sessions import FuturesSession
 import logging
 
+APP_SECRET_KEY = os.getenv('APP_SECRET_KEY', "not-set")
 
 app = Flask(__name__)
 CORS(app)
@@ -387,7 +388,13 @@ def graph():
 def pgsql():
     """Endpoint to get graph node properties."""
     input_json = request.get_json()
-    response = ppt.fetch_records(input_json)
+    client = request.headers.get('client')
+    client_validated = False
+    if client:
+        app_secret_key = request.headers.get("APP_SECRET_KEY")
+        if app_secret_key and app_secret_key == APP_SECRET_KEY:
+            client_validated = True
+    response = ppt.fetch_records(input_json, client_validated)
 
     return flask.jsonify(response)
 

@@ -19,7 +19,7 @@ import sentry_sdk
 from requests_futures.sessions import FuturesSession
 import logging
 
-APP_SECRET_KEY = os.getenv('APP_SECRET_KEY', "not-set")
+APP_SECRET_KEY = os.getenv('SERVICE_ACCOUNT_CLIENT_ID', "not-set")
 
 app = Flask(__name__)
 CORS(app)

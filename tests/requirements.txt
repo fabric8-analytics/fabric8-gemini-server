@@ -4,12 +4,12 @@
 #
 #    pip-compile --output-file=tests/requirements.txt tests/requirements.in
 #
-amqp==5.0.2
+amqp==5.0.9
     # via kombu
-anymarkup-core==0.8.1
-    # via anymarkup
 anymarkup==0.8.1
     # via f8a-worker
+anymarkup-core==0.8.1
+    # via anymarkup
 attrs==20.3.0
     # via
     #   jsonschema
@@ -20,7 +20,7 @@ beautifulsoup4==4.9.3
     # via
     #   bs4
     #   f8a-worker
-billiard==3.6.3.0
+billiard==3.6.4.0
     # via celery
 blinker==1.4
     # via
@@ -35,7 +35,7 @@ botocore==1.19.25
     #   s3transfer
 bs4==0.0.1
     # via f8a-utils
-celery==5.0.2
+celery==5.2.2
     # via selinon
 certifi==2020.11.8
     # via
@@ -45,20 +45,23 @@ cffi==1.14.4
     # via cryptography
 chardet==3.0.4
     # via requests
-click-didyoumean==0.0.3
-    # via celery
-click-repl==0.1.6
-    # via celery
-click==7.1.2
+click==8.0.3
     # via
     #   anymarkup
     #   celery
     #   click-didyoumean
+    #   click-plugins
     #   click-repl
     #   flask
     #   selinon
+click-didyoumean==0.0.3
+    # via celery
+click-plugins==1.1.1
+    # via celery
+click-repl==0.2.0
+    # via celery
 codecov==2.1.10
-    # via -r tests/requirements.in
+    # via -r requirements.in
 codegen==1.0
     # via selinon
 colorama==0.4.4
@@ -69,25 +72,36 @@ configobj==5.0.6
     # via anymarkup
 coverage==5.3
     # via
-    #   -r tests/requirements.in
+    #   -r requirements.in
     #   codecov
     #   pytest-cov
 cryptography==3.2.1
     # via
     #   f8a-utils
     #   fabric8a-auth
-git+https://github.com/fabric8-analytics/fabric8-analytics-utils.git@5a5ce60#egg=f8a_utils
+f8a-utils @ git+https://github.com/fabric8-analytics/fabric8-analytics-utils.git@5a5ce60
     # via f8a-worker
-git+https://github.com/fabric8-analytics/fabric8-analytics-version-comparator.git@8a57ac7#egg=f8a_version_comparator
+f8a-version-comparator @ git+https://github.com/fabric8-analytics/fabric8-analytics-version-comparator.git@8a57ac7
     # via f8a-utils
-git+https://github.com/fabric8-analytics/fabric8-analytics-worker.git@066c2f6#egg=f8a_worker
-    # via -r tests/../requirements.in
-git+https://github.com/fabric8-analytics/fabric8-analytics-auth.git@5ff9438#egg=fabric8a_auth
-    # via -r tests/../requirements.in
+f8a-worker @ git+https://github.com/fabric8-analytics/fabric8-analytics-worker.git@066c2f6
+    # via -r ../requirements.in
+fabric8a-auth @ git+https://github.com/fabric8-analytics/fabric8-analytics-auth.git@5ff9438
+    # via -r ../requirements.in
+flask==1.1.2
+    # via
+    #   -r ../requirements.in
+    #   fabric8a-auth
+    #   flask-babelex
+    #   flask-cors
+    #   flask-login
+    #   flask-mail
+    #   flask-principal
+    #   flask-security
+    #   flask-wtf
 flask-babelex==0.9.4
     # via flask-security
 flask-cors==3.0.9
-    # via -r tests/../requirements.in
+    # via -r ../requirements.in
 flask-login==0.5.0
     # via flask-security
 flask-mail==0.9.1
@@ -98,17 +112,6 @@ flask-security==3.0.0
     # via fabric8a-auth
 flask-wtf==0.14.3
     # via flask-security
-flask==1.1.2
-    # via
-    #   -r tests/../requirements.in
-    #   fabric8a-auth
-    #   flask-babelex
-    #   flask-cors
-    #   flask-login
-    #   flask-mail
-    #   flask-principal
-    #   flask-security
-    #   flask-wtf
 future==0.18.2
     # via radon
 git2json==0.2.3
@@ -120,15 +123,9 @@ gitpython==3.1.11
 graphviz==0.15
     # via selinon
 gunicorn==20.0.4
-    # via -r tests/../requirements.in
+    # via -r ../requirements.in
 idna==2.10
     # via requests
-importlib-metadata==3.1.0
-    # via
-    #   jsonschema
-    #   kombu
-    #   pluggy
-    #   pytest
 iniconfig==1.1.1
     # via pytest
 itsdangerous==1.1.0
@@ -152,7 +149,7 @@ jsonschema==3.2.0
     # via
     #   f8a-worker
     #   selinon
-kombu==5.0.2
+kombu==5.2.3
     # via celery
 logutils==0.3.5
     # via rainbow-logging-handler
@@ -175,28 +172,28 @@ pluggy==0.13.1
 prompt-toolkit==3.0.8
     # via click-repl
 psycopg2-binary==2.8.6
-    # via -r tests/../requirements.in
+    # via -r ../requirements.in
 py==1.9.0
     # via pytest
 pycparser==2.20
     # via cffi
 pydocstyle==5.1.1
-    # via -r tests/requirements.in
+    # via -r requirements.in
 pyjwt==1.7.1
     # via fabric8a-auth
 pyparsing==2.4.7
     # via packaging
 pyrsistent==0.17.3
     # via jsonschema
-pytest-cov==2.10.1
-    # via -r tests/requirements.in
-pytest-mock==3.3.1
-    # via -r tests/requirements.in
 pytest==6.1.2
     # via
-    #   -r tests/requirements.in
+    #   -r requirements.in
     #   pytest-cov
     #   pytest-mock
+pytest-cov==2.10.1
+    # via -r requirements.in
+pytest-mock==3.3.1
+    # via -r requirements.in
 python-dateutil==2.8.1
     # via botocore
 pytz==2020.4
@@ -209,12 +206,10 @@ pyyaml==5.3.1
     #   f8a-worker
     #   selinon
 radon==4.3.2
-    # via -r tests/requirements.in
+    # via -r requirements.in
 rainbow-logging-handler==2.2.2
     # via selinon
 raven==6.10.0
-    # via f8a-worker
-requests-futures==1.0.0
     # via f8a-worker
 requests==2.25.0
     # via
@@ -223,6 +218,8 @@ requests==2.25.0
     #   f8a-worker
     #   fabric8a-auth
     #   requests-futures
+requests-futures==1.0.0
+    # via f8a-worker
 s3transfer==0.3.3
     # via boto3
 selinon[celery]==1.0.0
@@ -232,10 +229,10 @@ semantic-version==2.8.5
 semver==2.13.0
     # via f8a-utils
 sentry-sdk==0.19.4
-    # via -r tests/../requirements.in
+    # via -r ../requirements.in
 six==1.15.0
     # via
-    #   -r tests/../requirements.in
+    #   -r ../requirements.in
     #   anymarkup-core
     #   click-repl
     #   configobj
@@ -274,6 +271,7 @@ vine==5.0.0
     # via
     #   amqp
     #   celery
+    #   kombu
 wcwidth==0.2.5
     # via prompt-toolkit
 werkzeug==1.0.1
@@ -284,8 +282,6 @@ wtforms==2.3.3
     # via flask-wtf
 xmltodict==0.12.0
     # via anymarkup
-zipp==3.4.0
-    # via importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools

@@ -6,10 +6,10 @@
 #
 amqp==5.0.2
     # via kombu
-anymarkup-core==0.8.1
-    # via anymarkup
 anymarkup==0.8.1
     # via f8a-worker
+anymarkup-core==0.8.1
+    # via anymarkup
 attrs==20.3.0
     # via jsonschema
 babel==2.9.0
@@ -35,7 +35,7 @@ bs4==0.0.1
     # via f8a-utils
 celery==5.0.2
     # via selinon
-certifi==2020.11.8
+certifi==2022.12.7
     # via
     #   requests
     #   sentry-sdk
@@ -43,10 +43,6 @@ cffi==1.14.4
     # via cryptography
 chardet==3.0.4
     # via requests
-click-didyoumean==0.0.3
-    # via celery
-click-repl==0.1.6
-    # via celery
 click==7.1.2
     # via
     #   anymarkup
@@ -55,6 +51,10 @@ click==7.1.2
     #   click-repl
     #   flask
     #   selinon
+click-didyoumean==0.0.3
+    # via celery
+click-repl==0.1.6
+    # via celery
 codegen==1.0
     # via selinon
 colorama==0.4.4
@@ -65,14 +65,25 @@ cryptography==3.2.1
     # via
     #   f8a-utils
     #   fabric8a-auth
-git+https://github.com/fabric8-analytics/fabric8-analytics-utils.git@5a5ce60#egg=f8a_utils
+f8a_utils @ git+https://github.com/fabric8-analytics/fabric8-analytics-utils.git@5a5ce60
     # via f8a-worker
-git+https://github.com/fabric8-analytics/fabric8-analytics-version-comparator.git@8a57ac7#egg=f8a_version_comparator
+f8a_version_comparator @ git+https://github.com/fabric8-analytics/fabric8-analytics-version-comparator.git@8a57ac7
     # via f8a-utils
-git+https://github.com/fabric8-analytics/fabric8-analytics-worker.git@066c2f6#egg=f8a_worker
+f8a_worker @ git+https://github.com/fabric8-analytics/fabric8-analytics-worker.git@066c2f6
     # via -r requirements.in
-git+https://github.com/fabric8-analytics/fabric8-analytics-auth.git@5ff9438#egg=fabric8a_auth
+fabric8a_auth @ git+https://github.com/fabric8-analytics/fabric8-analytics-auth.git@5ff9438
     # via -r requirements.in
+flask==1.1.2
+    # via
+    #   -r requirements.in
+    #   fabric8a-auth
+    #   flask-babelex
+    #   flask-cors
+    #   flask-login
+    #   flask-mail
+    #   flask-principal
+    #   flask-security
+    #   flask-wtf
 flask-babelex==0.9.4
     # via flask-security
 flask-cors==3.0.9
@@ -87,17 +98,6 @@ flask-security==3.0.0
     # via fabric8a-auth
 flask-wtf==0.14.3
     # via flask-security
-flask==1.1.2
-    # via
-    #   -r requirements.in
-    #   fabric8a-auth
-    #   flask-babelex
-    #   flask-cors
-    #   flask-login
-    #   flask-mail
-    #   flask-principal
-    #   flask-security
-    #   flask-wtf
 git2json==0.2.3
     # via f8a-worker
 gitdb==4.0.5
@@ -110,10 +110,6 @@ gunicorn==20.0.4
     # via -r requirements.in
 idna==2.10
     # via requests
-importlib-metadata==3.1.0
-    # via
-    #   jsonschema
-    #   kombu
 itsdangerous==1.1.0
     # via
     #   flask
@@ -174,14 +170,14 @@ rainbow-logging-handler==2.2.2
     # via selinon
 raven==6.10.0
     # via f8a-worker
-requests-futures==1.0.0
-    # via f8a-worker
 requests==2.25.0
     # via
     #   f8a-utils
     #   f8a-worker
     #   fabric8a-auth
     #   requests-futures
+requests-futures==1.0.0
+    # via f8a-worker
 s3transfer==0.3.3
     # via boto3
 selinon[celery]==1.0.0
@@ -238,8 +234,6 @@ wtforms==2.3.3
     # via flask-wtf
 xmltodict==0.12.0
     # via anymarkup
-zipp==3.4.0
-    # via importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools

@@ -6,10 +6,10 @@
 #
 amqp==5.0.2
     # via kombu
-anymarkup-core==0.8.1
-    # via anymarkup
 anymarkup==0.8.1
     # via f8a-worker
+anymarkup-core==0.8.1
+    # via anymarkup
 attrs==20.3.0
     # via
     #   jsonschema
@@ -45,10 +45,6 @@ cffi==1.14.4
     # via cryptography
 chardet==3.0.4
     # via requests
-click-didyoumean==0.0.3
-    # via celery
-click-repl==0.1.6
-    # via celery
 click==7.1.2
     # via
     #   anymarkup
@@ -57,6 +53,10 @@ click==7.1.2
     #   click-repl
     #   flask
     #   selinon
+click-didyoumean==0.0.3
+    # via celery
+click-repl==0.1.6
+    # via celery
 codecov==2.1.10
     # via -r tests/requirements.in
 codegen==1.0
@@ -84,6 +84,17 @@ git+https://github.com/fabric8-analytics/fabric8-analytics-worker.git@066c2f6#eg
     # via -r tests/../requirements.in
 git+https://github.com/fabric8-analytics/fabric8-analytics-auth.git@5ff9438#egg=fabric8a_auth
     # via -r tests/../requirements.in
+flask==1.1.2
+    # via
+    #   -r tests/../requirements.in
+    #   fabric8a-auth
+    #   flask-babelex
+    #   flask-cors
+    #   flask-login
+    #   flask-mail
+    #   flask-principal
+    #   flask-security
+    #   flask-wtf
 flask-babelex==0.9.4
     # via flask-security
 flask-cors==3.0.9
@@ -98,17 +109,6 @@ flask-security==3.0.0
     # via fabric8a-auth
 flask-wtf==0.14.3
     # via flask-security
-flask==1.1.2
-    # via
-    #   -r tests/../requirements.in
-    #   fabric8a-auth
-    #   flask-babelex
-    #   flask-cors
-    #   flask-login
-    #   flask-mail
-    #   flask-principal
-    #   flask-security
-    #   flask-wtf
 future==0.18.2
     # via radon
 git2json==0.2.3
@@ -123,12 +123,6 @@ gunicorn==20.0.4
     # via -r tests/../requirements.in
 idna==2.10
     # via requests
-importlib-metadata==3.1.0
-    # via
-    #   jsonschema
-    #   kombu
-    #   pluggy
-    #   pytest
 iniconfig==1.1.1
     # via pytest
 itsdangerous==1.1.0
@@ -188,22 +182,22 @@ pyparsing==2.4.7
     # via packaging
 pyrsistent==0.17.3
     # via jsonschema
-pytest-cov==2.10.1
-    # via -r tests/requirements.in
-pytest-mock==3.3.1
-    # via -r tests/requirements.in
 pytest==6.1.2
     # via
     #   -r tests/requirements.in
     #   pytest-cov
     #   pytest-mock
+pytest-cov==2.10.1
+    # via -r tests/requirements.in
+pytest-mock==3.3.1
+    # via -r tests/requirements.in
 python-dateutil==2.8.1
     # via botocore
 pytz==2020.4
     # via
     #   babel
     #   celery
-pyyaml==5.3.1
+pyyaml==5.4
     # via
     #   anymarkup
     #   f8a-worker
@@ -214,8 +208,6 @@ rainbow-logging-handler==2.2.2
     # via selinon
 raven==6.10.0
     # via f8a-worker
-requests-futures==1.0.0
-    # via f8a-worker
 requests==2.25.0
     # via
     #   codecov
@@ -223,6 +215,8 @@ requests==2.25.0
     #   f8a-worker
     #   fabric8a-auth
     #   requests-futures
+requests-futures==1.0.0
+    # via f8a-worker
 s3transfer==0.3.3
     # via boto3
 selinon[celery]==1.0.0
@@ -284,8 +278,6 @@ wtforms==2.3.3
     # via flask-wtf
 xmltodict==0.12.0
     # via anymarkup
-zipp==3.4.0
-    # via importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools
